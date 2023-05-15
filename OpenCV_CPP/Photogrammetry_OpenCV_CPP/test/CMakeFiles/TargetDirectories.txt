@@ -1,0 +1,3 @@
+/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/DisplayImage.dir
+/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/edit_cache.dir
+/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/rebuild_cache.dir

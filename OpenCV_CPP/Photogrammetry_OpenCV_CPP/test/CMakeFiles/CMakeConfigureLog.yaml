@@ -1,0 +1,1665 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineSystem.cmake:204 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Linux - 6.1.20-1-lts - x86_64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /usr/bin/cc 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+      
+      The C compiler identification is GNU, found in:
+        /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/3.26.0/CompilerIdC/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/bin/c++ 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is GNU, found in:
+        /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/3.26.0/CompilerIdCXX/a.out
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-m6v4Lx"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-m6v4Lx"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-m6v4Lx
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_13ef1/fast && /usr/bin/make  -f CMakeFiles/cmTC_13ef1.dir/build.make CMakeFiles/cmTC_13ef1.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-m6v4Lx'
+        Building C object CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o
+        /usr/bin/cc   -v -o CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++,d --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 12.2.1 20230201 (GCC) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_13ef1.dir/'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_13ef1.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -o /tmp/cciGhW0u.s
+        GNU C17 (GCC) version 12.2.1 20230201 (x86_64-pc-linux-gnu)
+        	compiled by GNU C version 12.2.1 20230201, GMP version 6.2.1, MPFR version 4.2.0, MPC version 1.3.1, isl version isl-0.25-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../x86_64-pc-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include
+         /usr/local/include
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed
+         /usr/include
+        End of search list.
+        GNU C17 (GCC) version 12.2.1 20230201 (x86_64-pc-linux-gnu)
+        	compiled by GNU C version 12.2.1 20230201, GMP version 6.2.1, MPFR version 4.2.0, MPC version 1.3.1, isl version isl-0.25-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        Compiler executable checksum: 99df1fbb4c4d7eeb8d93f0979bfab9ce
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_13ef1.dir/'
+         as -v --64 -o CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o /tmp/cciGhW0u.s
+        GNU assembler version 2.40 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.40
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.'
+        Linking C executable cmTC_13ef1
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_13ef1.dir/link.txt --verbose=1
+        /usr/bin/cc  -v -rdynamic CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o -o cmTC_13ef1 
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/lto-wrapper
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++,d --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 12.2.1 20230201 (GCC) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_13ef1' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_13ef1.'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/cctSUNLn.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_13ef1 /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../.. CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crtn.o
+        COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_13ef1' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_13ef1.'
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-m6v4Lx'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include]
+          add: [/usr/local/include]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include;/usr/local/include;/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-m6v4Lx]
+        ignore line: []
+        ignore line: [Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_13ef1/fast && /usr/bin/make  -f CMakeFiles/cmTC_13ef1.dir/build.make CMakeFiles/cmTC_13ef1.dir/build]
+        ignore line: [make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-m6v4Lx']
+        ignore line: [Building C object CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=c c++ ada fortran go lto objc obj-c++ d --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 12.2.1 20230201 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_13ef1.dir/']
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/cc1 -quiet -v /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_13ef1.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -o /tmp/cciGhW0u.s]
+        ignore line: [GNU C17 (GCC) version 12.2.1 20230201 (x86_64-pc-linux-gnu)]
+        ignore line: [	compiled by GNU C version 12.2.1 20230201  GMP version 6.2.1  MPFR version 4.2.0  MPC version 1.3.1  isl version isl-0.25-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../x86_64-pc-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [GNU C17 (GCC) version 12.2.1 20230201 (x86_64-pc-linux-gnu)]
+        ignore line: [	compiled by GNU C version 12.2.1 20230201  GMP version 6.2.1  MPFR version 4.2.0  MPC version 1.3.1  isl version isl-0.25-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [Compiler executable checksum: 99df1fbb4c4d7eeb8d93f0979bfab9ce]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_13ef1.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o /tmp/cciGhW0u.s]
+        ignore line: [GNU assembler version 2.40 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.40]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.']
+        ignore line: [Linking C executable cmTC_13ef1]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_13ef1.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/cc  -v -rdynamic CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o -o cmTC_13ef1 ]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/lto-wrapper]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=c c++ ada fortran go lto objc obj-c++ d --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 12.2.1 20230201 (GCC) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_13ef1' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_13ef1.']
+        link line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/cctSUNLn.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_13ef1 /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../.. CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crtn.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/cctSUNLn.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-export-dynamic] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_13ef1] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crti.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crti.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../..] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../..]
+          arg [CMakeFiles/cmTC_13ef1.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [-lc] ==> lib [c]
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crtn.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crtn.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/Scrt1.o] ==> [/usr/lib/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crti.o] ==> [/usr/lib/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crtn.o] ==> [/usr/lib/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../..] ==> [/usr/lib]
+        implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+        implicit objs: [/usr/lib/Scrt1.o;/usr/lib/crti.o;/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtbeginS.o;/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtendS.o;/usr/lib/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1;/usr/lib;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-7vLnBW"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-7vLnBW"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-7vLnBW
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_48594/fast && /usr/bin/make  -f CMakeFiles/cmTC_48594.dir/build.make CMakeFiles/cmTC_48594.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-7vLnBW'
+        Building CXX object CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o
+        /usr/bin/c++   -v -o CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++,d --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 12.2.1 20230201 (GCC) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_48594.dir/'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/cc1plus -quiet -v -D_GNU_SOURCE /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_48594.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -o /tmp/cc6mhLTI.s
+        GNU C++17 (GCC) version 12.2.1 20230201 (x86_64-pc-linux-gnu)
+        	compiled by GNU C version 12.2.1 20230201, GMP version 6.2.1, MPFR version 4.2.0, MPC version 1.3.1, isl version isl-0.25-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../x86_64-pc-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1/x86_64-pc-linux-gnu
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1/backward
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include
+         /usr/local/include
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed
+         /usr/include
+        End of search list.
+        GNU C++17 (GCC) version 12.2.1 20230201 (x86_64-pc-linux-gnu)
+        	compiled by GNU C version 12.2.1 20230201, GMP version 6.2.1, MPFR version 4.2.0, MPC version 1.3.1, isl version isl-0.25-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        Compiler executable checksum: ab2adc4aa87e9c5b6e6cb24c55e663d5
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_48594.dir/'
+         as -v --64 -o CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o /tmp/cc6mhLTI.s
+        GNU assembler version 2.40 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.40
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.'
+        Linking CXX executable cmTC_48594
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_48594.dir/link.txt --verbose=1
+        /usr/bin/c++  -v -rdynamic CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_48594 
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/lto-wrapper
+        Target: x86_64-pc-linux-gnu
+        Configured with: /build/gcc/src/gcc/configure --enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++,d --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 12.2.1 20230201 (GCC) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_48594' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_48594.'
+         /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccBMHJKk.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_48594 /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../.. CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crtn.o
+        COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_48594' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_48594.'
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-7vLnBW'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1/x86_64-pc-linux-gnu]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1/backward]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include]
+          add: [/usr/local/include]
+          add: [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1] ==> [/usr/include/c++/12.2.1]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1/x86_64-pc-linux-gnu] ==> [/usr/include/c++/12.2.1/x86_64-pc-linux-gnu]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1/backward] ==> [/usr/include/c++/12.2.1/backward]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/include/c++/12.2.1;/usr/include/c++/12.2.1/x86_64-pc-linux-gnu;/usr/include/c++/12.2.1/backward;/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include;/usr/local/include;/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-7vLnBW]
+        ignore line: []
+        ignore line: [Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_48594/fast && /usr/bin/make  -f CMakeFiles/cmTC_48594.dir/build.make CMakeFiles/cmTC_48594.dir/build]
+        ignore line: [make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-7vLnBW']
+        ignore line: [Building CXX object CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/usr/bin/c++   -v -o CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=c c++ ada fortran go lto objc obj-c++ d --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 12.2.1 20230201 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_48594.dir/']
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/cc1plus -quiet -v -D_GNU_SOURCE /usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_48594.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -o /tmp/cc6mhLTI.s]
+        ignore line: [GNU C++17 (GCC) version 12.2.1 20230201 (x86_64-pc-linux-gnu)]
+        ignore line: [	compiled by GNU C version 12.2.1 20230201  GMP version 6.2.1  MPFR version 4.2.0  MPC version 1.3.1  isl version isl-0.25-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../x86_64-pc-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1/x86_64-pc-linux-gnu]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../include/c++/12.2.1/backward]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/include-fixed]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [GNU C++17 (GCC) version 12.2.1 20230201 (x86_64-pc-linux-gnu)]
+        ignore line: [	compiled by GNU C version 12.2.1 20230201  GMP version 6.2.1  MPFR version 4.2.0  MPC version 1.3.1  isl version isl-0.25-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [Compiler executable checksum: ab2adc4aa87e9c5b6e6cb24c55e663d5]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_48594.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o /tmp/cc6mhLTI.s]
+        ignore line: [GNU assembler version 2.40 (x86_64-pc-linux-gnu) using BFD version (GNU Binutils) 2.40]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [Linking CXX executable cmTC_48594]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_48594.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/c++  -v -rdynamic CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_48594 ]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/lto-wrapper]
+        ignore line: [Target: x86_64-pc-linux-gnu]
+        ignore line: [Configured with: /build/gcc/src/gcc/configure --enable-languages=c c++ ada fortran go lto objc obj-c++ d --enable-bootstrap --prefix=/usr --libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man --infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/ --with-build-config=bootstrap-lto --with-linker-hash-style=gnu --with-system-zlib --enable-__cxa_atexit --enable-cet=auto --enable-checking=release --enable-clocale=gnu --enable-default-pie --enable-default-ssp --enable-gnu-indirect-function --enable-gnu-unique-object --enable-libstdcxx-backtrace --enable-link-serialization=1 --enable-linker-build-id --enable-lto --enable-multilib --enable-plugin --enable-shared --enable-threads=posix --disable-libssp --disable-libstdcxx-pch --disable-werror]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 12.2.1 20230201 (GCC) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/:/lib/../lib/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_48594' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_48594.']
+        link line: [ /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/collect2 -plugin /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/lto-wrapper -plugin-opt=-fresolution=/tmp/ccBMHJKk.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr --hash-style=gnu -m elf_x86_64 -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_48594 /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/Scrt1.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crti.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtbeginS.o -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1 -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../.. CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtendS.o /usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crtn.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccBMHJKk.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [-export-dynamic] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_48594] ==> ignore
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crti.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crti.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../..] ==> dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../..]
+          arg [CMakeFiles/cmTC_48594.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lm] ==> lib [m]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crtn.o] ==> obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crtn.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/Scrt1.o] ==> [/usr/lib/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crti.o] ==> [/usr/lib/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib/crtn.o] ==> [/usr/lib/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1] ==> [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/../../..] ==> [/usr/lib]
+        implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+        implicit objs: [/usr/lib/Scrt1.o;/usr/lib/crti.o;/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtbeginS.o;/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1/crtendS.o;/usr/lib/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-pc-linux-gnu/12.2.1;/usr/lib;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-rK8N0Y"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-rK8N0Y"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-rK8N0Y
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_341d6/fast && /usr/bin/make  -f CMakeFiles/cmTC_341d6.dir/build.make CMakeFiles/cmTC_341d6.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-rK8N0Y'
+        Building C object CMakeFiles/cmTC_341d6.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_341d6.dir/test_mpi.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-rK8N0Y/test_mpi.c
+        Linking C executable cmTC_341d6
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_341d6.dir/link.txt --verbose=1
+        /usr/bin/cc -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_341d6.dir/test_mpi.c.o -o cmTC_341d6  /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-rK8N0Y'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-OcglDe"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-OcglDe"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-OcglDe
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_feac7/fast && /usr/bin/make  -f CMakeFiles/cmTC_feac7.dir/build.make CMakeFiles/cmTC_feac7.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-OcglDe'
+        Building CXX object CMakeFiles/cmTC_feac7.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_feac7.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-OcglDe/test_mpi.cpp
+        Linking CXX executable cmTC_feac7
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_feac7.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_feac7.dir/test_mpi.cpp.o -o cmTC_feac7  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-OcglDe'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-QxUeK8"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-QxUeK8"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-QxUeK8
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_de8da/fast && /usr/bin/make  -f CMakeFiles/cmTC_de8da.dir/build.make CMakeFiles/cmTC_de8da.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-QxUeK8'
+        Building CXX object CMakeFiles/cmTC_de8da.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_de8da.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-QxUeK8/test_mpi.cpp
+        Linking CXX executable cmTC_de8da
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_de8da.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_de8da.dir/test_mpi.cpp.o -o cmTC_de8da  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-QxUeK8'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:241 (try_compile)"
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:596 (_HDF5_test_regular_compiler_C)"
+      - "/usr/lib/cmake/vtk/VTK-vtk-module-find-packages.cmake:1449 (find_package)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:152 (include)"
+      - "CMakeLists.txt:4 (find_package)"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk/patches/99;/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "HDF5_C_COMPILER_NO_INTERROGATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_d9cc8/fast && /usr/bin/make  -f CMakeFiles/cmTC_d9cc8.dir/build.make CMakeFiles/cmTC_d9cc8.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        Building C object CMakeFiles/cmTC_d9cc8.dir/cmake_hdf5_test.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_d9cc8.dir/cmake_hdf5_test.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/cmake_hdf5_test.c
+        Linking C executable cmTC_d9cc8
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d9cc8.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_d9cc8.dir/cmake_hdf5_test.c.o -o cmTC_d9cc8 
+        /usr/bin/ld: CMakeFiles/cmTC_d9cc8.dir/cmake_hdf5_test.c.o: in function `main':
+        cmake_hdf5_test.c:(.text+0x3e): undefined reference to `H5check_version'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x43): undefined reference to `H5open'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x61): undefined reference to `H5Fcreate'
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_d9cc8.dir/build.make:99: cmTC_d9cc8] Error 1
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        make: *** [Makefile:127: cmTC_d9cc8/fast] Error 2
+        
+      exitCode: 2
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-pn1no9"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-pn1no9"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-pn1no9
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_68421/fast && /usr/bin/make  -f CMakeFiles/cmTC_68421.dir/build.make CMakeFiles/cmTC_68421.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-pn1no9'
+        Building C object CMakeFiles/cmTC_68421.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_68421.dir/test_mpi.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-pn1no9/test_mpi.c
+        Linking C executable cmTC_68421
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_68421.dir/link.txt --verbose=1
+        /usr/bin/cc -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_68421.dir/test_mpi.c.o -o cmTC_68421  /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-pn1no9'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEjqka"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEjqka"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEjqka
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_970dd/fast && /usr/bin/make  -f CMakeFiles/cmTC_970dd.dir/build.make CMakeFiles/cmTC_970dd.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEjqka'
+        Building CXX object CMakeFiles/cmTC_970dd.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_970dd.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEjqka/test_mpi.cpp
+        Linking CXX executable cmTC_970dd
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_970dd.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_970dd.dir/test_mpi.cpp.o -o cmTC_970dd  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEjqka'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NxFmbv"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NxFmbv"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NxFmbv
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_bc549/fast && /usr/bin/make  -f CMakeFiles/cmTC_bc549.dir/build.make CMakeFiles/cmTC_bc549.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NxFmbv'
+        Building CXX object CMakeFiles/cmTC_bc549.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_bc549.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NxFmbv/test_mpi.cpp
+        Linking CXX executable cmTC_bc549
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bc549.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_bc549.dir/test_mpi.cpp.o -o cmTC_bc549  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NxFmbv'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:241 (try_compile)"
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:596 (_HDF5_test_regular_compiler_C)"
+      - "/usr/lib/cmake/vtk/VTK-vtk-module-find-packages.cmake:1449 (find_package)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:152 (include)"
+      - "CMakeLists.txt:4 (find_package)"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk/patches/99;/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "HDF5_C_COMPILER_NO_INTERROGATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_51870/fast && /usr/bin/make  -f CMakeFiles/cmTC_51870.dir/build.make CMakeFiles/cmTC_51870.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        Building C object CMakeFiles/cmTC_51870.dir/cmake_hdf5_test.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_51870.dir/cmake_hdf5_test.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/cmake_hdf5_test.c
+        Linking C executable cmTC_51870
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_51870.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_51870.dir/cmake_hdf5_test.c.o -o cmTC_51870 
+        /usr/bin/ld: CMakeFiles/cmTC_51870.dir/cmake_hdf5_test.c.o: in function `main':
+        cmake_hdf5_test.c:(.text+0x3e): undefined reference to `H5check_version'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x43): undefined reference to `H5open'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x61): undefined reference to `H5Fcreate'
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_51870.dir/build.make:99: cmTC_51870] Error 1
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        make: *** [Makefile:127: cmTC_51870/fast] Error 2
+        
+      exitCode: 2
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-Lzyles"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-Lzyles"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-Lzyles
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_1f6e9/fast && /usr/bin/make  -f CMakeFiles/cmTC_1f6e9.dir/build.make CMakeFiles/cmTC_1f6e9.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-Lzyles'
+        Building C object CMakeFiles/cmTC_1f6e9.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_1f6e9.dir/test_mpi.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-Lzyles/test_mpi.c
+        Linking C executable cmTC_1f6e9
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1f6e9.dir/link.txt --verbose=1
+        /usr/bin/cc -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_1f6e9.dir/test_mpi.c.o -o cmTC_1f6e9  /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-Lzyles'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mzPB1P"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mzPB1P"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mzPB1P
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_a83d0/fast && /usr/bin/make  -f CMakeFiles/cmTC_a83d0.dir/build.make CMakeFiles/cmTC_a83d0.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mzPB1P'
+        Building CXX object CMakeFiles/cmTC_a83d0.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_a83d0.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mzPB1P/test_mpi.cpp
+        Linking CXX executable cmTC_a83d0
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a83d0.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_a83d0.dir/test_mpi.cpp.o -o cmTC_a83d0  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mzPB1P'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HbJYwz"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HbJYwz"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HbJYwz
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_9d69a/fast && /usr/bin/make  -f CMakeFiles/cmTC_9d69a.dir/build.make CMakeFiles/cmTC_9d69a.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HbJYwz'
+        Building CXX object CMakeFiles/cmTC_9d69a.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_9d69a.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HbJYwz/test_mpi.cpp
+        Linking CXX executable cmTC_9d69a
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9d69a.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_9d69a.dir/test_mpi.cpp.o -o cmTC_9d69a  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HbJYwz'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:241 (try_compile)"
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:596 (_HDF5_test_regular_compiler_C)"
+      - "/usr/lib/cmake/vtk/VTK-vtk-module-find-packages.cmake:1449 (find_package)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:152 (include)"
+      - "CMakeLists.txt:4 (find_package)"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk/patches/99;/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "HDF5_C_COMPILER_NO_INTERROGATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_eab1a/fast && /usr/bin/make  -f CMakeFiles/cmTC_eab1a.dir/build.make CMakeFiles/cmTC_eab1a.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        Building C object CMakeFiles/cmTC_eab1a.dir/cmake_hdf5_test.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_eab1a.dir/cmake_hdf5_test.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/cmake_hdf5_test.c
+        Linking C executable cmTC_eab1a
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_eab1a.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_eab1a.dir/cmake_hdf5_test.c.o -o cmTC_eab1a 
+        /usr/bin/ld: CMakeFiles/cmTC_eab1a.dir/cmake_hdf5_test.c.o: in function `main':
+        cmake_hdf5_test.c:(.text+0x3e): undefined reference to `H5check_version'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x43): undefined reference to `H5open'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x61): undefined reference to `H5Fcreate'
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_eab1a.dir/build.make:99: cmTC_eab1a] Error 1
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        make: *** [Makefile:127: cmTC_eab1a/fast] Error 2
+        
+      exitCode: 2
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HzoNLd"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HzoNLd"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HzoNLd
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_7c47a/fast && /usr/bin/make  -f CMakeFiles/cmTC_7c47a.dir/build.make CMakeFiles/cmTC_7c47a.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HzoNLd'
+        Building C object CMakeFiles/cmTC_7c47a.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_7c47a.dir/test_mpi.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HzoNLd/test_mpi.c
+        Linking C executable cmTC_7c47a
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7c47a.dir/link.txt --verbose=1
+        /usr/bin/cc -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_7c47a.dir/test_mpi.c.o -o cmTC_7c47a  /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-HzoNLd'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-87vOEb"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-87vOEb"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-87vOEb
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_8c919/fast && /usr/bin/make  -f CMakeFiles/cmTC_8c919.dir/build.make CMakeFiles/cmTC_8c919.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-87vOEb'
+        Building CXX object CMakeFiles/cmTC_8c919.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_8c919.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-87vOEb/test_mpi.cpp
+        Linking CXX executable cmTC_8c919
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8c919.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_8c919.dir/test_mpi.cpp.o -o cmTC_8c919  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-87vOEb'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-IhObKz"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-IhObKz"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-IhObKz
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_9f6cf/fast && /usr/bin/make  -f CMakeFiles/cmTC_9f6cf.dir/build.make CMakeFiles/cmTC_9f6cf.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-IhObKz'
+        Building CXX object CMakeFiles/cmTC_9f6cf.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_9f6cf.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-IhObKz/test_mpi.cpp
+        Linking CXX executable cmTC_9f6cf
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9f6cf.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_9f6cf.dir/test_mpi.cpp.o -o cmTC_9f6cf  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-IhObKz'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:241 (try_compile)"
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:596 (_HDF5_test_regular_compiler_C)"
+      - "/usr/lib/cmake/vtk/VTK-vtk-module-find-packages.cmake:1449 (find_package)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:152 (include)"
+      - "CMakeLists.txt:4 (find_package)"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk/patches/99;/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "HDF5_C_COMPILER_NO_INTERROGATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b8090/fast && /usr/bin/make  -f CMakeFiles/cmTC_b8090.dir/build.make CMakeFiles/cmTC_b8090.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        Building C object CMakeFiles/cmTC_b8090.dir/cmake_hdf5_test.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_b8090.dir/cmake_hdf5_test.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/cmake_hdf5_test.c
+        Linking C executable cmTC_b8090
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b8090.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_b8090.dir/cmake_hdf5_test.c.o -o cmTC_b8090 
+        /usr/bin/ld: CMakeFiles/cmTC_b8090.dir/cmake_hdf5_test.c.o: in function `main':
+        cmake_hdf5_test.c:(.text+0x3e): undefined reference to `H5check_version'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x43): undefined reference to `H5open'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x61): undefined reference to `H5Fcreate'
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_b8090.dir/build.make:99: cmTC_b8090] Error 1
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        make: *** [Makefile:127: cmTC_b8090/fast] Error 2
+        
+      exitCode: 2
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-6XaBSb"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-6XaBSb"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-6XaBSb
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_0148a/fast && /usr/bin/make  -f CMakeFiles/cmTC_0148a.dir/build.make CMakeFiles/cmTC_0148a.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-6XaBSb'
+        Building C object CMakeFiles/cmTC_0148a.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_0148a.dir/test_mpi.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-6XaBSb/test_mpi.c
+        Linking C executable cmTC_0148a
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0148a.dir/link.txt --verbose=1
+        /usr/bin/cc -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_0148a.dir/test_mpi.c.o -o cmTC_0148a  /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-6XaBSb'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZEVuWk"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZEVuWk"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZEVuWk
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_4acf1/fast && /usr/bin/make  -f CMakeFiles/cmTC_4acf1.dir/build.make CMakeFiles/cmTC_4acf1.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZEVuWk'
+        Building CXX object CMakeFiles/cmTC_4acf1.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_4acf1.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZEVuWk/test_mpi.cpp
+        Linking CXX executable cmTC_4acf1
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4acf1.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_4acf1.dir/test_mpi.cpp.o -o cmTC_4acf1  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZEVuWk'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZMmv7m"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZMmv7m"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZMmv7m
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_87d9d/fast && /usr/bin/make  -f CMakeFiles/cmTC_87d9d.dir/build.make CMakeFiles/cmTC_87d9d.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZMmv7m'
+        Building CXX object CMakeFiles/cmTC_87d9d.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_87d9d.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZMmv7m/test_mpi.cpp
+        Linking CXX executable cmTC_87d9d
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_87d9d.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_87d9d.dir/test_mpi.cpp.o -o cmTC_87d9d  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-ZMmv7m'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:241 (try_compile)"
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:596 (_HDF5_test_regular_compiler_C)"
+      - "/usr/lib/cmake/vtk/VTK-vtk-module-find-packages.cmake:1449 (find_package)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:152 (include)"
+      - "CMakeLists.txt:4 (find_package)"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk/patches/99;/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "HDF5_C_COMPILER_NO_INTERROGATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_60fc1/fast && /usr/bin/make  -f CMakeFiles/cmTC_60fc1.dir/build.make CMakeFiles/cmTC_60fc1.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        Building C object CMakeFiles/cmTC_60fc1.dir/cmake_hdf5_test.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_60fc1.dir/cmake_hdf5_test.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/cmake_hdf5_test.c
+        Linking C executable cmTC_60fc1
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_60fc1.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_60fc1.dir/cmake_hdf5_test.c.o -o cmTC_60fc1 
+        /usr/bin/ld: CMakeFiles/cmTC_60fc1.dir/cmake_hdf5_test.c.o: in function `main':
+        cmake_hdf5_test.c:(.text+0x3e): undefined reference to `H5check_version'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x43): undefined reference to `H5open'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x61): undefined reference to `H5Fcreate'
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_60fc1.dir/build.make:99: cmTC_60fc1] Error 1
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        make: *** [Makefile:127: cmTC_60fc1/fast] Error 2
+        
+      exitCode: 2
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-L5H0IS"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-L5H0IS"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-L5H0IS
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_a766c/fast && /usr/bin/make  -f CMakeFiles/cmTC_a766c.dir/build.make CMakeFiles/cmTC_a766c.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-L5H0IS'
+        Building C object CMakeFiles/cmTC_a766c.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_a766c.dir/test_mpi.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-L5H0IS/test_mpi.c
+        Linking C executable cmTC_a766c
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a766c.dir/link.txt --verbose=1
+        /usr/bin/cc -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_a766c.dir/test_mpi.c.o -o cmTC_a766c  /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-L5H0IS'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-YtmPVE"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-YtmPVE"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-YtmPVE
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_de585/fast && /usr/bin/make  -f CMakeFiles/cmTC_de585.dir/build.make CMakeFiles/cmTC_de585.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-YtmPVE'
+        Building CXX object CMakeFiles/cmTC_de585.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_de585.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-YtmPVE/test_mpi.cpp
+        Linking CXX executable cmTC_de585
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_de585.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_de585.dir/test_mpi.cpp.o -o cmTC_de585  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-YtmPVE'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NIBsnS"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NIBsnS"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NIBsnS
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_40742/fast && /usr/bin/make  -f CMakeFiles/cmTC_40742.dir/build.make CMakeFiles/cmTC_40742.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NIBsnS'
+        Building CXX object CMakeFiles/cmTC_40742.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_40742.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NIBsnS/test_mpi.cpp
+        Linking CXX executable cmTC_40742
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_40742.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_40742.dir/test_mpi.cpp.o -o cmTC_40742  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-NIBsnS'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:241 (try_compile)"
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:596 (_HDF5_test_regular_compiler_C)"
+      - "/usr/lib/cmake/vtk/VTK-vtk-module-find-packages.cmake:1449 (find_package)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:152 (include)"
+      - "CMakeLists.txt:4 (find_package)"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk/patches/99;/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "HDF5_C_COMPILER_NO_INTERROGATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_cf898/fast && /usr/bin/make  -f CMakeFiles/cmTC_cf898.dir/build.make CMakeFiles/cmTC_cf898.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        Building C object CMakeFiles/cmTC_cf898.dir/cmake_hdf5_test.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_cf898.dir/cmake_hdf5_test.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/cmake_hdf5_test.c
+        Linking C executable cmTC_cf898
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cf898.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_cf898.dir/cmake_hdf5_test.c.o -o cmTC_cf898 
+        /usr/bin/ld: CMakeFiles/cmTC_cf898.dir/cmake_hdf5_test.c.o: in function `main':
+        cmake_hdf5_test.c:(.text+0x3e): undefined reference to `H5check_version'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x43): undefined reference to `H5open'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x61): undefined reference to `H5Fcreate'
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_cf898.dir/build.make:99: cmTC_cf898] Error 1
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        make: *** [Makefile:127: cmTC_cf898/fast] Error 2
+        
+      exitCode: 2
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-CArnWE"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-CArnWE"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-CArnWE
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_9ec9e/fast && /usr/bin/make  -f CMakeFiles/cmTC_9ec9e.dir/build.make CMakeFiles/cmTC_9ec9e.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-CArnWE'
+        Building C object CMakeFiles/cmTC_9ec9e.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_9ec9e.dir/test_mpi.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-CArnWE/test_mpi.c
+        Linking C executable cmTC_9ec9e
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9ec9e.dir/link.txt --verbose=1
+        /usr/bin/cc -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_9ec9e.dir/test_mpi.c.o -o cmTC_9ec9e  /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-CArnWE'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-EhhS7e"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-EhhS7e"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-EhhS7e
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b9469/fast && /usr/bin/make  -f CMakeFiles/cmTC_b9469.dir/build.make CMakeFiles/cmTC_b9469.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-EhhS7e'
+        Building CXX object CMakeFiles/cmTC_b9469.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_b9469.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-EhhS7e/test_mpi.cpp
+        Linking CXX executable cmTC_b9469
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b9469.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_b9469.dir/test_mpi.cpp.o -o cmTC_b9469  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-EhhS7e'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-45QQ9d"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-45QQ9d"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-45QQ9d
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_20d45/fast && /usr/bin/make  -f CMakeFiles/cmTC_20d45.dir/build.make CMakeFiles/cmTC_20d45.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-45QQ9d'
+        Building CXX object CMakeFiles/cmTC_20d45.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_20d45.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-45QQ9d/test_mpi.cpp
+        Linking CXX executable cmTC_20d45
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_20d45.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_20d45.dir/test_mpi.cpp.o -o cmTC_20d45  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-45QQ9d'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:241 (try_compile)"
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:596 (_HDF5_test_regular_compiler_C)"
+      - "/usr/lib/cmake/vtk/VTK-vtk-module-find-packages.cmake:1449 (find_package)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:152 (include)"
+      - "CMakeLists.txt:4 (find_package)"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk/patches/99;/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "HDF5_C_COMPILER_NO_INTERROGATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_8d45c/fast && /usr/bin/make  -f CMakeFiles/cmTC_8d45c.dir/build.make CMakeFiles/cmTC_8d45c.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        Building C object CMakeFiles/cmTC_8d45c.dir/cmake_hdf5_test.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_8d45c.dir/cmake_hdf5_test.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/cmake_hdf5_test.c
+        Linking C executable cmTC_8d45c
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8d45c.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_8d45c.dir/cmake_hdf5_test.c.o -o cmTC_8d45c 
+        /usr/bin/ld: CMakeFiles/cmTC_8d45c.dir/cmake_hdf5_test.c.o: in function `main':
+        cmake_hdf5_test.c:(.text+0x3e): undefined reference to `H5check_version'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x43): undefined reference to `H5open'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x61): undefined reference to `H5Fcreate'
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_8d45c.dir/build.make:99: cmTC_8d45c] Error 1
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        make: *** [Makefile:127: cmTC_8d45c/fast] Error 2
+        
+      exitCode: 2
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for C in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-U3PipX"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-U3PipX"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_C_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-U3PipX
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_8a71e/fast && /usr/bin/make  -f CMakeFiles/cmTC_8a71e.dir/build.make CMakeFiles/cmTC_8a71e.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-U3PipX'
+        Building C object CMakeFiles/cmTC_8a71e.dir/test_mpi.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_8a71e.dir/test_mpi.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-U3PipX/test_mpi.c
+        Linking C executable cmTC_8a71e
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8a71e.dir/link.txt --verbose=1
+        /usr/bin/cc -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_8a71e.dir/test_mpi.c.o -o cmTC_8a71e  /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-U3PipX'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1322 (_MPI_try_staged_settings)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1645 (_MPI_check_lang_works)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode normal"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-3ARn23"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-3ARn23"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_normal"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-3ARn23
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_a53d6/fast && /usr/bin/make  -f CMakeFiles/cmTC_a53d6.dir/build.make CMakeFiles/cmTC_a53d6.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-3ARn23'
+        Building CXX object CMakeFiles/cmTC_a53d6.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_a53d6.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-3ARn23/test_mpi.cpp
+        Linking CXX executable cmTC_a53d6
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a53d6.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_a53d6.dir/test_mpi.cpp.o -o cmTC_a53d6  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-3ARn23'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1278 (try_compile)"
+      - "/usr/share/cmake/Modules/FindMPI.cmake:1672 (_MPI_try_staged_settings)"
+      - "/usr/lib/cmake/vtk/vtkm/cmake/VTKmWrappers.cmake:18 (find_package)"
+      - "/usr/lib/cmake/vtk/vtkm/VTKmConfig.cmake:181 (include)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:129 (find_package)"
+      - "CMakeLists.txt:4 (find_package)"
+    description: "The MPI test test_mpi for CXX in mode MPICXX"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEQQuQ"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEQQuQ"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "MPI_RESULT_CXX_test_mpi_MPICXX"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEQQuQ
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_4e73d/fast && /usr/bin/make  -f CMakeFiles/cmTC_4e73d.dir/build.make CMakeFiles/cmTC_4e73d.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEQQuQ'
+        Building CXX object CMakeFiles/cmTC_4e73d.dir/test_mpi.cpp.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_4e73d.dir/test_mpi.cpp.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEQQuQ/test_mpi.cpp
+        Linking CXX executable cmTC_4e73d
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4e73d.dir/link.txt --verbose=1
+        /usr/bin/c++ -Wl,-rpath -Wl,/usr/lib -Wl,--enable-new-dtags CMakeFiles/cmTC_4e73d.dir/test_mpi.cpp.o -o cmTC_4e73d  /usr/lib/libmpi_cxx.so /usr/lib/libmpi.so 
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/CMakeScratch/TryCompile-mEQQuQ'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:241 (try_compile)"
+      - "/usr/lib/cmake/vtk/patches/99/FindHDF5.cmake:596 (_HDF5_test_regular_compiler_C)"
+      - "/usr/lib/cmake/vtk/VTK-vtk-module-find-packages.cmake:1449 (find_package)"
+      - "/usr/lib/cmake/vtk/vtk-config.cmake:152 (include)"
+      - "CMakeLists.txt:4 (find_package)"
+    directories:
+      source: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+      binary: "/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/usr/lib/cmake/vtk/patches/99;/usr/lib/cmake/vtk;/usr/lib/cmake/vtk/vtkm/cmake"
+    buildResult:
+      variable: "HDF5_C_COMPILER_NO_INTERROGATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp
+        
+        Run Build Command(s):/usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_ff8fc/fast && /usr/bin/make  -f CMakeFiles/cmTC_ff8fc.dir/build.make CMakeFiles/cmTC_ff8fc.dir/build
+        make[1]: Entering directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        Building C object CMakeFiles/cmTC_ff8fc.dir/cmake_hdf5_test.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_ff8fc.dir/cmake_hdf5_test.c.o -c /home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/cmake_hdf5_test.c
+        Linking C executable cmTC_ff8fc
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ff8fc.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_ff8fc.dir/cmake_hdf5_test.c.o -o cmTC_ff8fc 
+        /usr/bin/ld: CMakeFiles/cmTC_ff8fc.dir/cmake_hdf5_test.c.o: in function `main':
+        cmake_hdf5_test.c:(.text+0x3e): undefined reference to `H5check_version'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x43): undefined reference to `H5open'
+        /usr/bin/ld: cmake_hdf5_test.c:(.text+0x61): undefined reference to `H5Fcreate'
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_ff8fc.dir/build.make:99: cmTC_ff8fc] Error 1
+        make[1]: Leaving directory '/home/omie_sawie/Code_Code/OpenCV_CPP/test/CMakeFiles/hdf5/CMakeFiles/CMakeTmp'
+        make: *** [Makefile:127: cmTC_ff8fc/fast] Error 2
+        
+      exitCode: 2
+...
