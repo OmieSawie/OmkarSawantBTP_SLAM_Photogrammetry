@@ -1,0 +1,3 @@
+/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/faceDetectionTest/out/build/CMakeFiles/FaceDetection.dir
+/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/faceDetectionTest/out/build/CMakeFiles/edit_cache.dir
+/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/faceDetectionTest/out/build/CMakeFiles/rebuild_cache.dir

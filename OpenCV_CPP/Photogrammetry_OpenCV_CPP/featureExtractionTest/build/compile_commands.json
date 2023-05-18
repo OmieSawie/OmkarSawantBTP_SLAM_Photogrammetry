@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/featureExtractionTest/build",
+  "command": "/usr/bin/c++  -isystem /usr/include/opencv4  -o CMakeFiles/FeatureExtraction.dir/FeatureExtraction.cpp.o -c /home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/featureExtractionTest/FeatureExtraction.cpp",
+  "file": "/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/featureExtractionTest/FeatureExtraction.cpp",
+  "output": "CMakeFiles/FeatureExtraction.dir/FeatureExtraction.cpp.o"
+}
+]
