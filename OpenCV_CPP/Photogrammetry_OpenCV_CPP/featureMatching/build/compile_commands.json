@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/featureMatching/build",
+  "command": "/usr/bin/c++  -isystem /usr/include/opencv4  -o CMakeFiles/FeatureMatching.dir/FeatureMatching.cpp.o -c /home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/featureMatching/FeatureMatching.cpp",
+  "file": "/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/featureMatching/FeatureMatching.cpp",
+  "output": "CMakeFiles/FeatureMatching.dir/FeatureMatching.cpp.o"
+}
+]

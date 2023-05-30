@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.13)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+project( FeatureMatching )
+find_package( OpenCV REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable( FeatureMatching FeatureMatching.cpp )
+target_link_libraries( FeatureMatching ${OpenCV_LIBS} )

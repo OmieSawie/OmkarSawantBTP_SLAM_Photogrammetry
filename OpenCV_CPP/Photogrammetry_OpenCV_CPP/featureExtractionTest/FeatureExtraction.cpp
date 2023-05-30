@@ -9,6 +9,7 @@ using namespace cv::xfeatures2d;
 using std::cout;
 using std::endl;
 int main(int argc, char *argv[]) {
+
     CommandLineParser parser(argc, argv, "{@input | box.png | input image}");
     Mat src = imread(samples::findFile(parser.get<String>("@input")),
                      IMREAD_GRAYSCALE);
@@ -27,8 +28,13 @@ int main(int argc, char *argv[]) {
     drawKeypoints(src, keypoints, img_keypoints);
     //-- Show detected (drawn) keypoints
     imshow("SURF Keypoints", img_keypoints);
-    waitKey();
-    return 0;
+
+    while (true) {
+        char c = (char)waitKey(10);
+        // Press q to exit from window
+        if (c == 27 || c == 'q' || c == 'Q')
+            return 0;
+    }
 }
 #else
 int main() {
