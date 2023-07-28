@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 2.8)
+project( VideoFeatureMatching )
+find_package( OpenCV REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable( VideoFeatureMatching VideoFeatureMatching.cpp )
+target_link_libraries( VideoFeatureMatching ${OpenCV_LIBS} )
