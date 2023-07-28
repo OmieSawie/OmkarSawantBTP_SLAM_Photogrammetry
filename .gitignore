@@ -1,5 +1,7 @@
 /OpenCV_CPP/Photogrammetry_OpenCV_CPP/videoFeatureMatching/carOnRuralRoads.mp4
 /OpenCV_CPP/Photogrammetry_OpenCV_CPP/videoFeatureMatching/carOnRuralRoads0.avi
+*.mp4
+*.avi
 build/
 
 ### C++ ###
