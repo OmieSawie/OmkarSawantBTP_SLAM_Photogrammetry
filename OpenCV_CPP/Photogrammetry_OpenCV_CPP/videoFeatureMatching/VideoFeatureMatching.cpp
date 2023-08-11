@@ -17,7 +17,7 @@ int main() {
     VideoCapture vid_capture(
         "/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/"
         "OpenCV_CPP/Photogrammetry_OpenCV_CPP/videoFeatureMatching/"
-        "carOnLonelyRoads.mp4");
+        "/resources/carOnLonelyRoads.mp4");
 
     // Print error message if the stream is invalid
     if (!vid_capture.isOpened()) {
