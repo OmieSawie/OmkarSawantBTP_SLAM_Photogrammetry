@@ -18,24 +18,23 @@ using namespace cv::xfeatures2d;
 using namespace cv;
 using namespace std;
 
-Mat src, src_gray, prev_src_gray, descriptors, prev_descriptors;
-vector<KeyPoint> keypoints, prev_keypoints;
-int maxCorners = 30000;
-int maxTrackbar = 100;
+int maxCorners = 3000;
 RNG rng(12345);
 const char *source_window = "Image";
 
 Ptr<DescriptorExtractor> extractor = ORB::create();
+Ptr<DescriptorExtractor> prev_extractor = ORB::create();
+Mat src, src_gray, prev_src_gray;
 
 class FeatureExtractor {
-
   public:
-    FeatureExtractor() {}
+    FeatureExtractor(){};
 
     void extractFeatures_goodFeaturesToTrack(int, void *) {
+        cout << " Size is:" << prev_src_gray.size() << endl;
 
         maxCorners = MAX(maxCorners, 1);
-        vector<Point2f> corners;
+        vector<Point2f> corners, prev_corners;
         double qualityLevel = 0.01;
         double minDistance = 3;
         int blockSize = 3, gradientSize = 3;
@@ -43,26 +42,30 @@ class FeatureExtractor {
         double k = 0.04;
         Mat copy = src.clone();
 
-        corners.clear();
-
-        keypoints.clear();
-        prev_keypoints.clear();
+        Mat descriptors, prev_descriptors;
+        vector<KeyPoint> keypoints, prev_keypoints;
 
         goodFeaturesToTrack(src_gray, corners, maxCorners, qualityLevel,
                             minDistance, Mat(), blockSize, gradientSize,
                             useHarrisDetector, k);
+        goodFeaturesToTrack(prev_src_gray, prev_corners, maxCorners,
+                            qualityLevel, minDistance, Mat(), blockSize,
+                            gradientSize, useHarrisDetector, k);
 
         /* cout << "** Number of corners detected: " << corners.size() << endl;
          */
-
         for (int i = 0; i < corners.size(); i++) {
             KeyPoint kp(corners[i].x, corners[i].y, 2, -1, 0, 0, -1);
             keypoints.push_back(kp);
         }
+        for (int i = 0; i < prev_corners.size(); i++) {
+            KeyPoint kp(prev_corners[i].x, prev_corners[i].y, 2, -1, 0, 0, -1);
+            prev_keypoints.push_back(kp);
+        }
 
         extractor->compute(src_gray, keypoints, descriptors);
-        extractor->compute(prev_src_gray, prev_keypoints, prev_descriptors);
-        prev_src_gray = src_gray;
+        prev_extractor->compute(prev_src_gray, prev_keypoints,
+                                prev_descriptors);
 
         drawKeypoints(copy, keypoints, copy, cv::Scalar(255, 0, 0),
                       cv::DrawMatchesFlags::DRAW_OVER_OUTIMG);
@@ -78,34 +81,43 @@ class FeatureExtractor {
         // ________________________________________________________________
 
         cv::BFMatcher matcher(cv::NORM_L2, true);
-        std::vector<vector<cv::DMatch>> matches;
-        matcher.knnMatch(descriptors, prev_descriptors, matches, 2);
-        /* cout << "match="; */
-        /* cout << matches.size() << endl; */
+        std::vector<cv::DMatch> matches;
+        matcher.match(prev_descriptors, descriptors, matches);
 
-        /* // the number of matched features between the two images */
-        /* if (matches.size() != 0) { */
-        /*     cout << matches.size() << endl; */
-        /*     cv::Mat imageMatches; */
-        /*     std::vector<char> mask(matches.size(), 1); */
-        /*     cv::drawMatches(src_gray, keypoints, prev_src_gray,
-         * prev_keypoints, */
-        /*                     matches, imageMatches, cv::Scalar::all(-1), */
-        /*                     cv::Scalar::all(-1), mask, */
-        /*                     cv::DrawMatchesFlags::DRAW_OVER_OUTIMG); */
-        /*     cv::namedWindow("matches"); */
-        /*     cv::imshow("matches", imageMatches); */
-        /* } */
+        // Sort matches by score
+        std::sort(matches.begin(), matches.end());
 
-        //
-        //________________________________________________________________
+        // Remove not so good matches
+        const int numGoodMatches = matches.size() * 0.4f;
+        matches.erase(matches.begin() + numGoodMatches, matches.end());
 
-        for (size_t i = 0; i < keypoints.size(); i++) {
+        cout << "match=";
+        cout << matches.size() << endl;
+
+        // the number of matched features between the two images
+        if (matches.size() != 0) {
+            cout << matches.size() << endl;
+            cv::Mat imageMatches;
+
+            std::vector<char> mask(matches.size(), 1);
+            cv::drawMatches(prev_src_gray, prev_keypoints, src_gray, keypoints,
+                            matches, imageMatches, cv::Scalar::all(-1),
+                            cv::Scalar::all(-1), mask,
+                            cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
+            cv::drawMatches(prev_src_gray, prev_keypoints, src_gray, keypoints,
+                            matches, imageMatches);
+            cv::namedWindow("matches");
+            cv::imshow("matches", imageMatches);
+
+            //
+            //________________________________________________________________
+
+            /* namedWindow(source_window); */
+            /* moveWindow(source_window, 0, 0); */
+            /* imshow(source_window, copy); */
+
+            prev_src_gray = src_gray;
         }
-        namedWindow(source_window);
-        moveWindow(source_window, 0, 0);
-        imshow(source_window, copy);
-        sleep(0.1);
     }
 };
 
@@ -133,6 +145,18 @@ int main() {
         // they are enumerations
         int frame_count = vid_capture.get(7);
         cout << "  Frame count :" << frame_count;
+
+        Mat frame;
+        // Initialize a boolean to check if frames are there or not
+        bool isSuccess = vid_capture.read(frame);
+
+        int down_width = 1900;
+        int down_height = 900;
+
+        // resize down
+        resize(frame, src, Size(down_width, down_height), INTER_LINEAR);
+
+        cvtColor(src, prev_src_gray, COLOR_BGR2GRAY);
     }
 
     while (vid_capture.isOpened()) {
@@ -149,6 +173,8 @@ int main() {
 
         cvtColor(src, src_gray, COLOR_BGR2GRAY);
         namedWindow(source_window);
+        cv::namedWindow("matches");
+        moveWindow("matches", 0, 0);
 
         /* setTrackbarPos("Max corners", source_window, maxCorners); */
         /* imshow(source_window, src); */
