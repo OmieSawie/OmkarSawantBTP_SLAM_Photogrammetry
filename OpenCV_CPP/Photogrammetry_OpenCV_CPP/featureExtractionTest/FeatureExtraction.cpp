@@ -1,6 +1,3 @@
-#include "opencv2/highgui.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
 #include <cstddef>
 #include <iostream>
 #include <iterator>
@@ -107,14 +104,14 @@ class FeatureExtractor {
             cv::drawMatches(prev_src_gray, prev_keypoints, src_gray, keypoints,
                             matches, imageMatches);
             cv::namedWindow("matches");
-            cv::imshow("matches", imageMatches);
+            /* cv::imshow("matches", imageMatches); */
 
             //
             //________________________________________________________________
 
-            /* namedWindow(source_window); */
-            /* moveWindow(source_window, 0, 0); */
-            /* imshow(source_window, copy); */
+            namedWindow(source_window);
+            moveWindow(source_window, 0, 0);
+            imshow(source_window, copy);
 
             prev_src_gray = src_gray;
         }
