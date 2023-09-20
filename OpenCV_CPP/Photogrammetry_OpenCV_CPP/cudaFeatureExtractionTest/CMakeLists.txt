@@ -87,7 +87,7 @@ set(CPP_FILES
 
 # Tell CMake to compile the CUDA files
 set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS};-O3)
-CUDA_ADD_EXECUTABLE(CudaFeatureExtractionTest ${CUDA_FILES} ${CPP_FILES})
+CUDA_ADD_EXECUTABLE( ${PROJECT_NAME} ${CUDA_FILES} ${CPP_FILES})
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 # add_executable( NvidiaCudaTest NvidiaCudaTest.cpp )
 target_link_libraries( CudaFeatureExtractionTest ${OpenCV_LIBS} )
