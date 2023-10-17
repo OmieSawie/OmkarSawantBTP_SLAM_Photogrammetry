@@ -99,6 +99,10 @@ FeatureExtraction: /usr/lib/libopencv_aruco.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_bgsegm.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_bioinspired.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_ccalib.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudabgsegm.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudafeatures2d.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudaobjdetect.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudastereo.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_cvv.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_dnn_objdetect.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_dnn_superres.so.4.8.0
@@ -135,10 +139,14 @@ FeatureExtraction: /usr/lib/libopencv_plot.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_text.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_ml.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_phase_unwrapping.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudacodec.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_videoio.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudaoptflow.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudalegacy.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudawarping.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_optflow.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_ximgproc.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_video.so.4.8.0
-FeatureExtraction: /usr/lib/libopencv_videoio.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_imgcodecs.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_objdetect.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_calib3d.so.4.8.0
@@ -146,8 +154,12 @@ FeatureExtraction: /usr/lib/libopencv_dnn.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_features2d.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_flann.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_photo.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudaimgproc.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudafilters.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_imgproc.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudaarithm.so.4.8.0
 FeatureExtraction: /usr/lib/libopencv_core.so.4.8.0
+FeatureExtraction: /usr/lib/libopencv_cudev.so.4.8.0
 FeatureExtraction: CMakeFiles/FeatureExtraction.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/featureExtractionTest/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable FeatureExtraction"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/FeatureExtraction.dir/link.txt --verbose=$(VERBOSE)

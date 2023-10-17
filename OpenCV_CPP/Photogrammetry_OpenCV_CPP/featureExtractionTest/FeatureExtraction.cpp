@@ -15,7 +15,7 @@ using namespace cv::xfeatures2d;
 using namespace cv;
 using namespace std;
 
-int maxCorners = 3000;
+int maxCorners = 10000;
 RNG rng(12345);
 const char *source_window = "Image";
 
