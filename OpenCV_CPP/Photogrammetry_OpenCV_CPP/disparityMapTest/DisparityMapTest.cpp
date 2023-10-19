@@ -68,6 +68,10 @@ int main(int argc, char **argv) {
 
         imshow("disparity", (Mat_<uchar>)disp);
 
+        cout << disp.<< endl;
+        Mat disp8;
+        normalize(disp, disp8, 0, 255, NORM_MINMAX, CV_8U);
+
         /* Q = np.array(([ 1.0, 0.0, 0.0, -160.0 ], [ 0.0, 1.0, 0.0, -120.0 ],
          */
         /*               [ 0.0, 0.0, 0.0, 350.0 ], [ 0.0, 0.0, 1.0 / 90.0, 0.0
