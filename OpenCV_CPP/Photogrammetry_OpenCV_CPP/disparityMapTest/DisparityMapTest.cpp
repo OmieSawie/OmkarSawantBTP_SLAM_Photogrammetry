@@ -7,6 +7,7 @@
 #include <opencv2/core/base.hpp>
 #include <opencv2/core/hal/interface.h>
 #include <opencv2/core/mat.hpp>
+#include <opencv2/core/matx.hpp>
 #include <opencv2/core/persistence.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/core/utility.hpp>
@@ -19,23 +20,23 @@
 using namespace cv;
 using namespace std;
 
-void removeInfPoints(const Mat &points, Mat &removeInfPoints, Mat &left) {
+void removeInfPoints(const Mat points, Mat left_src, Mat &maskPoints,
+                     Mat &maskColors) {
     float inf = std::numeric_limits<float>::infinity();
 
-    removeInfPoints = points.clone();
+    /* removeInfPoints = points.clone(); */
     // Create a mask to remove inf points.
-    Mat mask = Mat(points.rows, points.cols, CV_8UC1);
-    for (int i = 0; i < mask.rows; i++) {
-        for (int j = 0; j < mask.cols; j++) {
+    for (int i = 0; i < points.rows; i++) {
+        for (int j = 0; j < points.cols; j++) {
+
             if (points.at<Point3f>(i, j).x == inf ||
                 points.at<Point3f>(i, j).y == inf ||
                 points.at<Point3f>(i, j).z == inf) {
-                mask.at<uchar>(i, j) = 0;
 
-                removeInfPoints.at<Point3f>(i, j).x = 0.f;
-                removeInfPoints.at<Point3f>(i, j).y = 0.f;
-                removeInfPoints.at<Point3f>(i, j).z = 0.f;
-                removeInfPoints.at<Point3f>(i, j);
+                /* points.at<Point3f>(i, j).x = 0.f; */
+                /* points.at<Point3f>(i, j).y = 0.f; */
+                /* points.at<Point3f>(i, j).z = 0.f; */
+                /* removeInfPoints.at<Point3f>(i, j); */
 
                 /* cout << removeInfPoints.at<Point3f>(i, j) << " "; */
 
@@ -51,7 +52,16 @@ void removeInfPoints(const Mat &points, Mat &removeInfPoints, Mat &left) {
                 /*                            points.at<Point3f>(i, j).y, */
                 /*                            points.at<Point3f>(i, j).z}); */
 
-                mask.at<uchar>(i, j) = 1;
+                /* cout << points.at<Point3f>(i, j); */
+
+                Mat colors(1, 1, CV_8UC3, Scalar(left_src.at<Vec3b>(i, j)));
+
+                maskColors.push_back(colors);
+                maskPoints.push_back(points.at<Point3f>(i, j));
+
+                /* mask.push_back({points.at<Point3f>(i, j).x, */
+                /*                 points.at<Point3f>(i, j).y, */
+                /*                 points.at<Point3f>(i, j).z}); */
             }
         }
     }
@@ -69,11 +79,12 @@ int main(int argc, char **argv) {
     Mat left, right;
     cuda::GpuMat d_left, d_right;
 
-    int ndisp = 16;
+    int ndisp = 16;    // 256;
+    int blockSize = 3; // 51;
 
     Ptr<cuda::StereoBM> bm;
 
-    bm = cuda::createStereoBM(ndisp, 3);
+    bm = cv::cuda::createStereoBM(ndisp, blockSize);
 
     /* VideoCapture vid_capture( */
     /*     "/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/"
@@ -85,8 +96,8 @@ int main(int argc, char **argv) {
     /* if (!vid_capture.isOpened()) { */
     /*     cout << "Error opening video stream or file" << endl; */
     /* } */
-    left_src = cv::imread("../imageL0.jpeg");
-    right_src = cv::imread("../imageR0.jpeg");
+    left_src = cv::imread("../imageL0.png");
+    right_src = cv::imread("../imageR0.png");
 
     /* while (vid_capture.isOpened()) { */
     // Initialise frame matrix
@@ -99,8 +110,8 @@ int main(int argc, char **argv) {
     cvtColor(left_src, left, COLOR_BGR2GRAY);
     cvtColor(right_src, right, COLOR_BGR2GRAY);
 
-    /* cv::resize(left, left, cv::Size(), 0.5, 0.5); */
-    /* cv::resize(right, right, cv::Size(), 0.5, 0.5); */
+    /* cv::resize(left, left, cv::Size(), 0.1, 0.1); */
+    /* cv::resize(right, right, cv::Size(), 0.1, 0.1); */
 
     // resize down
 
@@ -109,6 +120,7 @@ int main(int argc, char **argv) {
 
     imshow("left", left);
     imshow("right", right);
+    /* cout << "src:" << left.size() << left_src.size() << endl; */
 
     // Prepare disparity map of specified type
     Mat disp(left.size(), CV_32F);
@@ -121,43 +133,36 @@ int main(int argc, char **argv) {
 
     Mat disparity;
 
-    disp.convertTo(disparity, CV_32F, 1.0f);
+    disp.convertTo(disparity, CV_32F, 1.0f / 16.f);
 
-    // Scaling down the disparity values and normalizing them
-    disparity = (disparity / 16.0f);
+    /* // Scaling down the disparity values and normalizing them */
+    /* disparity = (disparity * 16.0f); */
 
     // cout << disp << endl;
-    /* normalize(disparity, disparity, 0., 255., NORM_MINMAX, CV_32F); */
+    normalize(disparity, disparity, 0., 255., NORM_MINMAX, CV_32F);
 
-    Mat Q = (Mat_<double>(4, 4) << 1., 0., 0., -3.1932437133789062e+02, 0., 1.,
+    Mat Q = (Mat_<float>(4, 4) << 1., 0., 0., -3.1932437133789062e+02, 0., 1.,
              0., -2.3945363616943359e+02, 0., 0., 0., 4.3964859406340838e+02,
              0., 0., 2.9912905731253359e-01, 0.);
 
-    Mat Img3D, Img3D_removeINF;
+    Mat Img3D;
+    /* cout << disparity.size(); */
 
     cv::reprojectImageTo3D(disparity, Img3D, Q, false, CV_32F);
-    removeInfPoints(Img3D, Img3D_removeINF, left_src);
-    cv::viz::writeCloud("pointCloud.ply", Img3D_removeINF);
-    /* cout << Img3D_removeINF; */
-    cout << Img3D.size();
-    imshow("disparity", Img3D_removeINF);
 
-    /* Q = np.array(([ 1.0, 0.0, 0.0, -160.0 ], [ 0.0, 1.0, 0.0, -120.0 ],
-     */
-    /*               [ 0.0, 0.0, 0.0, 350.0 ], [ 0.0, 0.0, 1.0 / 90.0, 0.0
-     * ]), */
-    /*              dtype = np.float32) */
+    /* cout << Img3D << endl; */
 
-    /* cv::stereoRectify(InputArray cameraMatrix1, InputArray
-     * distCoeffs1,
-     */
-    /*                   InputArray cameraMatrix2, InputArray
-     * distCoeffs2,
-     */
-    /*                   Size imageSize, InputArray R, InputArray T, */
-    /*                   OutputArray R1, OutputArray R2, OutputArray P1,
-     */
-    /*                   OutputArray P2, OutputArray Q); */
+    Mat maskPoints = Mat(0, 0, CV_32F);
+    Mat maskColors = Mat(0, 0, CV_8UC3);
+
+    removeInfPoints(Img3D, right_src, maskPoints, maskColors);
+
+    cout << left_src.type() << endl;
+
+    cv::viz::writeCloud("pointCloud.ply", maskPoints, maskColors);
+    /* cout << "3D:" << Img3D.size() << endl; */
+    /* cout << Img3D.size(); */
+    imshow("disparity", Img3D);
 
     while (true) {
         int key = waitKey(10000);
