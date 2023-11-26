@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
     cuda::GpuMat d_left, d_right;
 
     int ndisp = 16;    // 256;
-    int blockSize = 3; // 51;
+    int blockSize = 9; // 51;
 
     Ptr<cuda::StereoBM> bm;
 
@@ -96,8 +96,8 @@ int main(int argc, char **argv) {
     /* if (!vid_capture.isOpened()) { */
     /*     cout << "Error opening video stream or file" << endl; */
     /* } */
-    left_src = cv::imread("../imageL0.png");
-    right_src = cv::imread("../imageR0.png");
+    left_src = cv::imread("../bridgeL1.jpeg");
+    right_src = cv::imread("../bridgeR1.jpeg");
 
     /* while (vid_capture.isOpened()) { */
     // Initialise frame matrix
@@ -107,11 +107,11 @@ int main(int argc, char **argv) {
     /* int down_width = 1900; */
     /* int down_height = 900; */
 
+    /* cv::resize(left_src, left_src, cv::Size(), 0.2, 0.2); */
+    /* cv::resize(right_src, right_src, cv::Size(), 0.2, 0.2); */
+
     cvtColor(left_src, left, COLOR_BGR2GRAY);
     cvtColor(right_src, right, COLOR_BGR2GRAY);
-
-    /* cv::resize(left, left, cv::Size(), 0.1, 0.1); */
-    /* cv::resize(right, right, cv::Size(), 0.1, 0.1); */
 
     // resize down
 
@@ -133,17 +133,17 @@ int main(int argc, char **argv) {
 
     Mat disparity;
 
-    disp.convertTo(disparity, CV_32F, 1.0f / 16.f);
+    disp.convertTo(disparity, CV_32F, 1.0f / 16.0f);
 
     /* // Scaling down the disparity values and normalizing them */
     /* disparity = (disparity * 16.0f); */
 
     // cout << disp << endl;
-    normalize(disparity, disparity, 0., 255., NORM_MINMAX, CV_32F);
+    /* normalize(disparity, disparity, 0., 255., NORM_MINMAX, CV_32F); */
 
-    Mat Q = (Mat_<float>(4, 4) << 1., 0., 0., -3.1932437133789062e+02, 0., 1.,
-             0., -2.3945363616943359e+02, 0., 0., 0., 4.3964859406340838e+02,
-             0., 0., 2.9912905731253359e-01, 0.);
+    Mat Q = (Mat_<float>(4, 4) << 1., 0., 0., -3.3066341400146484e+02, 0., 1.,
+             0., -1.7788335609436035e+02, 0., 0., 0., 4.2544886900500654e+02,
+             0., 0., 2.5734796525421183e-01, 0.);
 
     Mat Img3D;
     /* cout << disparity.size(); */

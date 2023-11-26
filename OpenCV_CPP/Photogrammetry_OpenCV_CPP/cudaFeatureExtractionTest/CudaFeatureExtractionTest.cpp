@@ -25,9 +25,9 @@ int maxCorners = 3000;
 cv::RNG rng(12345);
 const char *source_window = "Image";
 
-int nfeatures = 500;
+int nfeatures = 1000;
 float scaleFactor = 1.2f;
-int nlevels = 8;
+int nlevels = 16;
 int edgeThreshold = 31;
 int firstLevel = 0;
 int WTA_K = 2;
@@ -56,10 +56,10 @@ class FeatureExtractor {
 
             cout << " Size is:" << prev_src_gray_gpu.size() << endl;
 
-            maxCorners = MAX(maxCorners, 1);
+            maxCorners = MAX(maxCorners, 1000);
             double qualityLevel = 0.01;
-            double minDistance = 3;
-            int blockSize = 3, gradientSize = 3;
+            double minDistance = 0;
+            int blockSize = 10, gradientSize = 3;
             bool useHarrisDetector = false;
             double k = 0.04;
             cv::cuda::GpuMat copy = src_gray_gpu.clone();
@@ -86,9 +86,7 @@ class FeatureExtractor {
             std::vector<cv::DMatch> good_matches;
             for (int k = 0;
                  k < min(descriptors_gpu.rows - 1, (int)matches.size()); k++) {
-                if ((matches[k][0].distance < 0.6 * (matches[k][1].distance)) &&
-                    ((int)matches[k].size() <= 2 &&
-                     (int)matches[k].size() > 0)) {
+                if ((matches[k][0].distance < 0.7 * (matches[k][1].distance))) {
                     good_matches.push_back(matches[k][0]);
                 }
             }

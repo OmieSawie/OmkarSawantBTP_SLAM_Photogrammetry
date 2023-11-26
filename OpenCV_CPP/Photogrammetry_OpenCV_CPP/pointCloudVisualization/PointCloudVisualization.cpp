@@ -109,8 +109,8 @@ int main(int argc, char **argv) {
     cvtColor(left_src, left, COLOR_BGR2GRAY);
     cvtColor(right_src, right, COLOR_BGR2GRAY);
 
-    cv::resize(left, left, cv::Size(), 0.1, 0.1);
-    cv::resize(right, right, cv::Size(), 0.1, 0.1);
+    cv::resize(left, left, cv::Size(), 0.5, 0.5);
+    cv::resize(right, right, cv::Size(), 0.5, 0.5);
 
     // resize down
 

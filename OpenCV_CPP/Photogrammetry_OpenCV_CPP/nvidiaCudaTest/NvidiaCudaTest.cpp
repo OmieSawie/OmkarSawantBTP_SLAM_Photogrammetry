@@ -97,8 +97,8 @@ void gpuSpeedTest() {
 }
 
 int main(int, char **) {
-    gpuSpeedTest();
-    /* cpuSpeedTest(); */
+    /* gpuSpeedTest(); */
+    cpuSpeedTest();
     return 1;
 }
 
