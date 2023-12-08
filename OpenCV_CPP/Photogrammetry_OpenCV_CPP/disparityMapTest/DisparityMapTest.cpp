@@ -86,96 +86,96 @@ int main(int argc, char **argv) {
 
     bm = cv::cuda::createStereoBM(ndisp, blockSize);
 
-    /* VideoCapture vid_capture( */
-    /*     "/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/"
-     */
-    /*     "OpenCV_CPP/Photogrammetry_OpenCV_CPP/videoFeatureMatching/" */
-    /*     "/resources/carOnLonelyRoads.mp4"); */
+    VideoCapture vid_capture(
+        "/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/"
+
+        "OpenCV_CPP/Photogrammetry_OpenCV_CPP/videoFeatureMatching/"
+        "/resources/carOnLonelyRoads.mp4");
 
     // Print error message if the stream is invalid
-    /* if (!vid_capture.isOpened()) { */
-    /*     cout << "Error opening video stream or file" << endl; */
-    /* } */
-    left_src = cv::imread("../bridgeL1.jpeg");
-    right_src = cv::imread("../bridgeR1.jpeg");
+    if (!vid_capture.isOpened()) {
+        cout << "Error opening video stream or file" << endl;
+    }
+    /* left_src = cv::imread("../bridgeL1.jpeg"); */
+    /* right_src = cv::imread("../bridgeR1.jpeg"); */
 
-    /* while (vid_capture.isOpened()) { */
-    // Initialise frame matrix
-    // Initialize a boolean to check if frames are there or not
-    /* vid_capture.read(left_src); */
-    /* vid_capture.read(right_src); */
-    /* int down_width = 1900; */
-    /* int down_height = 900; */
+    while (vid_capture.isOpened()) {
+        // Initialise frame matrix
+        // Initialize a boolean to check if frames are there or not
+        vid_capture.read(left_src);
+        vid_capture.read(right_src);
+        int down_width = 1900;
+        int down_height = 900;
 
-    /* cv::resize(left_src, left_src, cv::Size(), 0.2, 0.2); */
-    /* cv::resize(right_src, right_src, cv::Size(), 0.2, 0.2); */
+        cv::resize(left_src, left_src, cv::Size(), 0.5, 0.5);
+        cv::resize(right_src, right_src, cv::Size(), 0.5, 0.5);
 
-    cvtColor(left_src, left, COLOR_BGR2GRAY);
-    cvtColor(right_src, right, COLOR_BGR2GRAY);
+        cvtColor(left_src, left, COLOR_BGR2GRAY);
+        cvtColor(right_src, right, COLOR_BGR2GRAY);
 
-    // resize down
+        // resize down
 
-    d_left.upload(left);
-    d_right.upload(right);
+        d_left.upload(left);
+        d_right.upload(right);
 
-    imshow("left", left);
-    imshow("right", right);
-    /* cout << "src:" << left.size() << left_src.size() << endl; */
+        imshow("left", left);
+        imshow("right", right);
+        /* cout << "src:" << left.size() << left_src.size() << endl; */
 
-    // Prepare disparity map of specified type
-    Mat disp(left.size(), CV_32F);
-    cuda::GpuMat d_disp(left.size(), CV_32F);
+        // Prepare disparity map of specified type
+        Mat disp(left.size(), CV_32F);
+        cuda::GpuMat d_disp(left.size(), CV_32F);
 
-    bm->compute(d_left, d_right, d_disp);
+        bm->compute(d_left, d_right, d_disp);
 
-    // Show results
-    d_disp.download(disp);
+        // Show results
+        d_disp.download(disp);
 
-    Mat disparity;
+        Mat disparity;
 
-    disp.convertTo(disparity, CV_32F, 1.0f / 16.0f);
+        disp.convertTo(disparity, CV_32F, 1.0f / 16.0f);
 
-    /* // Scaling down the disparity values and normalizing them */
-    /* disparity = (disparity * 16.0f); */
+        /* // Scaling down the disparity values and normalizing them */
+        /* disparity = (disparity * 16.0f); */
 
-    // cout << disp << endl;
-    /* normalize(disparity, disparity, 0., 255., NORM_MINMAX, CV_32F); */
+        // cout << disp << endl;
+        /* normalize(disparity, disparity, 0., 255., NORM_MINMAX, CV_32F); */
 
-    Mat Q = (Mat_<float>(4, 4) << 1., 0., 0., -3.3066341400146484e+02, 0., 1.,
-             0., -1.7788335609436035e+02, 0., 0., 0., 4.2544886900500654e+02,
-             0., 0., 2.5734796525421183e-01, 0.);
+        Mat Q = (Mat_<float>(4, 4) << 1., 0., 0., -3.3066341400146484e+02, 0.,
+                 1., 0., -1.7788335609436035e+02, 0., 0., 0.,
+                 4.2544886900500654e+02, 0., 0., 2.5734796525421183e-01, 0.);
 
-    Mat Img3D;
-    /* cout << disparity.size(); */
+        Mat Img3D;
+        /* cout << disparity.size(); */
 
-    cv::reprojectImageTo3D(disparity, Img3D, Q, false, CV_32F);
+        cv::reprojectImageTo3D(disparity, Img3D, Q, false, CV_32F);
 
-    /* cout << Img3D << endl; */
+        /* cout << Img3D << endl; */
 
-    Mat maskPoints = Mat(0, 0, CV_32F);
-    Mat maskColors = Mat(0, 0, CV_8UC3);
+        Mat maskPoints = Mat(0, 0, CV_32F);
+        Mat maskColors = Mat(0, 0, CV_8UC3);
 
-    removeInfPoints(Img3D, right_src, maskPoints, maskColors);
+        removeInfPoints(Img3D, right_src, maskPoints, maskColors);
 
-    cout << left_src.type() << endl;
+        cout << left_src.type() << endl;
 
-    cv::viz::writeCloud("pointCloud.ply", maskPoints, maskColors);
-    /* cout << "3D:" << Img3D.size() << endl; */
-    /* cout << Img3D.size(); */
-    imshow("disparity", Img3D);
+        cv::viz::writeCloud("pointCloud.ply", maskPoints, maskColors);
+        /* cout << "3D:" << Img3D.size() << endl; */
+        /* cout << Img3D.size(); */
+        imshow("disparity", Img3D);
 
-    while (true) {
-        int key = waitKey(10000);
+        /* while (true) { */
+        int key = waitKey(1);
         if (key == 'q') {
             cout << "q key is pressed by the user. Stopping the "
                     "video"
                  << endl;
             break;
         }
+        /* } */
     }
-    /* } */
     // Release the video capture object
-    /* vid_capture.release(); */
+    vid_capture.release();
     destroyAllWindows();
     return 0;
 }

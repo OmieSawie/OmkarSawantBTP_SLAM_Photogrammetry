@@ -15,7 +15,7 @@ using namespace cv::xfeatures2d;
 using namespace cv;
 using namespace std;
 
-int maxCorners = 10000;
+int maxCorners = 1000;
 RNG rng(12345);
 const char *source_window = "Image";
 
@@ -30,7 +30,7 @@ class FeatureExtractor {
     void extractFeatures_goodFeaturesToTrack(int, void *) {
         cout << " Size is:" << prev_src_gray.size() << endl;
 
-        maxCorners = MAX(maxCorners, 1);
+        maxCorners = MAX(maxCorners, 100);
         vector<Point2f> corners, prev_corners;
         double qualityLevel = 0.01;
         double minDistance = 3;
@@ -198,7 +198,7 @@ int main() {
 
         // wait 20 ms between successive frames and break the loop if
         // key q is pressed
-        int key = waitKey(20);
+        int key = waitKey(1);
         if (key == 'q') {
             cout << "q key is pressed by the user. Stopping the "
                     "video"

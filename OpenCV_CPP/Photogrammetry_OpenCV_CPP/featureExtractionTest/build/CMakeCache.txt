@@ -28,7 +28,7 @@ CMAKE_BUILD_TYPE:STRING=
 CMAKE_COLOR_MAKEFILE:BOOL=ON
 
 //CXX compiler
-CMAKE_CXX_COMPILER:STRING=/usr/bin/c++
+CMAKE_CXX_COMPILER:FILEPATH=/usr/bin/c++
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -54,7 +54,7 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-O3 -DNDEBUG
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
 //C compiler
-CMAKE_C_COMPILER:STRING=/usr/bin/cc
+CMAKE_C_COMPILER:FILEPATH=/usr/bin/cc
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -97,8 +97,8 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=
 //Flags used by the linker during RELWITHDEBINFO builds.
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
-//No help, variable specified on the command line.
-CMAKE_EXPORT_COMPILE_COMMANDS:UNINITIALIZED=1
+//Enable/Disable output of compile commands during generation.
+CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=
 
 //Value Computed by CMake.
 CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/OpenCV_CPP/Photogrammetry_OpenCV_CPP/featureExtractionTest/build/CMakeFiles/pkgRedirects
@@ -292,7 +292,7 @@ CUDA_USE_STATIC_CUDA_RUNTIME:BOOL=ON
 CUDA_VERBOSE_BUILD:BOOL=OFF
 
 //Version of CUDA as computed from nvcc.
-CUDA_VERSION:STRING=12.2
+CUDA_VERSION:STRING=12.3
 
 //"cublas" library
 CUDA_cublas_LIBRARY:FILEPATH=/opt/cuda/lib64/libcublas.so
@@ -388,7 +388,7 @@ CMAKE_CACHE_MAJOR_VERSION:INTERNAL=3
 //Minor version of cmake used to create the current loaded cache
 CMAKE_CACHE_MINOR_VERSION:INTERNAL=27
 //Patch version of cmake used to create the current loaded cache
-CMAKE_CACHE_PATCH_VERSION:INTERNAL=5
+CMAKE_CACHE_PATCH_VERSION:INTERNAL=8
 //ADVANCED property for variable: CMAKE_COLOR_MAKEFILE
 CMAKE_COLOR_MAKEFILE-ADVANCED:INTERNAL=1
 //Path to CMake executable.
@@ -626,9 +626,9 @@ CUDA_rt_LIBRARY-ADVANCED:INTERNAL=1
 //Location of run_nvcc.cmake
 CUDA_run_nvcc:INTERNAL=/usr/share/cmake/Modules/FindCUDA/run_nvcc.cmake
 //Details about finding CUDA
-FIND_PACKAGE_MESSAGE_DETAILS_CUDA:INTERNAL=[/opt/cuda][/opt/cuda/bin/nvcc][/opt/cuda/include][/opt/cuda/lib64/libcudart_static.a][v12.2(12.2)]
+FIND_PACKAGE_MESSAGE_DETAILS_CUDA:INTERNAL=[/opt/cuda][/opt/cuda/bin/nvcc][/opt/cuda/include][/opt/cuda/lib64/libcudart_static.a][v12.3(12.3)]
 //Details about finding OpenCV
-FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[/usr][v4.8.0()]
+FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[/usr][v4.8.1()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //linker supports push/pop state

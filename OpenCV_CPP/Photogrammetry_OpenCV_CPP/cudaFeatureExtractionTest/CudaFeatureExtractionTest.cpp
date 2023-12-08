@@ -1,8 +1,10 @@
 #include <cstddef>
 #include <iostream>
 #include <iterator>
+#include <opencv2/calib3d.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/core/cvstd_wrapper.hpp>
+#include <opencv2/core/hal/interface.h>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/features2d.hpp>
@@ -36,26 +38,23 @@ int patchSize = 31;
 int fastThreshold = 20;
 bool blurForDescriptor = false;
 
-cv::Ptr<cv::cuda::ORB> extractor =
-    cv::cuda::ORB::create(20, 1.2f, 8, 31, 0, 2, 0, 31, 20, true);
-
 cv::Mat src, src_gray, prev_src_gray;
 cv::cuda::GpuMat src_gray_gpu, prev_src_gray_gpu;
 
 class FeatureExtractor {
   public:
+    cv::Ptr<cv::cuda::ORB> extractor = cv::cuda::ORB::create(
+        nfeatures, scaleFactor, nlevels, edgeThreshold, firstLevel, WTA_K,
+        scoreType, patchSize, fastThreshold, blurForDescriptor);
+
     FeatureExtractor(){};
 
     void extractFeatures_goodFeaturesToTrack(int, void *) {
 
         cv::cuda::GpuMat src_gray_gpu = cv::cuda::GpuMat(src_gray);
 
-        cout << "Skipped" << src.size() << endl;
-
         if (!prev_src_gray_gpu.empty()) {
-
-            cout << " Size is:" << prev_src_gray_gpu.size() << endl;
-
+            cout << " Size of image:" << prev_src_gray_gpu.size() << endl;
             maxCorners = MAX(maxCorners, 1000);
             double qualityLevel = 0.01;
             double minDistance = 0;
@@ -74,48 +73,72 @@ class FeatureExtractor {
                 prev_src_gray_gpu, cv::cuda::GpuMat(), prev_keypoints_gpu,
                 prev_descriptors_gpu);
 
-            std::cout << "HelloBoi " << descriptors_gpu.size() << endl;
+            std::cout << "Descriptors Size " << descriptors_gpu.size() << endl;
 
+            // Match the features
             cv::Ptr<cv::cuda::DescriptorMatcher> matcher =
                 cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING);
-
             vector<vector<cv::DMatch>> matches;
             matcher->knnMatch(descriptors_gpu, prev_descriptors_gpu, matches,
                               2);
-
+            // Filter the good matches
             std::vector<cv::DMatch> good_matches;
             for (int k = 0;
                  k < min(descriptors_gpu.rows - 1, (int)matches.size()); k++) {
-                if ((matches[k][0].distance < 0.7 * (matches[k][1].distance))) {
+                if ((matches[k][0].distance < 0.8 * (matches[k][1].distance))) {
                     good_matches.push_back(matches[k][0]);
+                    /* cout << matches[k][1].queryIdx << " " */
+                    /*      << matches[k][1].trainIdx << " "; */
                 }
             }
+            cout << endl;
+            cout << "MatchesSize: " << good_matches.size() << endl;
 
             /* t_BBtime = getTickCount(); */
             /* t_pt = (t_BBtime - t_AAtime) / getTickFrequency(); */
             /* t_fpt = 1 / t_pt; */
             /* printf("%.4lf sec/ %.4lf fps\n", t_pt, t_fpt); */
 
+            // Download the Keypoints from GPU
             vector<cv::KeyPoint> keypoints_cpu, prev_keypoints_cpu;
-
             extractor->convert(keypoints_gpu, keypoints_cpu);
             extractor->convert(prev_keypoints_gpu, prev_keypoints_cpu);
+            cout << "Keypoints Size :" << keypoints_cpu[100].size << endl;
 
-            vector<float> descriptors_cpu, prev_descriptors_cpu;
+            // Draw the Keypoints on the source gray image
+            drawKeypoints(src_gray, keypoints_cpu, src_gray,
+                          cv::Scalar(255, 0, 0),
+                          cv::DrawMatchesFlags::DRAW_OVER_OUTIMG);
+            cv::imshow("Kps", src_gray);
 
+            // Draw the Matches
             cv::Mat img_matches;
-
             drawMatches(src, keypoints_cpu, prev_src_gray, prev_keypoints_cpu,
                         good_matches, img_matches);
-
             cv::namedWindow("matches", 0);
             imshow("matches", img_matches);
-        }
+
+            // Estimating the Fundamental Matrix
+            int point_count = 100;
+            vector<cv::Point2f> points1(point_count);
+            vector<cv::Point2f> points2(point_count);
+            // initialize the points here ...
+            for (int i = 0; i < point_count; i++) {
+                points1[i] = keypoints_cpu[i].pt;
+                points2[i] = prev_keypoints_cpu[i].pt;
+            }
+            cout << cv::findFundamentalMat(points1, points2, cv::FM_RANSAC, 3,
+                                           0.95)
+                 << endl;
+
+        } // End of if statement
 
         src_gray_gpu.copyTo(prev_src_gray_gpu);
         src_gray.copyTo(prev_src_gray);
         cout << "Size 1" << prev_src_gray.size() << endl;
     }
+
+    void estimateFundamentalMatrix() {}
 }
 
 ;
@@ -173,7 +196,7 @@ int main() {
 
         // wait 20 ms between successive frames and break the loop ifkey
         // q is pressed
-        int key = cv::waitKey(500);
+        int key = cv::waitKey(1000);
         if (key == 'q') {
             cout << "q key is pressed by the user. Stopping the video" << endl;
             break;
