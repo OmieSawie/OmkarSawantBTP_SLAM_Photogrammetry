@@ -302,7 +302,7 @@ int main(int argc, char *argv[]) {
         view = s.nextImage();
 
         //-----  If no more image, or got enough, then stop calibration and show
-        //result -------------
+        // result -------------
         if (mode == CAPTURING && imagePoints.size() >= (size_t)s.nrFrames) {
             if (runCalibrationAndSave(s, imageSize, cameraMatrix, distCoeffs,
                                       imagePoints))
