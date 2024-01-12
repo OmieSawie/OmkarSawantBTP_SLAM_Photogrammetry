@@ -1,3 +1,4 @@
+#include <complex>
 #include <cstddef>
 #include <iostream>
 #include <iterator>
@@ -27,11 +28,10 @@
 
 using namespace std;
 
-int maxCorners = 3000;
 cv::RNG rng(12345);
 const char *source_window = "Image";
 
-int nfeatures = 3000;
+int nfeatures = 100000;
 float scaleFactor = 1.2f;
 int nlevels = 16;
 int edgeThreshold = 31;
@@ -40,7 +40,7 @@ int WTA_K = 2;
 int scoreType = cv::ORB::HARRIS_SCORE;
 int patchSize = 31;
 int fastThreshold = 20;
-bool blurForDescriptor = false;
+bool blurForDescriptor = true;
 
 cv::Mat src, src_gray, prev_src_gray;
 cv::cuda::GpuMat src_gray_gpu, prev_src_gray_gpu;
@@ -51,7 +51,25 @@ class FeatureExtractor {
         nfeatures, scaleFactor, nlevels, edgeThreshold, firstLevel, WTA_K,
         scoreType, patchSize, fastThreshold, blurForDescriptor);
 
-    FeatureExtractor(){};
+    cv::Mat cameraMatrix = (cv::Mat_<float>(3, 3) << 3048., 0., 2312., 0.,
+                            2046., 1734., 0., 0., 1.);
+
+    /* FeatureExtractor(){}; */
+
+    void computingDepth(cv::Mat rot, cv::Mat trans) {
+        cv::Mat temp = (cv::Mat_<float>(3, 1) << 0., 0., 0.);
+        cv::Mat hom_cameraMatrix;
+        cv::hconcat(cameraMatrix, temp, hom_cameraMatrix);
+        cout << "Camera Matrix Homogenised: " << hom_cameraMatrix << endl;
+
+        cv::Mat rpt, hom_rpt;
+        cv::hconcat(rot, trans, rpt);
+        rpt.convertTo(rpt, CV_32F);
+        temp = (cv::Mat_<float>(1, 4) << 0., 0., 0., 0.);
+        cv::vconcat(rpt, temp, hom_rpt);
+        cout << "RPT homogenised: " << hom_rpt << endl;
+        cout << "cam*rpt: " << hom_cameraMatrix * hom_rpt << endl;
+    }
 
     void extractFeatures_goodFeaturesToTrack(int, void *) {
 
@@ -59,8 +77,10 @@ class FeatureExtractor {
         cv::cuda::GpuMat prev_src_gray_gpu = cv::cuda::GpuMat(prev_src_gray);
 
         if (!prev_src_gray_gpu.empty()) {
-            cout << " Size of image:" << src_gray_gpu.size() << endl;
-            maxCorners = MAX(maxCorners, 1000);
+            int img_width = src_gray_gpu.size().width,
+                img_height = src_gray_gpu.size().height;
+            cout << " Size of image: " << img_width << " x " << img_height
+                 << endl;
             double qualityLevel = 0.01;
             double minDistance = 0;
             int blockSize = 10, gradientSize = 3;
@@ -72,13 +92,24 @@ class FeatureExtractor {
                 keypoints_gpu, prev_keypoints_gpu, matches_gpu;
             std::vector<cv::KeyPoint> keypoints_cpu, prev_keypoints_cpu;
 
-            extractor->detectAndComputeAsync(src_gray_gpu, cv::noArray(),
-                                             keypoints_gpu, descriptors_gpu,
-                                             false);
-
+            // Detect and Compute features
+            // prev_src_gray is	#1 query image
+            // src_gray is the  #2 train image
+            /* extractor->detectAndCompute(prev_src_gray_gpu,
+             * cv::noArray(), */
+            /*                             prev_keypoints_cpu, */
+            /*                             prev_descriptors_gpu); */
+            /* extractor->detectAndCompute(src_gray_gpu, cv::noArray(),
+             */
+            /*                             keypoints_cpu,
+             * descriptors_gpu); */
             extractor->detectAndComputeAsync(prev_src_gray_gpu, cv::noArray(),
                                              prev_keypoints_gpu,
                                              prev_descriptors_gpu, false);
+
+            extractor->detectAndComputeAsync(src_gray_gpu, cv::noArray(),
+                                             keypoints_gpu, descriptors_gpu,
+                                             false);
 
             std::cout << "Descriptors Size " << descriptors_gpu.size() << endl;
 
@@ -86,17 +117,20 @@ class FeatureExtractor {
             cv::Ptr<cv::cuda::DescriptorMatcher> matcher =
                 cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING);
             vector<vector<cv::DMatch>> matches;
-            matcher->knnMatchAsync(descriptors_gpu, prev_descriptors_gpu,
+            /* matcher->knnMatch(prev_descriptors_gpu, descriptors_gpu,
+             * matches,
+             */
+            /*                   2); */
+            matcher->knnMatchAsync(prev_descriptors_gpu, descriptors_gpu,
                                    matches_gpu, 2);
             matcher->knnMatchConvert(matches_gpu, matches, false);
             // Filter the good matches
             std::vector<cv::DMatch> good_matches;
-            for (int k = 0;
-                 k < min(descriptors_gpu.rows - 1, (int)matches.size()); k++) {
-                if ((matches[k][0].distance < 0.8 * (matches[k][1].distance))) {
+            for (int k = 0; k < (int)matches.size(); k++) {
+                if ((matches[k][0].distance < 0.6 * (matches[k][1].distance))) {
                     good_matches.push_back(matches[k][0]);
-                    /* cout << matches[k][1].queryIdx << " " */
-                    /*      << matches[k][1].trainIdx << " "; */
+                    /* cout << matches[k][0].distance << " " */
+                    /*      << matches[k][1].distance << " " << endl; */
                 }
             }
             cout << endl;
@@ -113,17 +147,20 @@ class FeatureExtractor {
             cout << "Keypoints Size :" << keypoints_cpu.size() << endl;
 
             // Draw the Keypoints on the source gray image
-            drawKeypoints(src_gray, keypoints_cpu, src_gray,
-                          cv::Scalar(255, 0, 190),
-                          cv::DrawMatchesFlags::DRAW_OVER_OUTIMG);
-            drawKeypoints(prev_src_gray, prev_keypoints_cpu, prev_src_gray,
-                          cv::Scalar(190, 0, 190),
-                          cv::DrawMatchesFlags::DRAW_OVER_OUTIMG);
+            /* drawKeypoints(src_gray, keypoints_cpu, src_gray, */
+            /*               cv::Scalar(255, 0, 190), */
+            /*               cv::DrawMatchesFlags::DRAW_OVER_OUTIMG); */
+            /* drawKeypoints(prev_src_gray, prev_keypoints_cpu,
+             * prev_src_gray,
+             */
+            /*               cv::Scalar(190, 0, 190), */
+            /*               cv::DrawMatchesFlags::DRAW_OVER_OUTIMG); */
             /* cv::imshow("Kps", src_gray); */
 
             // Draw the Matches
             cv::Mat img_matches;
-            /* drawMatches(prev_src_gray, prev_keypoints_cpu, src_gray, */
+            /* drawMatches(prev_src_gray, prev_keypoints_cpu, src_gray,
+             */
             /*             keypoints_cpu, good_matches, img_matches); */
             /* cv::namedWindow("matches", 0); */
             /* imshow("matches", img_matches); */
@@ -134,59 +171,85 @@ class FeatureExtractor {
             vector<cv::Point2f> points2(point_count);
             // initialize the points here ...
             for (int i = 0; i < point_count; i++) {
-                points1[i] = prev_keypoints_cpu[good_matches[i].trainIdx].pt;
-                points2[i] = keypoints_cpu[good_matches[i].queryIdx].pt;
+                points1[i] = prev_keypoints_cpu[good_matches[i].queryIdx].pt;
+                points2[i] = keypoints_cpu[good_matches[i].trainIdx].pt;
             }
-            cv::Mat fundamentalMatrix =
-                cv::findFundamentalMat(points1, points2, cv::FM_8POINT);
+            cv::Mat fund_mask;
+            cv::Mat fundamentalMatrix = cv::findFundamentalMat(
+                points1, points2, cv::FM_RANSAC, 3., 0.9, fund_mask);
             /*  cout << fundamentalMatrix << endl; */
-
-            // Estimating the Essential Matrix
-            cv::Mat cameraMatrix = (cv::Mat_<float>(3, 3) << 1048., 0., 2312.,
-                                    0., 1046., 1302., 0., 0., 1.);
-            cv::Mat essentialMatrix;
-            essentialMatrix = cv::findEssentialMat(
-                points1, points2, cameraMatrix, cv::RANSAC, 0.999, 1.0, 1000);
-            /* cout << essentialMatrix << endl; */
-            cv::Mat R1, R2, t, R1R;
-            cv::decomposeEssentialMat(essentialMatrix, R1, R2, t);
-            cout << R1 << endl << R2 << endl << t << endl;
-            cv::Rodrigues(R1, R1R);
-            cout << R1R << endl;
+            /* cout << fund_mask; */
+            vector<cv::Point2f> points1_masked, points2_masked;
+            for (int i = 0; i < point_count; i++) {
+                /* if (fund_mask.at<int>(i) == 1) { */
+                points1_masked.push_back(points1[i]);
+                points2_masked.push_back(points2[i]);
+                /* } */
+            }
+            cout << "masked points count: " << points1_masked.size() << endl;
 
             // Compute epilines
             vector<cv::Vec3f> epilines1, epilines2;
-            cv::computeCorrespondEpilines(points1, 1, fundamentalMatrix,
-                                          epilines1);
-            cv::computeCorrespondEpilines(points2, 2, fundamentalMatrix,
+            cv::computeCorrespondEpilines(points1_masked, 1, fundamentalMatrix,
                                           epilines2);
+            cv::computeCorrespondEpilines(points2_masked, 2, fundamentalMatrix,
+                                          epilines1);
             /* cout << epilines << endl; */
-            for (vector<cv::Vec3f>::const_iterator it = epilines1.begin();
-                 it != epilines1.end(); ++it) {
-                // draw the line between first and last column
-                cv::line(
-                    prev_src_gray, cv::Point(0, -(*it)[2] / (*it)[1]),
-                    cv::Point(4624, -((*it)[2] + (*it)[0] * 4624) / ((*it)[1])),
-                    cv::Scalar(255, 255, 255), cv::LINE_4);
-            }
-            for (vector<cv::Vec3f>::const_iterator it = epilines2.begin();
-                 it != epilines2.end(); ++it) {
-                // draw the line between first and last column
-                cv::line(
-                    src_gray, cv::Point(0, -(*it)[2] / (*it)[1]),
-                    cv::Point(4624, -((*it)[2] + (*it)[0] * 4624) / ((*it)[1])),
-                    cv::Scalar(255, 255, 255), cv::LINE_4);
-            }
 
-            /* cv::imshow("Right Image Epilines (FM_7POINT2)", src_gray); */
+            if (true) {
+                for (vector<cv::Vec3f>::const_iterator it = epilines1.begin();
+                     it != epilines1.end(); ++it) {
+                    // draw the line between first and last column
+                    cv::line(prev_src_gray, cv::Point(0, -(*it)[2] / (*it)[1]),
+                             cv::Point(4624., -((*it)[2] + (*it)[0] * 4624.) /
+                                                  ((*it)[1])),
+                             cv::Scalar(255, 255, 255), cv::LINE_4);
+                }
+                for (vector<cv::Vec3f>::const_iterator it = epilines2.begin();
+                     it != epilines2.end(); ++it) {
+                    // draw the line between first and last column
+                    cv::line(src_gray, cv::Point(0, -(*it)[2] / (*it)[1]),
+                             cv::Point(4624., -((*it)[2] + (*it)[0] * 4624.) /
+                                                  ((*it)[1])),
+                             cv::Scalar(255, 255, 255), cv::LINE_4);
+                }
+            }
+            // Draw trhe masked keypoints
+            for (int i = 0; i < points1_masked.size(); i++) {
+                cv::circle(prev_src_gray, points1_masked[i], 10,
+                           cv::Scalar(255, 0, 255), 10, cv::LINE_8, 0);
+                cv::circle(src_gray, points2_masked[i], 10,
+                           cv::Scalar(255, 0, 255), 10, cv::LINE_8, 0);
+            }
+            /* cv::imshow("Right Image Epilines (FM_7POINT2)",
+             * src_gray); */
             /* cv::imshow("Right Image Epilines (FM_7POINT1)",
              * prev_src_gray);
              */
 
-            drawMatches(src_gray, keypoints_cpu, prev_src_gray,
-                        prev_keypoints_cpu, good_matches, img_matches);
-            cv::namedWindow("matches", 0);
-            imshow("matches", img_matches);
+            /* drawMatches(prev_src_gray, prev_keypoints_cpu, src_gray,
+             */
+            /*             keypoints_cpu, good_matches, img_matches); */
+            /* cv::namedWindow("matches", 0); */
+            /* imshow("matches", img_matches); */
+            cv::imshow("src_gray", src_gray);
+            cv::imshow("prev_src_gray", prev_src_gray);
+
+            // Estimating the Essential Matrix
+
+            cv::Mat essentialMatrix;
+            essentialMatrix = cv::findEssentialMat(
+                points1, points2, cameraMatrix, cv::RANSAC, 0.99, 1.0, 10000);
+            /* cout << essentialMatrix << endl; */
+            cv::Mat R1, R2, t, R1R, R2R;
+            cv::decomposeEssentialMat(essentialMatrix, R1, R2, t);
+            cout << "R1" << R1 << endl
+                 << "R2" << R2 << endl
+                 << "t" << t << endl;
+            cv::Rodrigues(R1, R1R);
+            cv::Rodrigues(R2, R2R);
+            cout << "R1R" << R1R << endl << "R2R" << R2R << endl;
+            computingDepth(R1, t);
 
         } // End of if statement
 
