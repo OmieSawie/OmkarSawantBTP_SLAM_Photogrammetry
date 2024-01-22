@@ -30,6 +30,7 @@
 #include <opencv2/core/cuda.hpp>
 #include <opencv2/cudafeatures2d.hpp>
 #include <opencv2/cudaimgproc.hpp>
+#include <opencv2/xfeatures2d/cuda.hpp>
 
 using namespace std;
 
@@ -46,6 +47,8 @@ int scoreType = cv::ORB::HARRIS_SCORE;
 int patchSize = 31;
 int fastThreshold = 20;
 bool blurForDescriptor = true;
+
+int negativeZCount = 0;
 
 cv::Mat src, src_gray, prev_src_gray;
 cv::cuda::GpuMat src_gray_gpu, prev_src_gray_gpu;
@@ -165,6 +168,10 @@ class FeatureExtractor {
             pointCoordinate.x = answer.at<double>(0);
             pointCoordinate.y = answer.at<double>(1);
             pointCoordinate.z = answer.at<double>(2);
+            if (pointCoordinate.z < 0.) {
+                negativeZCount++;
+                return;
+            }
             PointCloudMatrix.push_back(pointCoordinate);
             /* cout << l.x << " " << l.y << endl; */
 
@@ -217,6 +224,22 @@ class FeatureExtractor {
 
             std::cout << "Descriptors Size " << descriptors_gpu.size() << endl;
 
+            cv::goodFeaturesToTrack(src_gray, keypoints_cpu, 10000,
+                                    qualityLevel, minDistance, cv::noArray(),
+                                    blockSize, useHarrisDetector, k);
+            cv::goodFeaturesToTrack(prev_src_gray, prev_keypoints_cpu, 10000,
+                                    qualityLevel, minDistance, cv::noArray(),
+                                    blockSize, useHarrisDetector, k);
+
+            cv::cuda::SURF_CUDA::uploadKeypoints(keypoints_cpu, keypoints_gpu);
+            cv::cuda::SURF_CUDA::uploadKeypoints(prev_keypoints_cpu,
+                                                 prev_keypoints_gpu);
+
+            extractor->computeAsync(src_gray_gpu, keypoints_gpu,
+                                    descriptors_gpu);
+            extractor->computeAsync(prev_src_gray_gpu, prev_keypoints_gpu,
+                                    prev_descriptors_gpu);
+
             // Match the features
             cv::Ptr<cv::cuda::DescriptorMatcher> matcher =
                 cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_HAMMING);
@@ -231,7 +254,8 @@ class FeatureExtractor {
             // Filter the good matches
             std::vector<cv::DMatch> good_matches;
             for (int k = 0; k < (int)matches.size(); k++) {
-                if ((matches[k][0].distance < 0.8 * (matches[k][1].distance))) {
+                if ((matches[k][0].distance <
+                     0.75 * (matches[k][1].distance))) {
                     good_matches.push_back(matches[k][0]);
                 }
             }
@@ -244,8 +268,8 @@ class FeatureExtractor {
             /* printf("%.4lf sec/ %.4lf fps\n", t_pt, t_fpt); */
 
             // Download the Keypoints from GPU
-            extractor->convert(keypoints_gpu, keypoints_cpu);
-            extractor->convert(prev_keypoints_gpu, prev_keypoints_cpu);
+            /* extractor->convert(keypoints_gpu, keypoints_cpu); */
+            /* extractor->convert(prev_keypoints_gpu, prev_keypoints_cpu); */
             cout << "Keypoints Size :" << keypoints_cpu.size() << endl;
 
             // Draw the Keypoints on the source gray image
@@ -298,7 +322,7 @@ class FeatureExtractor {
                                           epilines1);
             /* cout << epilines << endl; */
 
-            if (true) {
+            if (false) {
                 for (vector<cv::Vec3f>::const_iterator it = epilines1.begin();
                      it != epilines1.end(); ++it) {
                     // draw the line between first and last column
@@ -329,11 +353,11 @@ class FeatureExtractor {
              * prev_src_gray);
              */
 
-            /* drawMatches(prev_src_gray, prev_keypoints_cpu, src_gray, */
+            drawMatches(prev_src_gray, prev_keypoints_cpu, src_gray,
 
-            /*             keypoints_cpu, good_matches, img_matches); */
-            /* cv::namedWindow("matches", 0); */
-            /* imshow("matches", img_matches); */
+                        keypoints_cpu, good_matches, img_matches);
+            cv::namedWindow("matches", 0);
+            imshow("matches", img_matches);
             cv::resize(src_gray, src_gray, cv::Size(), 0.25, 0.25);
             cv::resize(prev_src_gray, prev_src_gray, cv::Size(), 0.25, 0.25);
             cv::imshow("src_gray", src_gray);
@@ -368,6 +392,7 @@ class FeatureExtractor {
                 solnFinalEquation(points2[i], points1[i], M, P);
             }
 
+            cout << "negativeZCount " << negativeZCount << endl;
             cv::viz::writeCloud("PointCLoud.ply", PointCloudMatrix,
                                 PointColorsMatrix);
 
