@@ -11,6 +11,7 @@
 #include <opencv2/core/hal/interface.h>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/core/matx.hpp>
+#include <opencv2/core/persistence.hpp>
 #include <opencv2/core/types.hpp>
 #include <opencv2/features2d.hpp>
 #include <opencv2/highgui.hpp>
@@ -50,6 +51,8 @@ int negativeZCount = 0;
 
 cv::Mat src, src_gray, prev_src_gray;
 
+vector<string> imageList;
+
 class FeatureExtractor {
   public:
     cv::Ptr<cv::SIFT> extractor =
@@ -61,8 +64,19 @@ class FeatureExtractor {
     cv::Mat PointCloudMatrix = cv::Mat(0, 0, CV_64F),
             PointColorsMatrix = cv::Mat(0, 0, CV_8UC3);
 
-    /* FeatureExtractor(){}; */
-
+    static bool readStringList(const string &filename, vector<string> &l) {
+        l.clear();
+        cv::FileStorage fs(filename, cv::FileStorage::READ);
+        if (!fs.isOpened())
+            return false;
+        cv::FileNode n = fs.getFirstTopLevelNode();
+        if (n.type() != cv::FileNode::SEQ)
+            return false;
+        cv::FileNodeIterator it = n.begin(), it_end = n.end();
+        for (; it != it_end; ++it)
+            l.push_back((string)*it);
+        return true;
+    }
     cv::Mat computeM(cv::Mat rot, cv::Mat trans) {
         cv::Mat temp = (cv::Mat_<double>(3, 1) << 0., 0., 0.);
         cv::Mat hom_cameraMatrix;
@@ -101,7 +115,12 @@ class FeatureExtractor {
     /*     return returnAns; */
     /* } */
 
-    void solnFinalEquation(cv::Point2f r, cv::Point2f l, cv::Mat M, cv::Mat P) {
+    cv::Mat getLocalCoordinates(cv::Point2f r, cv::Point2f l, cv::Mat M,
+                                cv::Mat P) {
+
+        cv::Mat colors(1, 1, CV_8UC3, cv::Scalar(src.at<cv::Vec3b>(l.y, l.x)));
+        PointColorsMatrix.push_back(colors);
+
         double ur = r.x, ul = l.x, vr = r.y, vl = l.y;
 
         double m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41,
@@ -158,25 +177,34 @@ class FeatureExtractor {
         /* cout << "mulTransposedMatInverted: " << mulTransposedMatInverted */
         /* << endl; */
         cv::Mat answer = mulTransposedMatInverted * transposedMat * finr;
-        if (answer.at<double>(0) == answer.at<double>(0)) {
-            /* cout << "x,y,z: " << answer << endl; */
-            cv::Point3d pointCoordinate;
-            pointCoordinate.x = answer.at<double>(0);
-            pointCoordinate.y = answer.at<double>(1);
-            pointCoordinate.z = answer.at<double>(2);
-            if (pointCoordinate.z < 0.) {
-                negativeZCount++;
-                return;
-            }
-            PointCloudMatrix.push_back(pointCoordinate);
-            /* cout << l.x << " " << l.y << endl; */
 
-            /* cout << src.at<cv::Vec3b>(l.y, l.x) << endl; */
+        return answer;
+    }
 
-            cv::Mat colors(1, 1, CV_8UC3,
-                           cv::Scalar(src.at<cv::Vec3b>(l.y, l.x)));
-            PointColorsMatrix.push_back(colors);
-        }
+    void getWorldCoordinates(cv::Mat trans, cv::Mat rot,
+                             cv::Mat localCoordinates) {
+        cv::Mat worldCoordinates =
+            (cv::Mat_<double>(3, 3) << 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        /* worldCoordinates.at<double>(0) = coordinates.x + trans.at<double>(0);
+         */
+        /* worldCoordinates.at<double>(1) = coordinates.y + trans.at<double>(1);
+         */
+        /* worldCoordinates.at<double>(2) = coordinates.at<double>(2) +
+         * trans.at<double>(2); */
+
+        worldCoordinates = localCoordinates + trans;
+        worldCoordinates = rot * worldCoordinates;
+
+        /* cout << "x,y,z: " << worldCoordinates << endl; */
+        cv::Point3d pointCoordinate;
+        pointCoordinate.x = worldCoordinates.at<double>(0);
+        pointCoordinate.y = worldCoordinates.at<double>(1);
+        pointCoordinate.z = worldCoordinates.at<double>(2);
+
+        PointCloudMatrix.push_back(pointCoordinate);
+        /* cout << l.x << " " << l.y << endl; */
+
+        /* cout << src.at<cv::Vec3b>(l.y, l.x) << endl; */
     }
 
     void extractFeatures_goodFeaturesToTrack(int, void *) {
@@ -221,8 +249,7 @@ class FeatureExtractor {
             // Filter the good matches
             std::vector<cv::DMatch> good_matches;
             for (int k = 0; k < (int)matches.size(); k++) {
-                if ((matches[k][0].distance <
-                     0.75 * (matches[k][1].distance))) {
+                if ((matches[k][0].distance < 0.8 * (matches[k][1].distance))) {
                     good_matches.push_back(matches[k][0]);
                 }
             }
@@ -353,10 +380,12 @@ class FeatureExtractor {
             cv::Mat M = computeM(R1, t);
 
             for (int i = 0; i < point_count; i++) {
-                solnFinalEquation(points2[i], points1[i], M, P);
+                cv::Mat localCoordinates =
+                    getLocalCoordinates(points2[i], points1[i], M, P);
+                getWorldCoordinates(t, R1, localCoordinates);
             }
 
-            cout << "negativeZCount " << negativeZCount << endl;
+            /* cout << "negativeZCount " << negativeZCount << endl; */
             cv::viz::writeCloud("PointCLoud.ply", PointCloudMatrix,
                                 PointColorsMatrix);
 
@@ -398,10 +427,6 @@ int main() {
     /* bool isSuccess = vid_capture.read(frame); */
     /* src = frame.clone(); */
 
-    src = cv::imread("../testimgR.jpg");
-    src_gray = cv::imread("../testimgR.jpg", cv::IMREAD_GRAYSCALE);
-    prev_src_gray = cv::imread("../testimgL.jpg", cv::IMREAD_GRAYSCALE);
-
     /* cv::cvtColor(src, src_gray, cv::COLOR_RGB2GRAY); */
 
     /* cv::setTrackbarPos("Max corners", source_window, maxCorners); */
@@ -409,6 +434,14 @@ int main() {
     /* imshow(source_window, src); */
 
     FeatureExtractor feature_extractor;
+
+    feature_extractor.readStringList("./src/imageList.xml", imageList);
+
+    cout << "Image List: " << imageList[0];
+
+    src = cv::imread(imageList[0]);
+    src_gray = cv::imread(imageList[0], cv::IMREAD_GRAYSCALE);
+    prev_src_gray = cv::imread(imageList[1], cv::IMREAD_GRAYSCALE);
 
     feature_extractor.extractFeatures_goodFeaturesToTrack(0, 0);
 
