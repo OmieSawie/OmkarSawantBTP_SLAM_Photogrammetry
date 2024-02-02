@@ -64,6 +64,10 @@ class FeatureExtractor {
     cv::Mat PointCloudMatrix = cv::Mat(0, 0, CV_64F),
             PointColorsMatrix = cv::Mat(0, 0, CV_8UC3);
 
+    cv::Mat baseRot =
+        (cv::Mat_<double>(3, 3, CV_64F) << 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    cv::Mat baseTrans = (cv::Mat_<double>(3, 1, CV_64F) << 0, 0, 0);
+
     static bool readStringList(const string &filename, vector<string> &l) {
         l.clear();
         cv::FileStorage fs(filename, cv::FileStorage::READ);
@@ -181,10 +185,9 @@ class FeatureExtractor {
         return answer;
     }
 
-    void getWorldCoordinates(cv::Mat trans, cv::Mat rot,
+    void getWorldCoordinates(cv::Mat baseTrans, cv::Mat baseRot,
                              cv::Mat localCoordinates) {
-        cv::Mat worldCoordinates =
-            (cv::Mat_<double>(3, 3) << 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        cv::Mat worldCoordinates = cv::Mat_<double>(3, 3, CV_64F);
         /* worldCoordinates.at<double>(0) = coordinates.x + trans.at<double>(0);
          */
         /* worldCoordinates.at<double>(1) = coordinates.y + trans.at<double>(1);
@@ -192,8 +195,10 @@ class FeatureExtractor {
         /* worldCoordinates.at<double>(2) = coordinates.at<double>(2) +
          * trans.at<double>(2); */
 
-        worldCoordinates = localCoordinates + trans;
-        worldCoordinates = rot * worldCoordinates;
+        worldCoordinates = localCoordinates + baseTrans;
+        cv::Mat baseRotInv;
+        cv::invert(baseRot, baseRotInv);
+        worldCoordinates = baseRotInv * worldCoordinates;
 
         /* cout << "x,y,z: " << worldCoordinates << endl; */
         cv::Point3d pointCoordinate;
@@ -202,9 +207,15 @@ class FeatureExtractor {
         pointCoordinate.z = worldCoordinates.at<double>(2);
 
         PointCloudMatrix.push_back(pointCoordinate);
+
         /* cout << l.x << " " << l.y << endl; */
 
         /* cout << src.at<cv::Vec3b>(l.y, l.x) << endl; */
+    }
+
+    void writeCloudToFile(string filename, cv::Mat PointCloudMatrix,
+                          cv::Mat PointColorsMatrix) {
+        cv::viz::writeCloud(filename, PointCloudMatrix, PointColorsMatrix);
     }
 
     void extractFeatures_goodFeaturesToTrack(int, void *) {
@@ -382,12 +393,13 @@ class FeatureExtractor {
             for (int i = 0; i < point_count; i++) {
                 cv::Mat localCoordinates =
                     getLocalCoordinates(points2[i], points1[i], M, P);
-                getWorldCoordinates(t, R1, localCoordinates);
+                getWorldCoordinates(baseTrans, baseRot, localCoordinates);
             }
+            baseTrans = t;
+            baseRot = R1;
+            /* cout << "baseTrans " << baseTrans << endl << "t" << t << endl; */
 
             /* cout << "negativeZCount " << negativeZCount << endl; */
-            cv::viz::writeCloud("PointCLoud.ply", PointCloudMatrix,
-                                PointColorsMatrix);
 
         } // End of if statement
 
@@ -439,38 +451,44 @@ int main() {
 
     cout << "Image List: " << imageList[0];
 
-    src = cv::imread(imageList[0]);
-    src_gray = cv::imread(imageList[0], cv::IMREAD_GRAYSCALE);
-    prev_src_gray = cv::imread(imageList[1], cv::IMREAD_GRAYSCALE);
+    for (int i = 1; i < imageList.size(); i++) {
 
-    feature_extractor.extractFeatures_goodFeaturesToTrack(0, 0);
+        src = cv::imread(imageList[i]);
+        src_gray = cv::imread(imageList[i], cv::IMREAD_GRAYSCALE);
+        prev_src_gray = cv::imread(imageList[i - 1], cv::IMREAD_GRAYSCALE);
 
-    /* // If frames are present, show it */
-    /* if (isSuccess == true) { */
-    /*     // display frames */
-    /*     /1* imshow("Frame", frame); *1/ */
-    /*     /1* imshow("PrevFrame", prevFrame); *1/ */
-    /* } */
+        feature_extractor.extractFeatures_goodFeaturesToTrack(0, 0);
 
-    /* if (isSuccess == false) { */
-    /*     cout << "Video camera is disconnected" << endl; */
-    /*     break; */
-    /* } */
+        /* // If frames are present, show it */
+        /* if (isSuccess == true) { */
+        /*     // display frames */
+        /*     /1* imshow("Frame", frame); *1/ */
+        /*     /1* imshow("PrevFrame", prevFrame); *1/ */
+        /* } */
 
-    //-- Step 1: Detect the keypoints using SURF Detector,compute
-    // the
-    // descriptors
+        /* if (isSuccess == false) { */
+        /*     cout << "Video camera is disconnected" << endl; */
+        /*     break; */
+        /* } */
 
-    // wait 20 ms between successive frames and break the loop ifkey
-    // q is pressed
-    while (true) {
-        int key = cv::waitKey();
-        if (key == 'q') {
-            cout << "q key is pressed by the user. Stopping the "
-                    "video"
-                 << endl;
-            break;
+        //-- Step 1: Detect the keypoints using SURF Detector,compute
+        // the
+        // descriptors
+
+        // wait 20 ms between successive frames and break the loop ifkey
+        // q is pressed
+        while (true) {
+            int key = cv::waitKey();
+            if (key == 'q') {
+                cout << "q key is pressed by the user. Stopping the "
+                        "video"
+                     << endl;
+                break;
+            }
         }
+        feature_extractor.writeCloudToFile("PointCLoud.ply",
+                                           feature_extractor.PointCloudMatrix,
+                                           feature_extractor.PointColorsMatrix);
     }
     /* } */
     // Release the video capture object
