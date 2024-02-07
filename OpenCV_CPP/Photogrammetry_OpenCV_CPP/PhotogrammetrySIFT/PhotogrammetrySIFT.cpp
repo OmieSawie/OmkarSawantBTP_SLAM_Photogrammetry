@@ -58,15 +58,21 @@ class FeatureExtractor {
     cv::Ptr<cv::SIFT> extractor =
         cv::SIFT::create(100000, 3, 0.09, 31, 1.2f, CV_8U, false);
 
-    cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 3048., 0., 2312., 0.,
-                            2046., 1734., 0., 0., 1.);
+    cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 3658.26, 0., 2311.5, 0.,
+                            3658.26, 1734., 0., 0., 1.);
+    /* cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 3048., 0., 2312., 0.,
+     */
+    /* 2046., 1734., 0., 0., 1.); */
 
     cv::Mat PointCloudMatrix = cv::Mat(0, 0, CV_64F),
             PointColorsMatrix = cv::Mat(0, 0, CV_8UC3);
 
     cv::Mat baseRot =
-        (cv::Mat_<double>(3, 3, CV_64F) << 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        (cv::Mat_<double>(3, 3, CV_64F) << 1, 0, 0, 0, 1, 0, 0, 0, 1);
     cv::Mat baseTrans = (cv::Mat_<double>(3, 1, CV_64F) << 0, 0, 0);
+
+    cv::Mat baseRPT = (cv::Mat_<double>(4, 4, CV_64F) << 1, 0, 0, 0, 0, 1, 0, 0,
+                       0, 0, 1, 0, 0, 0, 0, 1);
 
     static bool readStringList(const string &filename, vector<string> &l) {
         l.clear();
@@ -88,14 +94,20 @@ class FeatureExtractor {
         /* cout << "Camera Matrix Homogenised: " << hom_cameraMatrix << endl; */
         return hom_cameraMatrix;
     }
+    cv::Mat composeHomRPT(cv::Mat rot, cv::Mat trans) {
+        cv::Mat rpt, hom_rpt;
+        cv::hconcat(rot, trans, rpt);
+        cv::Mat temp = (cv::Mat_<double>(1, 4) << 0., 0., 0., 1.);
+        cv::vconcat(rpt, temp, hom_rpt);
+        cout << "Hom RPT" << hom_rpt << endl;
+        return hom_rpt;
+    }
 
     cv::Mat comptueP(cv::Mat rot, cv::Mat trans) {
         cv::Mat hom_cameraMatrix = computeM(rot, trans);
-        cv::Mat rpt, hom_rpt;
-        cv::hconcat(rot, trans, rpt);
-        cout << "RPT" << rpt << endl;
-        cv::Mat temp = (cv::Mat_<double>(1, 4) << 0., 0., 0., 0.);
-        cv::vconcat(rpt, temp, hom_rpt);
+        cv::Mat hom_rpt = composeHomRPT(rot, trans);
+        baseRPT = baseRPT * hom_rpt;
+        cout << "Base RPT" << baseRPT << endl;
         /* cout << "RPT homogenised: " << hom_rpt << endl; */
         /* cout << "cam*rpt: " << hom_cameraMatrix * hom_rpt << endl; */
         return hom_cameraMatrix * hom_rpt;
@@ -121,6 +133,7 @@ class FeatureExtractor {
 
     cv::Mat getLocalCoordinates(cv::Point2f r, cv::Point2f l, cv::Mat M,
                                 cv::Mat P) {
+        /* cout << "getting local coordinates " << l.x << " " << l.y << endl; */
 
         cv::Mat colors(1, 1, CV_8UC3, cv::Scalar(src.at<cv::Vec3b>(l.y, l.x)));
         PointColorsMatrix.push_back(colors);
@@ -181,6 +194,7 @@ class FeatureExtractor {
         /* cout << "mulTransposedMatInverted: " << mulTransposedMatInverted */
         /* << endl; */
         cv::Mat answer = mulTransposedMatInverted * transposedMat * finr;
+        /* cout << "answer" << answer << endl; */
 
         return answer;
     }
@@ -188,29 +202,19 @@ class FeatureExtractor {
     void getWorldCoordinates(cv::Mat baseTrans, cv::Mat baseRot,
                              cv::Mat localCoordinates) {
         cv::Mat worldCoordinates = cv::Mat_<double>(3, 3, CV_64F);
-        /* worldCoordinates.at<double>(0) = coordinates.x + trans.at<double>(0);
-         */
-        /* worldCoordinates.at<double>(1) = coordinates.y + trans.at<double>(1);
-         */
-        /* worldCoordinates.at<double>(2) = coordinates.at<double>(2) +
-         * trans.at<double>(2); */
 
-        worldCoordinates = localCoordinates + baseTrans;
         cv::Mat baseRotInv;
-        cv::invert(baseRot, baseRotInv);
-        worldCoordinates = baseRotInv * worldCoordinates;
-
-        /* cout << "x,y,z: " << worldCoordinates << endl; */
+        /* cout << "baseRot" << baseRot << endl; */
+        cv::transpose(baseRot, baseRotInv);
+        /* worldCoordinates = baseRotInv * worldCoordinates; */
+        worldCoordinates = localCoordinates + baseTrans;
+        /* cout << "worldCoordinates" << worldCoordinates << endl; */
         cv::Point3d pointCoordinate;
         pointCoordinate.x = worldCoordinates.at<double>(0);
         pointCoordinate.y = worldCoordinates.at<double>(1);
         pointCoordinate.z = worldCoordinates.at<double>(2);
 
         PointCloudMatrix.push_back(pointCoordinate);
-
-        /* cout << l.x << " " << l.y << endl; */
-
-        /* cout << src.at<cv::Vec3b>(l.y, l.x) << endl; */
     }
 
     void writeCloudToFile(string filename, cv::Mat PointCloudMatrix,
@@ -260,7 +264,8 @@ class FeatureExtractor {
             // Filter the good matches
             std::vector<cv::DMatch> good_matches;
             for (int k = 0; k < (int)matches.size(); k++) {
-                if ((matches[k][0].distance < 0.8 * (matches[k][1].distance))) {
+                if ((matches[k][0].distance <
+                     0.75 * (matches[k][1].distance))) {
                     good_matches.push_back(matches[k][0]);
                 }
             }
@@ -310,12 +315,15 @@ class FeatureExtractor {
                 points1, points2, cv::FM_RANSAC, 3., 0.90, fund_mask);
             /*  cout << fundamentalMatrix << endl; */
             /* cout << fund_mask; */
+            /* cv::correctMatches(fundamentalMatrix, points1, points2, points1,
+             */
+            /*                    points2); */
             vector<cv::Point2f> points1_masked, points2_masked;
             for (int i = 0; i < point_count; i++) {
-                /* if (fund_mask.at<int>(i) == 1) { */
-                points1_masked.push_back(points1[i]);
-                points2_masked.push_back(points2[i]);
-                /* } */
+                if (fund_mask.at<int>(i) == 1) {
+                    points1_masked.push_back(points1[i]);
+                    points2_masked.push_back(points2[i]);
+                }
             }
             cout << "masked points count: " << points1_masked.size() << endl;
 
@@ -359,14 +367,16 @@ class FeatureExtractor {
              */
 
             drawMatches(prev_src_gray, prev_keypoints_cpu, src_gray,
-
                         keypoints_cpu, good_matches, img_matches);
             cv::namedWindow("matches", 0);
             imshow("matches", img_matches);
-            cv::resize(src_gray, src_gray, cv::Size(), 0.25, 0.25);
-            cv::resize(prev_src_gray, prev_src_gray, cv::Size(), 0.25, 0.25);
-            cv::imshow("src_gray", src_gray);
-            cv::imshow("prev_src_gray", prev_src_gray);
+            cv::imwrite("Matches.jpg", img_matches);
+
+            /* cv::resize(src_gray, src_gray, cv::Size(), 0.25, 0.25); */
+            /* cv::resize(prev_src_gray, prev_src_gray, cv::Size(), 0.25, 0.25);
+             */
+            /* cv::imshow("src_gray", src_gray); */
+            /* cv::imshow("prev_src_gray", prev_src_gray); */
 
             // Estimating the Essential Matrix
 
@@ -376,7 +386,7 @@ class FeatureExtractor {
             /* cout << essentialMatrix << endl; */
             cv::Mat R1, R2, t, R1R, R2R;
             cv::decomposeEssentialMat(essentialMatrix, R1, R2, t);
-            cout << "R1" << R1 << endl << "R2" << R2 << endl;
+            /* cout << "R1" << R1 << endl << "R2" << R2 << endl; */
             if (t.at<double>(0) < 0.) {
                 t = -t;
             }
@@ -386,22 +396,54 @@ class FeatureExtractor {
             cout << "t" << t << endl
                  << "R1R" << R1R << endl
                  << "R2R" << R2R << endl;
+            cv::Mat correctRot;
+            if (abs(R1R.at<double>(0)) < abs(R2R.at<double>(0))) {
+                correctRot = R1;
+                cout << "R1 is Correct" << endl;
+            } else {
+                correctRot = R2;
+                cout << "R2 is Correct" << endl;
+            }
 
-            cv::Mat P = comptueP(R1, t);
-            cv::Mat M = computeM(R1, t);
+            cv::Mat P = comptueP(correctRot, t);
+            cv::Mat M = computeM(correctRot, t);
 
             for (int i = 0; i < point_count; i++) {
                 cv::Mat localCoordinates =
                     getLocalCoordinates(points2[i], points1[i], M, P);
                 getWorldCoordinates(baseTrans, baseRot, localCoordinates);
             }
-            baseTrans = t;
-            baseRot = R1;
+            cout << "REached" << endl;
+
+            /* cv::Mat temp = (cv::Mat_<double>(1, 3) << 0., 0., 0.); */
+            baseTrans.at<double>(0) = baseRPT.at<double>(0, 3);
+            baseTrans.at<double>(1) = baseRPT.at<double>(1, 3);
+            baseTrans.at<double>(2) = baseRPT.at<double>(2, 3);
+            /* baseTrans = temp; */
+
+            baseRot.at<double>(0, 0) = baseRPT.at<double>(0, 0);
+            baseRot.at<double>(0, 1) = baseRPT.at<double>(0, 1);
+            baseRot.at<double>(0, 2) = baseRPT.at<double>(0, 2);
+            baseRot.at<double>(1, 0) = baseRPT.at<double>(1, 0);
+            baseRot.at<double>(1, 1) = baseRPT.at<double>(1, 1);
+            baseRot.at<double>(1, 2) = baseRPT.at<double>(1, 2);
+            baseRot.at<double>(2, 0) = baseRPT.at<double>(2, 0);
+            baseRot.at<double>(2, 1) = baseRPT.at<double>(2, 1);
+            baseRot.at<double>(2, 2) = baseRPT.at<double>(2, 2);
+
+            cout << "Base Trans " << baseTrans << endl;
+            cv::Mat baseRot_rodrigues;
+            cv::Rodrigues(baseRot, baseRot_rodrigues);
+            cout << "Base Rot " << baseRot_rodrigues << endl;
+            /* baseRot = correctRot; */
             /* cout << "baseTrans " << baseTrans << endl << "t" << t << endl; */
 
-            /* cout << "negativeZCount " << negativeZCount << endl; */
+            cout << "negativeZCount " << negativeZCount << endl;
+            negativeZCount = 0;
 
         } // End of if statement
+        //
+        cout << "baseRPT" << baseRPT << endl;
 
         /* cout << "Size 1" << prev_src_gray.size() << endl; */
     }
@@ -449,7 +491,7 @@ int main() {
 
     feature_extractor.readStringList("./src/imageList.xml", imageList);
 
-    cout << "Image List: " << imageList[0];
+    cout << "Image List: " << imageList.size();
 
     for (int i = 1; i < imageList.size(); i++) {
 
@@ -477,19 +519,20 @@ int main() {
 
         // wait 20 ms between successive frames and break the loop ifkey
         // q is pressed
-        while (true) {
-            int key = cv::waitKey();
-            if (key == 'q') {
-                cout << "q key is pressed by the user. Stopping the "
-                        "video"
-                     << endl;
-                break;
-            }
-        }
+
+        int key = cv::waitKey(5000);
         feature_extractor.writeCloudToFile("PointCLoud.ply",
                                            feature_extractor.PointCloudMatrix,
                                            feature_extractor.PointColorsMatrix);
+
+        if (key == 'q') {
+            cout << "q key is pressed by the user. Stopping the "
+                    "video"
+                 << endl;
+            break;
+        }
     }
+
     /* } */
     // Release the video capture object
     /* vid_capture.release(); */
