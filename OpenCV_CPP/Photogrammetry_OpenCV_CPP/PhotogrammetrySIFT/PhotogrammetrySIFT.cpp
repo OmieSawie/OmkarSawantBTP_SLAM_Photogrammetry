@@ -58,11 +58,12 @@ class FeatureExtractor {
     cv::Ptr<cv::SIFT> extractor =
         cv::SIFT::create(100000, 3, 0.09, 31, 1.2f, CV_8U, false);
 
-    cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 3658.26, 0., 2311.5, 0.,
-                            3658.26, 1734., 0., 0., 1.);
-    /* cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 3048., 0., 2312., 0.,
-     */
-    /* 2046., 1734., 0., 0., 1.); */
+    /* cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 3658.26, 0., 2311.5,
+     * 0., */
+    /*                         3658.26, 1734., 0., 0., 1.); */
+    cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 2666., 0., 2312.1, 0.,
+
+                            2000., 1734.1, 0., 0., 1.);
 
     cv::Mat PointCloudMatrix = cv::Mat(0, 0, CV_64F),
             PointColorsMatrix = cv::Mat(0, 0, CV_8UC3);
@@ -215,6 +216,36 @@ class FeatureExtractor {
         pointCoordinate.z = worldCoordinates.at<double>(2);
 
         PointCloudMatrix.push_back(pointCoordinate);
+        placeCameraReferencePointCloud(baseTrans, baseRot);
+    }
+
+    void placeCameraReferencePointCloud(cv::Mat baseTrans, cv::Mat baseRot) {
+        cv::Point3d cameraPointCLoud;
+        cv::Mat arrowTip = (cv::Mat_<double>(3, 1) << 0., 0., -1.);
+
+        arrowTip = baseRot * arrowTip + baseTrans;
+        cv::Mat arrowBase = (cv::Mat_<double>(3, 1) << 0., 0., 0.);
+        arrowBase = arrowBase + baseTrans;
+
+        for (int i = -2; i < 2; i++) {
+            for (int j = -2; j < 2; j++) {
+                for (int k = -2; k < 2; k++) {
+                    cameraPointCLoud.x = arrowTip.at<double>(0) + i * 0.1;
+                    cameraPointCLoud.y = arrowTip.at<double>(1) + j * 0.1;
+                    cameraPointCLoud.z = arrowTip.at<double>(2) + k * 0.1;
+                    PointCloudMatrix.push_back(cameraPointCLoud);
+                    cv::Mat colors1(1, 1, CV_8UC3, cv::Scalar(200, 200, 200));
+                    PointColorsMatrix.push_back(colors1);
+
+                    cameraPointCLoud.x = arrowBase.at<double>(0) + i * 0.1;
+                    cameraPointCLoud.y = arrowBase.at<double>(1) + j * 0.1;
+                    cameraPointCLoud.z = arrowBase.at<double>(2) + k * 0.1;
+                    PointCloudMatrix.push_back(cameraPointCLoud);
+                    cv::Mat colors2(1, 1, CV_8UC3, cv::Scalar(200, 200, 200));
+                    PointColorsMatrix.push_back(colors2);
+                }
+            }
+        }
     }
 
     void writeCloudToFile(string filename, cv::Mat PointCloudMatrix,
@@ -335,7 +366,7 @@ class FeatureExtractor {
                                           epilines1);
             /* cout << epilines << endl; */
 
-            if (true) {
+            if (false) {
                 for (vector<cv::Vec3f>::const_iterator it = epilines1.begin();
                      it != epilines1.end(); ++it) {
                     // draw the line between first and last column
