@@ -55,26 +55,40 @@ vector<string> imageList;
 
 class FeatureExtractor {
   public:
+    // Make the SIFT Object with the appropriate parameters
     cv::Ptr<cv::SIFT> extractor =
         cv::SIFT::create(100000, 3, 0.09, 31, 1.2f, CV_8U, false);
 
-    /* cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 3658.26, 0., 2311.5,
-     * 0., */
-    /*                         3658.26, 1734., 0., 0., 1.); */
-    cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 2666., 0., 2312.1, 0.,
+    // Camera Matrix as obtained from the camera calibration
+    cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 3658.26, 0., 2311.5, 0.,
+                            3658.26, 1734., 0., 0., 1.);
+    /* cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 5000., 0., 2312.1, 0.,
+     */
 
-                            2000., 1734.1, 0., 0., 1.);
+    /*                         5000., 1734.1, 0., 0., 1.); */
 
-    cv::Mat PointCloudMatrix = cv::Mat(0, 0, CV_64F),
-            PointColorsMatrix = cv::Mat(0, 0, CV_8UC3);
+    // Distortion coefficients
+    cv::Mat distortionCoefficients =
+        (cv::Mat_<double>(5, 1) << 0.21044, -1.0387, 0., 0., 1.6132);
 
+    // Point Cloud Output data and Color matrices
+    cv::Mat PointCloudMatrix = cv::Mat(0., 0., CV_64F),
+            PointColorsMatrix = cv::Mat(0., 0., CV_8UC3);
+
+    // Rotation and translation of the camera frame with respect to the world
+    // coordinate frame ie. initial point
     cv::Mat baseRot =
-        (cv::Mat_<double>(3, 3, CV_64F) << 1, 0, 0, 0, 1, 0, 0, 0, 1);
-    cv::Mat baseTrans = (cv::Mat_<double>(3, 1, CV_64F) << 0, 0, 0);
+        (cv::Mat_<double>(3, 3, CV_64F) << 1., 0., 0., 0., 1., 0., 0., 0., 1.);
+    cv::Mat baseTrans = (cv::Mat_<double>(3, 1, CV_64F) << 0., 0., 0.);
 
+    double scaleFactor = 1.;
+
+    // Euclidian Transform of camera frame with respect to the world coordinate
+    // frame ie. the initial point
     cv::Mat baseRPT = (cv::Mat_<double>(4, 4, CV_64F) << 1, 0, 0, 0, 0, 1, 0, 0,
-                       0, 0, 1, 0, 0, 0, 0, 1);
+                       0, 0, 1, 0, 0, 0, 0, scaleFactor);
 
+    // Take input image files from xml file
     static bool readStringList(const string &filename, vector<string> &l) {
         l.clear();
         cv::FileStorage fs(filename, cv::FileStorage::READ);
@@ -88,6 +102,8 @@ class FeatureExtractor {
             l.push_back((string)*it);
         return true;
     }
+
+    // Compute the homogenised camera matrix
     cv::Mat computeM(cv::Mat rot, cv::Mat trans) {
         cv::Mat temp = (cv::Mat_<double>(3, 1) << 0., 0., 0.);
         cv::Mat hom_cameraMatrix;
@@ -95,45 +111,33 @@ class FeatureExtractor {
         /* cout << "Camera Matrix Homogenised: " << hom_cameraMatrix << endl; */
         return hom_cameraMatrix;
     }
+
+    // Compute the euclidian transform from input rotation and translation
+    // matrices
     cv::Mat composeHomRPT(cv::Mat rot, cv::Mat trans) {
         cv::Mat rpt, hom_rpt;
         cv::hconcat(rot, trans, rpt);
-        cv::Mat temp = (cv::Mat_<double>(1, 4) << 0., 0., 0., 1.);
+        cv::Mat temp = (cv::Mat_<double>(1, 4) << 0., 0., 0., scaleFactor);
         cv::vconcat(rpt, temp, hom_rpt);
         cout << "Hom RPT" << hom_rpt << endl;
         return hom_rpt;
     }
 
+    // Compute the product of homogenised camera matrix and the euclidian
+    // transform
     cv::Mat comptueP(cv::Mat rot, cv::Mat trans) {
         cv::Mat hom_cameraMatrix = computeM(rot, trans);
         cv::Mat hom_rpt = composeHomRPT(rot, trans);
-        baseRPT = baseRPT * hom_rpt;
-        cout << "Base RPT" << baseRPT << endl;
+        /* baseRPT = baseRPT * hom_rpt; */
+        /* cout << "Base RPT" << baseRPT << endl; */
         /* cout << "RPT homogenised: " << hom_rpt << endl; */
         /* cout << "cam*rpt: " << hom_cameraMatrix * hom_rpt << endl; */
         return hom_cameraMatrix * hom_rpt;
     }
 
-    /* cv::Mat computingDepth(cv::Mat rot, cv::Mat trans) { */
-    /*     cv::Mat temp = (cv::Mat_<double>(3, 1) << 0., 0., 0.); */
-    /*     cv::Mat hom_cameraMatrix; */
-    /*     cv::hconcat(cameraMatrix, temp, hom_cameraMatrix); */
-    /*     cout << "Camera Matrix Homogenised: " << hom_cameraMatrix << endl; */
-
-    /*     cv::Mat rpt, hom_rpt; */
-    /*     cv::hconcat(rot, trans, rpt); */
-    /*     rpt.convertTo(rpt, CV_32F); */
-    /*     temp = (cv::Mat_<double>(1, 4) << 0., 0., 0., 0.); */
-    /*     cv::vconcat(rpt, temp, hom_rpt); */
-    /*     cout << "RPT homogenised: " << hom_rpt << endl; */
-    /*     cout << "cam*rpt: " << hom_cameraMatrix * hom_rpt << endl; */
-    /*     cv::Mat returnAns = {hom_cameraMatrix, hom_cameraMatrix * hom_rpt};
-     */
-    /*     return returnAns; */
-    /* } */
-
+    //
     cv::Mat getLocalCoordinates(cv::Point2f r, cv::Point2f l, cv::Mat M,
-                                cv::Mat P) {
+                                cv::Mat P, cv::Mat hom_rpt) {
         /* cout << "getting local coordinates " << l.x << " " << l.y << endl; */
 
         cv::Mat colors(1, 1, CV_8UC3, cv::Scalar(src.at<cv::Vec3b>(l.y, l.x)));
@@ -162,15 +166,15 @@ class FeatureExtractor {
         p11 = P.at<double>(0, 0);
         p12 = P.at<double>(0, 1);
         p13 = P.at<double>(0, 2);
-        p14 = P.at<double>(0, 3);
+        p14 = P.at<double>(0, 3) / scaleFactor;
         p21 = P.at<double>(1, 0);
         p22 = P.at<double>(1, 1);
         p23 = P.at<double>(1, 2);
-        p24 = P.at<double>(1, 3);
+        p24 = P.at<double>(1, 3) / scaleFactor;
         p31 = P.at<double>(2, 0);
         p32 = P.at<double>(2, 1);
         p33 = P.at<double>(2, 2);
-        p34 = P.at<double>(2, 3);
+        p34 = P.at<double>(2, 3) / scaleFactor;
 
         /* cout << "ur= " << ur << endl; */
         /* cout << "m33= " << m33 << endl; */
@@ -194,10 +198,22 @@ class FeatureExtractor {
         cv::transpose(finl, transposedMat);
         /* cout << "mulTransposedMatInverted: " << mulTransposedMatInverted */
         /* << endl; */
-        cv::Mat answer = mulTransposedMatInverted * transposedMat * finr;
-        /* cout << "answer" << answer << endl; */
+        cv::Mat rightFrameCoordiantes =
+            mulTransposedMatInverted * transposedMat * finr;
+        cv::Mat temp = (cv::Mat_<double>(1, 1) << 1 / scaleFactor);
+        cv::Mat rightFrameCoordiantesHom;
+        cv::vconcat(rightFrameCoordiantes, temp, rightFrameCoordiantesHom);
+        /* cout << "rightFrameCoordiantes" << rightFrameCoordiantes << endl; */
+        cv::Mat leftFrameCoordinatesHom = hom_rpt * rightFrameCoordiantesHom;
+        /* cout << "leftFrameCoordinatesHom" << leftFrameCoordinatesHom << endl;
+         */
 
-        return answer;
+        cv::Mat leftFrameCoordinates =
+            cv::Mat(3, 1, CV_64F, leftFrameCoordinatesHom.data);
+        /* cout << "leftFrameCoordinates" << leftFrameCoordinates << endl; */
+
+        return leftFrameCoordinates;
+        /* return rightFrameCoordiantes; */
     }
 
     void getWorldCoordinates(cv::Mat baseTrans, cv::Mat baseRot,
@@ -207,7 +223,7 @@ class FeatureExtractor {
         cv::Mat baseRotInv;
         /* cout << "baseRot" << baseRot << endl; */
         cv::transpose(baseRot, baseRotInv);
-        /* worldCoordinates = baseRotInv * worldCoordinates; */
+        worldCoordinates = baseRot * worldCoordinates;
         worldCoordinates = localCoordinates + baseTrans;
         /* cout << "worldCoordinates" << worldCoordinates << endl; */
         cv::Point3d pointCoordinate;
@@ -216,7 +232,6 @@ class FeatureExtractor {
         pointCoordinate.z = worldCoordinates.at<double>(2);
 
         PointCloudMatrix.push_back(pointCoordinate);
-        placeCameraReferencePointCloud(baseTrans, baseRot);
     }
 
     void placeCameraReferencePointCloud(cv::Mat baseTrans, cv::Mat baseRot) {
@@ -234,7 +249,7 @@ class FeatureExtractor {
                     cameraPointCLoud.y = arrowTip.at<double>(1) + j * 0.1;
                     cameraPointCLoud.z = arrowTip.at<double>(2) + k * 0.1;
                     PointCloudMatrix.push_back(cameraPointCLoud);
-                    cv::Mat colors1(1, 1, CV_8UC3, cv::Scalar(200, 200, 200));
+                    cv::Mat colors1(1, 1, CV_8UC3, cv::Scalar(100, 100, 100));
                     PointColorsMatrix.push_back(colors1);
 
                     cameraPointCLoud.x = arrowBase.at<double>(0) + i * 0.1;
@@ -246,12 +261,16 @@ class FeatureExtractor {
                 }
             }
         }
+        cout << "HAsdjasd \n  \n" << endl;
     }
 
     void writeCloudToFile(string filename, cv::Mat PointCloudMatrix,
                           cv::Mat PointColorsMatrix) {
         cv::viz::writeCloud(filename, PointCloudMatrix, PointColorsMatrix);
     }
+
+    void triangulateFramesForScale(cv::Mat prev_frame, cv::Mat middle_frame,
+                                   cv::Mat next_frame) {}
 
     void extractFeatures_goodFeaturesToTrack(int, void *) {
         /* cv::cuda::GpuMat src_gray_gpu = cv::cuda::GpuMat(src_gray); */
@@ -295,8 +314,7 @@ class FeatureExtractor {
             // Filter the good matches
             std::vector<cv::DMatch> good_matches;
             for (int k = 0; k < (int)matches.size(); k++) {
-                if ((matches[k][0].distance <
-                     0.75 * (matches[k][1].distance))) {
+                if ((matches[k][0].distance < 0.8 * (matches[k][1].distance))) {
                     good_matches.push_back(matches[k][0]);
                 }
             }
@@ -438,15 +456,23 @@ class FeatureExtractor {
 
             cv::Mat P = comptueP(correctRot, t);
             cv::Mat M = computeM(correctRot, t);
+            cv::Mat hom_rpt = composeHomRPT(correctRot, t);
 
             for (int i = 0; i < point_count; i++) {
                 cv::Mat localCoordinates =
-                    getLocalCoordinates(points2[i], points1[i], M, P);
+                    getLocalCoordinates(points2[i], points1[i], M, P, hom_rpt);
                 getWorldCoordinates(baseTrans, baseRot, localCoordinates);
             }
+            placeCameraReferencePointCloud(baseTrans, baseRot);
+
             cout << "REached" << endl;
 
+            baseRPT = baseRPT * hom_rpt;
             /* cv::Mat temp = (cv::Mat_<double>(1, 3) << 0., 0., 0.); */
+            baseRPT.at<double>(0, 3) = baseRPT.at<double>(0, 3) / scaleFactor;
+            baseRPT.at<double>(1, 3) = baseRPT.at<double>(1, 3) / scaleFactor;
+            baseRPT.at<double>(2, 3) = baseRPT.at<double>(2, 3) / scaleFactor;
+            baseRPT.at<double>(3, 3) = baseRPT.at<double>(3, 3) / scaleFactor;
             baseTrans.at<double>(0) = baseRPT.at<double>(0, 3);
             baseTrans.at<double>(1) = baseRPT.at<double>(1, 3);
             baseTrans.at<double>(2) = baseRPT.at<double>(2, 3);
@@ -526,10 +552,20 @@ int main() {
 
     for (int i = 1; i < imageList.size(); i++) {
 
-        src = cv::imread(imageList[i]);
-        src_gray = cv::imread(imageList[i], cv::IMREAD_GRAYSCALE);
-        prev_src_gray = cv::imread(imageList[i - 1], cv::IMREAD_GRAYSCALE);
+        cv::Mat distorted_src, distorted_src_gray, distorted_prev_src_gray;
 
+        distorted_src = cv::imread(imageList[i]);
+        cv::undistort(distorted_src, src, feature_extractor.cameraMatrix,
+                      feature_extractor.distortionCoefficients, cv::noArray());
+        distorted_src_gray = cv::imread(imageList[i], cv::IMREAD_GRAYSCALE);
+        cv::undistort(distorted_src_gray, src_gray,
+                      feature_extractor.cameraMatrix,
+                      feature_extractor.distortionCoefficients, cv::noArray());
+        distorted_prev_src_gray =
+            cv::imread(imageList[i - 1], cv::IMREAD_GRAYSCALE);
+        cv::undistort(distorted_prev_src_gray, prev_src_gray,
+                      feature_extractor.cameraMatrix,
+                      feature_extractor.distortionCoefficients);
         feature_extractor.extractFeatures_goodFeaturesToTrack(0, 0);
 
         /* // If frames are present, show it */
