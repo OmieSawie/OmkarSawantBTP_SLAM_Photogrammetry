@@ -385,17 +385,16 @@ public:
 
   double scaleFactor = 1.;
 
-  // Frame &prevFrame;
-  // Frame &frame;
-  //
-  // FeatureExtractorAndMatcher(Frame &prevFrame, Frame &frame)
-  //     : prevFrame(prevFrame), frame(frame) {
-  //   // this->prevFrame = prevFrame;
-  //   // this->frame = frame;
-  // }
+  Frame prevFrame;
+  Frame frame;
 
-  // cv::Mat prev_descriptors_cpu, descriptors_cpu;
-  // std::vector<cv::KeyPoint> prev_keypoints_cpu, keypoints_cpu;
+  FeatureExtractorAndMatcher(Frame &prevFrame, Frame &frame) {
+    this->prevFrame = prevFrame;
+    this->frame = frame;
+  }
+
+  cv::Mat prev_descriptors_cpu, descriptors_cpu;
+  std::vector<cv::KeyPoint> prev_keypoints_cpu, keypoints_cpu;
 
   // Euclidian Transform of camera frame with respect to the world
   // coordinate frame ie. the initial point
@@ -403,8 +402,10 @@ public:
                      0, 0, 1, 0, 0, 0, 0, 1);
 
   void extractFeaturesSIFT(Frame &prevFrame, Frame &frame) {
-    int img_width = frame.src_gray.size().width,
-        img_height = frame.src_gray.size().height;
+    cv::Mat src_gray = frame.src_gray;
+    cv::Mat prev_src_gray = prevFrame.src_gray;
+
+    int img_width = src_gray.size().width, img_height = src_gray.size().height;
     cout << " Size of image: " << img_width << " x " << img_height << endl;
     double qualityLevel = 0.01;
     double minDistance = 0;
@@ -416,32 +417,31 @@ public:
     // Detect and Compute features
     // prev_src_gray is	#1 query image
     // src_gray is the  #2 train image
-    extractor->detectAndCompute(prevFrame.src_gray, cv::noArray(),
-                                prevFrame.keypoints_cpu,
-                                prevFrame.descriptors_cpu);
-    extractor->detectAndCompute(frame.src_gray, cv::noArray(),
-                                frame.keypoints_cpu, frame.descriptors_cpu);
+    extractor->detectAndCompute(prev_src_gray, cv::noArray(),
+                                prev_keypoints_cpu, prev_descriptors_cpu);
+    extractor->detectAndCompute(src_gray, cv::noArray(), keypoints_cpu,
+                                descriptors_cpu);
 
-    cout << "Keypoints Size :" << frame.keypoints_cpu.size() << endl;
-    std::cout << "Descriptors Size " << frame.descriptors_cpu.size() << endl;
-    // this->frame = frame;
-    // this->prevFrame = prevFrame;
+    cout << "Keypoints Size :" << keypoints_cpu.size() << endl;
+    std::cout << "Descriptors Size " << descriptors_cpu.size() << endl;
+    /* frame.keypoints_cpu = keypoints_cpu; */
+    /* frame.descriptors_cpu = descriptors_cpu; */
+    this->frame = frame;
+    this->prevFrame = prevFrame;
   }
 
-  std::vector<cv::DMatch> matchFeaturesBrutForce(Frame &prevFrame,
-                                                 Frame &frame) {
-    // cv::Mat prev_src_gray = this->prevFrame.src_gray;
-    // cv::Mat src_gray = this->frame.src_gray;
-    // cout << "Keypoints size in matching features "
-    //      << prevFrame.descriptors_cpu.size() << endl;
-    //
+  std::vector<cv::DMatch> matchFeaturesBrutForce() {
+    cv::Mat prev_src_gray = this->prevFrame.src_gray;
+    cv::Mat src_gray = this->frame.src_gray;
+    cout << "Keypoints size in matching features "
+         << prevFrame.descriptors_cpu.size() << endl;
+
     // Match the features
     cv::Ptr<cv::DescriptorMatcher> matcher =
         cv::DescriptorMatcher::create("BruteForce");
 
     vector<vector<cv::DMatch>> matches;
-    matcher->knnMatch(prevFrame.descriptors_cpu, frame.descriptors_cpu, matches,
-                      2);
+    matcher->knnMatch(prev_descriptors_cpu, descriptors_cpu, matches, 2);
 
     // Filter the good matches
     std::vector<cv::DMatch> good_matches;
@@ -475,8 +475,8 @@ public:
     vector<cv::Point2f> points2(point_count);
     // initialize the points here ...
     for (int i = 0; i < point_count; i++) {
-      points1[i] = prevFrame.keypoints_cpu[good_matches[i].queryIdx].pt;
-      points2[i] = frame.keypoints_cpu[good_matches[i].trainIdx].pt;
+      points1[i] = prev_keypoints_cpu[good_matches[i].queryIdx].pt;
+      points2[i] = keypoints_cpu[good_matches[i].trainIdx].pt;
     }
     cv::Mat fund_mask;
     cv::Mat fundamentalMatrix = cv::findFundamentalMat(
@@ -506,23 +506,23 @@ public:
       for (vector<cv::Vec3f>::const_iterator it = epilines1.begin();
            it != epilines1.end(); ++it) {
         // draw the line between first and last column
-        cv::line(prevFrame.src_gray, cv::Point(0, -(*it)[2] / (*it)[1]),
+        cv::line(prev_src_gray, cv::Point(0, -(*it)[2] / (*it)[1]),
                  cv::Point(4624., -((*it)[2] + (*it)[0] * 4624.) / ((*it)[1])),
                  cv::Scalar(255, 255, 255), cv::LINE_4);
       }
       for (vector<cv::Vec3f>::const_iterator it = epilines2.begin();
            it != epilines2.end(); ++it) {
         // draw the line between first and last column
-        cv::line(frame.src_gray, cv::Point(0, -(*it)[2] / (*it)[1]),
+        cv::line(src_gray, cv::Point(0, -(*it)[2] / (*it)[1]),
                  cv::Point(4624., -((*it)[2] + (*it)[0] * 4624.) / ((*it)[1])),
                  cv::Scalar(255, 255, 255), cv::LINE_4);
       }
       // Draw trhe masked keypoints
       for (int i = 0; i < points1_masked.size(); i++) {
-        cv::circle(prevFrame.src_gray, points1_masked[i], 10,
+        cv::circle(prev_src_gray, points1_masked[i], 10,
                    cv::Scalar(255, 0, 255), 10, cv::LINE_8, 0);
-        cv::circle(frame.src_gray, points2_masked[i], 10,
-                   cv::Scalar(255, 0, 255), 10, cv::LINE_8, 0);
+        cv::circle(src_gray, points2_masked[i], 10, cv::Scalar(255, 0, 255), 10,
+                   cv::LINE_8, 0);
       }
     }
     /* cv::imshow("Right Image Epilines (FM_7POINT2)",
@@ -533,8 +533,8 @@ public:
 
     // Draw the Matches
     cv::Mat img_matches;
-    drawMatches(prevFrame.src_gray, prevFrame.keypoints_cpu, frame.src_gray,
-                frame.keypoints_cpu, good_matches, img_matches);
+    drawMatches(prev_src_gray, prev_keypoints_cpu, src_gray, keypoints_cpu,
+                good_matches, img_matches);
 
     cv::namedWindow("matches", 0);
     imshow("matches", img_matches);
@@ -624,20 +624,20 @@ int main() {
     prevFrame.src_gray = prev_src_gray;
     frame.src_gray = src_gray;
 
-    FeatureExtractorAndMatcher featureExtractorAndMatcher;
+    FeatureExtractorAndMatcher featureExtractorAndMatcher(prevFrame, frame);
 
     featureExtractorAndMatcher.extractFeaturesSIFT(prevFrame, frame);
 
     std::vector<cv::DMatch> good_matches =
-        featureExtractorAndMatcher.matchFeaturesBrutForce(prevFrame, frame);
+        featureExtractorAndMatcher.matchFeaturesBrutForce();
 
     // To do from here:
     Compute3D compute3D(prevFrame, frame, pointCloud);
-    // cout << "FrameSize: " << featureExtractorAndMatcher.frame.src_gray.size()
-    //      << std::endl;
+    cout << "FrameSize: " << featureExtractorAndMatcher.frame.src_gray.size()
+         << std::endl;
 
     cout << "Main frame object size " << frame.descriptors_cpu.size() << endl;
-    cout << "Main Frame object data " << frame.keypoints_cpu.size() << endl;
+    cout << "Main Frame object data " << frame.src_gray.size;
 
     // change in frame is not reflected in the main frame object after
     // feature extraction
