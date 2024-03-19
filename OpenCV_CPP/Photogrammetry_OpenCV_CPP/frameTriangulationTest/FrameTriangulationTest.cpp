@@ -20,9 +20,6 @@
 
 using namespace std;
 
-cv::RNG rng(12345);
-const char *source_window = "Image";
-
 int nfeatures = 100000;
 float scaleFactor = 1.2f;
 int nlevels = 16;
@@ -33,13 +30,9 @@ int scoreType = cv::ORB::HARRIS_SCORE;
 int patchSize = 31;
 int fastThreshold = 20;
 bool blurForDescriptor = true;
-
 int negativeZCount = 0;
 
-/* cv::Mat src, src_gray, prev_src_gray; */
-
-vector<string> imageList;
-
+// Class of Storing Point Cloud data
 class PointCLoud {
 public:
   cv::Mat pointCloudMatrix = cv::Mat(0, 0, CV_64F);
@@ -52,7 +45,6 @@ public:
 };
 
 class Frame {
-private:
 public:
   cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 3658.26, 0., 2311.5, 0.,
                           3658.26, 1734., 0., 0., 1.);
@@ -60,13 +52,20 @@ public:
   // Distortion coefficients
   cv::Mat distortionCoefficients =
       (cv::Mat_<double>(5, 1) << 0.21044, -1.0387, 0., 0., 1.6132);
-
+  cv::Mat src;
   cv::Mat src_gray;
   cv::Mat descriptors_cpu;
   std::vector<cv::KeyPoint> keypoints_cpu;
   double scaleFactor = 1.;
+
+  vector<cv::Point2f> points1;
+
+  cv::Mat relPose = (cv::Mat_<double>(4, 4, CV_64F) << 1, 0, 0, 0, 0, 1, 0, 0,
+                     0, 0, 1, 0, 0, 0, 0, 1);
+
   cv::Mat basePose = (cv::Mat_<double>(4, 4, CV_64F) << 1, 0, 0, 0, 0, 1, 0, 0,
                       0, 0, 1, 0, 0, 0, 0, 1);
+  Frame(cv::Mat basePose) { this->basePose = basePose; }
 };
 
 class Compute3D {
@@ -75,41 +74,39 @@ private:
                           3658.26, 1734., 0., 0., 1.);
 
 public:
-  Frame prevFrame, frame;
-  PointCLoud pointCloud;
-  cv::Mat pointCloudMatrix = pointCloud.pointCloudMatrix;
-  cv::Mat pointColorsMatrix = pointCloud.pointColorsMatrix;
+  cv::Mat extractTransFromPose(cv::Mat pose) {
+    cv::Mat trans = (cv::Mat_<double>(3, 1));
+    trans.at<double>(0, 0) = pose.at<double>(0, 3);
+    trans.at<double>(1, 0) = pose.at<double>(1, 3);
+    trans.at<double>(2, 0) = pose.at<double>(2, 3);
+    return trans;
+  }
+  cv::Mat extractRotFromPose(cv::Mat pose) {
+    cv::Mat rot = (cv::Mat_<double>(3, 1));
+    rot.at<double>(0, 0) = pose.at<double>(0, 0);
+    rot.at<double>(0, 1) = pose.at<double>(0, 1);
+    rot.at<double>(0, 2) = pose.at<double>(0, 2);
+    rot.at<double>(1, 0) = pose.at<double>(1, 0);
+    rot.at<double>(1, 1) = pose.at<double>(1, 1);
+    rot.at<double>(1, 2) = pose.at<double>(1, 2);
+    rot.at<double>(2, 0) = pose.at<double>(2, 0);
+    rot.at<double>(2, 1) = pose.at<double>(2, 1);
+    rot.at<double>(2, 2) = pose.at<double>(2, 2);
+    return rot;
+  }
 
-  cv::Mat hom_rpt;
+  // Adjust the scale factor to match the point clouds by triangulation of 3
+  // frames
+  void triangulateFramesForScale(cv::Mat &prevFrame, cv::Mat &middle_frame,
+                                 cv::Mat &next_frame) {}
 
-  Compute3D(Frame prevFrame, Frame frame, PointCLoud &pointCloud) {
-    this->prevFrame = prevFrame;
-    this->frame = frame;
-    this->pointCloud = pointCloud;
-    this->pointCloudMatrix = pointCloud.pointCloudMatrix;
-    this->pointColorsMatrix = pointCloud.pointColorsMatrix;
-  };
-
-  void triangulateFramesForScale(cv::Mat prev_frame, cv::Mat middle_frame,
-                                 cv::Mat next_frame) {}
-
-  void findPose(std::vector<cv::DMatch> good_matches) {
-    int point_count = good_matches.size();
-    cout << "Good Points: " << point_count << endl;
-    vector<cv::Point2f> points1(point_count);
-    vector<cv::Point2f> points2(point_count);
-    // initialize the points here ...
-    for (int i = 0; i < point_count; i++) {
-      cout << i << endl;
-      cout << prevFrame.keypoints_cpu.size() << endl;
-      points1[i] = prevFrame.keypoints_cpu[good_matches[i].queryIdx].pt;
-      points2[i] = frame.keypoints_cpu[good_matches[i].trainIdx].pt;
-    }
-
+  // Find the relative pose in between the two input frames
+  void findPose(Frame &prevFrame, Frame &frame) {
     // Estimating the Essential Matrix
     cv::Mat essentialMatrix;
-    essentialMatrix = cv::findEssentialMat(points1, points2, cameraMatrix,
-                                           cv::RANSAC, 0.99, 1.0, 10000);
+    essentialMatrix =
+        cv::findEssentialMat(prevFrame.points1, frame.points1, cameraMatrix,
+                             cv::RANSAC, 0.99, 1.0, 10000);
     /* cout << essentialMatrix << endl; */
     cv::Mat R1, R2, t, R1R, R2R;
     cv::decomposeEssentialMat(essentialMatrix, R1, R2, t);
@@ -130,28 +127,7 @@ public:
       cout << "R2 is Correct" << endl;
     }
 
-    this->hom_rpt = composeHomRPT(correctRot, t);
-  }
-
-  cv::Mat extractTransFromRpt() {
-    cv::Mat trans = (cv::Mat_<double>(3, 1));
-    trans.at<double>(0, 0) = this->hom_rpt.at<double>(0, 3);
-    trans.at<double>(1, 0) = this->hom_rpt.at<double>(1, 3);
-    trans.at<double>(2, 0) = this->hom_rpt.at<double>(2, 3);
-    return trans;
-  }
-  cv::Mat extractRotFromRpt(cv::Mat hom_rpt) {
-    cv::Mat rot = (cv::Mat_<double>(3, 1));
-    rot.at<double>(0, 0) = hom_rpt.at<double>(0, 0);
-    rot.at<double>(0, 1) = hom_rpt.at<double>(0, 1);
-    rot.at<double>(0, 2) = hom_rpt.at<double>(0, 2);
-    rot.at<double>(1, 0) = hom_rpt.at<double>(1, 0);
-    rot.at<double>(1, 1) = hom_rpt.at<double>(1, 1);
-    rot.at<double>(1, 2) = hom_rpt.at<double>(1, 2);
-    rot.at<double>(2, 0) = hom_rpt.at<double>(2, 0);
-    rot.at<double>(2, 1) = hom_rpt.at<double>(2, 1);
-    rot.at<double>(2, 2) = hom_rpt.at<double>(2, 2);
-    return rot;
+    frame.relPose = composeHomPose(correctRot, t);
   }
 
   // Compute the homogenised camera matrix
@@ -165,31 +141,33 @@ public:
 
   // Compute the euclidian transform from input rotation and translation
   // matrices
-  cv::Mat composeHomRPT(cv::Mat rot, cv::Mat trans) {
-    cv::Mat rpt, hom_rpt;
-    cv::hconcat(rot, trans, rpt);
+  cv::Mat composeHomPose(cv::Mat rot, cv::Mat trans) {
+    cv::Mat pose, hom_pose;
+    cv::hconcat(rot, trans, pose);
     cv::Mat temp = (cv::Mat_<double>(1, 4) << 0., 0., 0., scaleFactor);
-    cv::vconcat(rpt, temp, hom_rpt);
-    cout << "Hom RPT" << hom_rpt << endl;
-    return hom_rpt;
+    cv::vconcat(pose, temp, hom_pose);
+    // cout << "Hom Pose" << hom_pose << endl;
+    return hom_pose;
   }
 
   // Compute the product of homogenised camera matrix and the euclidian
   // transform
-  cv::Mat comptueP(cv::Mat hom_rpt) {
+  cv::Mat comptueP(cv::Mat pose) {
     cv::Mat hom_cameraMatrix = computeM();
     /* baseRPT = baseRPT * hom_rpt; */
     /* cout << "Base RPT" << baseRPT << endl; */
     /* cout << "RPT homogenised: " << hom_rpt << endl; */
     /* cout << "cam*rpt: " << hom_cameraMatrix * hom_rpt << endl; */
-    return hom_cameraMatrix * hom_rpt;
+    return hom_cameraMatrix * pose;
   }
 
-  //
-  cv::Mat getLocalCoordinates(cv::Mat src, cv::Point2f r, cv::Point2f l,
-                              cv::Mat M, cv::Mat P, cv::Mat hom_rpt) {
+  // Used by computeCoordinates to find the local coordinates
+  cv::Mat getLocalCoordinates(cv::Mat src, cv::Point2f l, cv::Point2f r,
+                              cv::Mat relPose, PointCLoud &pointCloud) {
     /* cout << "getting local coordinates " << l.x << " " << l.y << endl; */
 
+    cv::Mat M = computeM();
+    cv::Mat P = comptueP(relPose);
     cv::Mat colors(1, 1, CV_8UC3, cv::Scalar(src.at<cv::Vec3b>(l.y, l.x)));
     pointCloud.pointColorsMatrix.push_back(colors);
 
@@ -253,7 +231,7 @@ public:
     cv::Mat rightFrameCoordiantesHom;
     cv::vconcat(rightFrameCoordiantes, temp, rightFrameCoordiantesHom);
     /* cout << "rightFrameCoordiantes" << rightFrameCoordiantes << endl; */
-    cv::Mat leftFrameCoordinatesHom = hom_rpt * rightFrameCoordiantesHom;
+    cv::Mat leftFrameCoordinatesHom = relPose * rightFrameCoordiantesHom;
     /* cout << "leftFrameCoordinatesHom" << leftFrameCoordinatesHom << endl;
      */
 
@@ -265,14 +243,17 @@ public:
     /* return rightFrameCoordiantes; */
   }
 
-  void getWorldCoordinates(cv::Mat baseRPT, cv::Mat localCoordinates) {
+  // Used by computeCoordinates to calculate world coordinates from local
+  // coordinates
+  void getWorldCoordinates(cv::Mat basePose, cv::Mat localCoordinates,
+                           PointCLoud &pointCloud) {
     cv::Mat worldCoordinates = cv::Mat_<double>(3, 3, CV_64F);
 
     /* cout << "baseRot" << baseRot << endl; */
     /* worldCoordinates = baseRot * worldCoordinates; */
     /* worldCoordinates = localCoordinates + baseTrans; */
     /* cout << "worldCoordinates" << worldCoordinates << endl; */
-    worldCoordinates = baseRPT * localCoordinates;
+    worldCoordinates = basePose * localCoordinates;
     cv::Point3d pointCoordinate;
     pointCoordinate.x = worldCoordinates.at<double>(0);
     pointCoordinate.y = worldCoordinates.at<double>(1);
@@ -281,12 +262,14 @@ public:
     pointCloud.pointCloudMatrix.push_back(pointCoordinate);
   }
 
-  void placeCameraReferencePointCloud(cv::Mat baseRPT) {
+  // Plce the camera reference in the point cloud
+  void placeCameraReferencePointCloud(cv::Mat basePose,
+                                      PointCLoud &pointCloud) {
     cv::Point3d cameraPointCLoud;
     cv::Mat arrowTip = (cv::Mat_<double>(4, 1) << 0., 0., -1., 1);
-    arrowTip = baseRPT * arrowTip;
+    arrowTip = basePose * arrowTip;
     cv::Mat arrowBase = (cv::Mat_<double>(4, 1) << 0., 0., 0., 1);
-    arrowBase = baseRPT * arrowBase;
+    arrowBase = basePose * arrowBase;
 
     for (int i = -2; i < 2; i++) {
       for (int j = -2; j < 2; j++) {
@@ -301,36 +284,36 @@ public:
           cameraPointCLoud.x = arrowBase.at<double>(0) + i * 0.1;
           cameraPointCLoud.y = arrowBase.at<double>(1) + j * 0.1;
           cameraPointCLoud.z = arrowBase.at<double>(2) + k * 0.1;
-          pointCloudMatrix.push_back(cameraPointCLoud);
+          pointCloud.pointCloudMatrix.push_back(cameraPointCLoud);
           cv::Mat colors2(1, 1, CV_8UC3, cv::Scalar(200, 200, 200));
-          pointColorsMatrix.push_back(colors2);
+          pointCloud.pointColorsMatrix.push_back(colors2);
         }
       }
     }
   }
 
-  void computeCoordinates(cv::Mat src, vector<cv::Point2f> points1,
-                          vector<cv::Point2f> points2, cv::Mat hom_rpt,
-                          cv::Mat baseRPT) {
-    int point_count = points1.size();
-    cv::Mat correctRot = extractRotFromRpt(hom_rpt);
-    cv::Mat P = comptueP(hom_rpt);
+  cv::Mat computeCoordinates(Frame prevFrame, Frame frame, cv::Mat relPose,
+                             cv::Mat &basePose, PointCLoud &pointCloud) {
+    int point_count = frame.points1.size();
+    cv::Mat correctRot = extractRotFromPose(relPose);
+    cv::Mat P = comptueP(relPose);
     cv::Mat M = computeM();
     for (int i = 0; i < point_count; i++) {
       cv::Mat localCoordinates =
-          getLocalCoordinates(src, points2[i], points1[i], M, P, hom_rpt);
-      getWorldCoordinates(baseRPT, localCoordinates);
+          getLocalCoordinates(prevFrame.src, prevFrame.points1[i],
+                              frame.points1[i], relPose, pointCloud);
+      getWorldCoordinates(basePose, localCoordinates, pointCloud);
     }
-    placeCameraReferencePointCloud(baseRPT);
+    placeCameraReferencePointCloud(basePose, pointCloud);
 
-    cout << "REached" << endl;
+    basePose.at<double>(0, 3) = basePose.at<double>(0, 3) / scaleFactor;
+    basePose.at<double>(1, 3) = basePose.at<double>(1, 3) / scaleFactor;
+    basePose.at<double>(2, 3) = basePose.at<double>(2, 3) / scaleFactor;
+    basePose.at<double>(3, 3) = basePose.at<double>(3, 3) / scaleFactor;
 
-    baseRPT = baseRPT * hom_rpt;
+    basePose = basePose * relPose;
     /* cv::Mat temp = (cv::Mat_<double>(1, 3) << 0., 0., 0.); */
-    baseRPT.at<double>(0, 3) = baseRPT.at<double>(0, 3) / scaleFactor;
-    baseRPT.at<double>(1, 3) = baseRPT.at<double>(1, 3) / scaleFactor;
-    baseRPT.at<double>(2, 3) = baseRPT.at<double>(2, 3) / scaleFactor;
-    baseRPT.at<double>(3, 3) = baseRPT.at<double>(3, 3) / scaleFactor;
+
     /* baseTrans.at<double>(0) = baseRPT.at<double>(0, 3); */
     /* baseTrans.at<double>(1) = baseRPT.at<double>(1, 3); */
     /* baseTrans.at<double>(2) = baseRPT.at<double>(2, 3); */
@@ -346,7 +329,7 @@ public:
     /* baseRot.at<double>(2, 1) = baseRPT.at<double>(2, 1); */
     /* baseRot.at<double>(2, 2) = baseRPT.at<double>(2, 2); */
 
-    cout << "Pose " << baseRPT << endl;
+    cout << "Pose " << basePose << endl;
     cout << "Base Rot " << correctRot << endl;
 
     negativeZCount = 0;
@@ -355,6 +338,7 @@ public:
     /* cout << "baseRPT" << baseRPT << endl; */
 
     /* cout << "Size 1" << prev_src_gray.size() << endl; */
+    return basePose;
   }
 };
 
@@ -403,8 +387,8 @@ public:
                      0, 0, 1, 0, 0, 0, 0, 1);
 
   void extractFeaturesSIFT(Frame &prevFrame, Frame &frame) {
-    int img_width = frame.src_gray.size().width,
-        img_height = frame.src_gray.size().height;
+    int img_width = prevFrame.src_gray.size().width,
+        img_height = prevFrame.src_gray.size().height;
     cout << " Size of image: " << img_width << " x " << img_height << endl;
     double qualityLevel = 0.01;
     double minDistance = 0;
@@ -475,25 +459,27 @@ public:
     vector<cv::Point2f> points2(point_count);
     // initialize the points here ...
     for (int i = 0; i < point_count; i++) {
-      points1[i] = prevFrame.keypoints_cpu[good_matches[i].queryIdx].pt;
-      points2[i] = frame.keypoints_cpu[good_matches[i].trainIdx].pt;
+      prevFrame.points1.push_back(
+          prevFrame.keypoints_cpu[good_matches[i].queryIdx].pt);
+      frame.points1.push_back(frame.keypoints_cpu[good_matches[i].trainIdx].pt);
     }
+    vector<cv::Point2f> points1_masked, points2_masked;
+    for (int i = 0; i < point_count; i++) {
+      // if (fund_mask.at<int>(i) == 1) {
+      points1_masked.push_back(prevFrame.points1[i]);
+      points2_masked.push_back(frame.points1[i]);
+      // }
+    }
+    cout << "masked points count: " << points1_masked.size() << endl;
+
     cv::Mat fund_mask;
     cv::Mat fundamentalMatrix = cv::findFundamentalMat(
-        points1, points2, cv::FM_RANSAC, 3., 0.90, fund_mask);
+        prevFrame.points1, frame.points1, cv::FM_RANSAC, 3., 0.90, fund_mask);
     /*  cout << fundamentalMatrix << endl; */
     /* cout << fund_mask; */
     /* cv::correctMatches(fundamentalMatrix, points1, points2, points1,
      */
     /*                    points2); */
-    vector<cv::Point2f> points1_masked, points2_masked;
-    for (int i = 0; i < point_count; i++) {
-      if (fund_mask.at<int>(i) == 1) {
-        points1_masked.push_back(points1[i]);
-        points2_masked.push_back(points2[i]);
-      }
-    }
-    cout << "masked points count: " << points1_masked.size() << endl;
 
     // Compute epilines
     vector<cv::Vec3f> epilines1, epilines2;
@@ -564,9 +550,6 @@ static bool readStringList(const string &filename, vector<string> &l) {
 }
 
 int main() {
-  /* cv::cuda::setDevice(0); */
-  /* cv::cuda::printCudaDeviceInfo(0); */
-
   // initialize a video capture object
   /* cv::VideoCapture vid_capture( */
   /*     "/home/omie_sawie/Code_Code/OmkarSawantBTP_SLAM_Photogrammetry/"
@@ -598,7 +581,10 @@ int main() {
   /* imshow(source_window, src); */
 
   PointCLoud pointCloud;
+  cv::Mat basePose = (cv::Mat_<double>(4, 4, CV_64F) << 1, 0, 0, 0, 0, 1, 0, 0,
+                      0, 0, 1, 0, 0, 0, 0, 1);
 
+  vector<string> imageList;
   readStringList("./src/imageList.xml", imageList);
 
   cout << "Image List: " << imageList.size() << endl;
@@ -607,8 +593,8 @@ int main() {
     cv::Mat distorted_src, distorted_src_gray, distorted_prev_src_gray, src,
         src_gray, prev_src_gray;
 
-    Frame prevFrame;
-    Frame frame;
+    Frame prevFrame(basePose);
+    Frame frame(basePose);
 
     distorted_src = cv::imread(imageList[i]);
     cv::undistort(distorted_src, src, frame.cameraMatrix,
@@ -623,16 +609,16 @@ int main() {
 
     prevFrame.src_gray = prev_src_gray;
     frame.src_gray = src_gray;
-
+    prevFrame.src = src;
+    prevFrame.basePose = basePose;
     FeatureExtractorAndMatcher featureExtractorAndMatcher;
 
     featureExtractorAndMatcher.extractFeaturesSIFT(prevFrame, frame);
 
-    std::vector<cv::DMatch> good_matches =
-        featureExtractorAndMatcher.matchFeaturesBrutForce(prevFrame, frame);
+    featureExtractorAndMatcher.matchFeaturesBrutForce(prevFrame, frame);
 
     // To do from here:
-    Compute3D compute3D(prevFrame, frame, pointCloud);
+    Compute3D compute3D;
     // cout << "FrameSize: " << featureExtractorAndMatcher.frame.src_gray.size()
     //      << std::endl;
 
@@ -641,8 +627,12 @@ int main() {
 
     // change in frame is not reflected in the main frame object after
     // feature extraction
-    compute3D.findPose(good_matches);
+    compute3D.findPose(prevFrame, frame);
 
+    cout << "relative pose " << frame.relPose << endl;
+
+    basePose = compute3D.computeCoordinates(prevFrame, frame, frame.relPose,
+                                            prevFrame.basePose, pointCloud);
     /* // If frames are present, show it */
     /* if (isSuccess == true) { */
     /*     // display frames */
