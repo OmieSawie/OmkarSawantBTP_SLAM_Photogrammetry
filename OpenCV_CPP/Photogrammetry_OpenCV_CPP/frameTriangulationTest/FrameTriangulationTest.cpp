@@ -21,7 +21,7 @@
 using namespace std;
 
 int nfeatures = 100000;
-float scaleFactor = 1.2f;
+float scaleFactor = 2.f;
 int nlevels = 16;
 int edgeThreshold = 31;
 int firstLevel = 0;
@@ -56,7 +56,7 @@ public:
   cv::Mat src_gray;
   cv::Mat descriptors_cpu;
   std::vector<cv::KeyPoint> keypoints_cpu;
-  double scaleFactor = 1.;
+  double scaleFactor = 2.;
 
   vector<cv::Point2f> points1;
 
@@ -127,6 +127,7 @@ public:
       cout << "R2 is Correct" << endl;
     }
 
+    t = t * scaleFactor;
     frame.relPose = composeHomPose(correctRot, t);
   }
 
@@ -144,7 +145,7 @@ public:
   cv::Mat composeHomPose(cv::Mat rot, cv::Mat trans) {
     cv::Mat pose, hom_pose;
     cv::hconcat(rot, trans, pose);
-    cv::Mat temp = (cv::Mat_<double>(1, 4) << 0., 0., 0., scaleFactor);
+    cv::Mat temp = (cv::Mat_<double>(1, 4) << 0., 0., 0., 1);
     cv::vconcat(pose, temp, hom_pose);
     // cout << "Hom Pose" << hom_pose << endl;
     return hom_pose;
@@ -194,15 +195,15 @@ public:
     p11 = P.at<double>(0, 0);
     p12 = P.at<double>(0, 1);
     p13 = P.at<double>(0, 2);
-    p14 = P.at<double>(0, 3) / scaleFactor;
+    p14 = P.at<double>(0, 3) * scaleFactor;
     p21 = P.at<double>(1, 0);
     p22 = P.at<double>(1, 1);
     p23 = P.at<double>(1, 2);
-    p24 = P.at<double>(1, 3) / scaleFactor;
+    p24 = P.at<double>(1, 3) * scaleFactor;
     p31 = P.at<double>(2, 0);
     p32 = P.at<double>(2, 1);
     p33 = P.at<double>(2, 2);
-    p34 = P.at<double>(2, 3) / scaleFactor;
+    p34 = P.at<double>(2, 3) * scaleFactor;
 
     /* cout << "ur= " << ur << endl; */
     /* cout << "m33= " << m33 << endl; */
@@ -306,10 +307,10 @@ public:
     }
     placeCameraReferencePointCloud(basePose, pointCloud);
 
-    basePose.at<double>(0, 3) = basePose.at<double>(0, 3) / scaleFactor;
-    basePose.at<double>(1, 3) = basePose.at<double>(1, 3) / scaleFactor;
-    basePose.at<double>(2, 3) = basePose.at<double>(2, 3) / scaleFactor;
-    basePose.at<double>(3, 3) = basePose.at<double>(3, 3) / scaleFactor;
+    basePose.at<double>(0, 3) = basePose.at<double>(0, 3);
+    basePose.at<double>(1, 3) = basePose.at<double>(1, 3);
+    basePose.at<double>(2, 3) = basePose.at<double>(2, 3);
+    basePose.at<double>(3, 3) = basePose.at<double>(3, 3);
 
     basePose = basePose * relPose;
     /* cv::Mat temp = (cv::Mat_<double>(1, 3) << 0., 0., 0.); */
@@ -366,8 +367,6 @@ public:
   /*     (cv::Mat_<double>(3, 3, CV_64F) << 1., 0., 0., 0., 1., 0., 0.,
    * 0., 1.); */
   /* cv::Mat baseTrans = (cv::Mat_<double>(3, 1, CV_64F) << 0., 0., 0.); */
-
-  double scaleFactor = 1.;
 
   // Frame &prevFrame;
   // Frame &frame;
