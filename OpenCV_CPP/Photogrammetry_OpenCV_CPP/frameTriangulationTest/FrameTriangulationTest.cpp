@@ -21,7 +21,7 @@
 using namespace std;
 
 int nfeatures = 100000;
-float scaleFactor = 2.f;
+float scaleFactor = 0.4f;
 int nlevels = 16;
 int edgeThreshold = 31;
 int firstLevel = 0;
@@ -56,7 +56,7 @@ public:
   cv::Mat src_gray;
   cv::Mat descriptors_cpu;
   std::vector<cv::KeyPoint> keypoints_cpu;
-  double scaleFactor = 2.;
+  // double scaleFactor = 2.;
 
   vector<cv::Point2f> points1;
 
@@ -267,9 +267,9 @@ public:
   void placeCameraReferencePointCloud(cv::Mat basePose,
                                       PointCLoud &pointCloud) {
     cv::Point3d cameraPointCLoud;
-    cv::Mat arrowTip = (cv::Mat_<double>(4, 1) << 0., 0., -1., 1);
+    cv::Mat arrowTip = (cv::Mat_<double>(4, 1) << 0., 0., 0., 1);
     arrowTip = basePose * arrowTip;
-    cv::Mat arrowBase = (cv::Mat_<double>(4, 1) << 0., 0., 0., 1);
+    cv::Mat arrowBase = (cv::Mat_<double>(4, 1) << 0., 0., 1., 1);
     arrowBase = basePose * arrowBase;
 
     for (int i = -2; i < 2; i++) {
@@ -463,17 +463,17 @@ public:
       frame.points1.push_back(frame.keypoints_cpu[good_matches[i].trainIdx].pt);
     }
     vector<cv::Point2f> points1_masked, points2_masked;
-    for (int i = 0; i < point_count; i++) {
-      // if (fund_mask.at<int>(i) == 1) {
-      points1_masked.push_back(prevFrame.points1[i]);
-      points2_masked.push_back(frame.points1[i]);
-      // }
-    }
-    cout << "masked points count: " << points1_masked.size() << endl;
 
     cv::Mat fund_mask;
     cv::Mat fundamentalMatrix = cv::findFundamentalMat(
         prevFrame.points1, frame.points1, cv::FM_RANSAC, 3., 0.90, fund_mask);
+    for (int i = 0; i < point_count; i++) {
+      if (fund_mask.at<int>(i) == 1) {
+        points1_masked.push_back(prevFrame.points1[i]);
+        points2_masked.push_back(frame.points1[i]);
+      }
+    }
+    cout << "masked points count: " << points1_masked.size() << endl;
     /*  cout << fundamentalMatrix << endl; */
     /* cout << fund_mask; */
     /* cv::correctMatches(fundamentalMatrix, points1, points2, points1,
@@ -588,6 +588,8 @@ int main() {
 
   cout << "Image List: " << imageList.size() << endl;
 
+  vector<Frame> framesData;
+
   for (int i = 1; i < imageList.size(); i++) {
     cv::Mat distorted_src, distorted_src_gray, distorted_prev_src_gray, src,
         src_gray, prev_src_gray;
@@ -655,6 +657,9 @@ int main() {
     pointCloud.writeCloudToFile("PointCLoud.ply", pointCloud.pointCloudMatrix,
                                 pointCloud.pointColorsMatrix);
 
+    framesData.push_back(prevFrame);
+    framesData.push_back(frame);
+
     if (key == 'q') {
       cout << "q key is pressed by the user. Stopping the "
               "video"
@@ -662,6 +667,7 @@ int main() {
       break;
     }
   }
+  cout << "FraneData Vector data: " << framesData[1].keypoints_cpu.size();
 
   /* } */
   // Release the video capture object
