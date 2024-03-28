@@ -385,9 +385,9 @@ public:
   cv::Mat baseRPT = (cv::Mat_<double>(4, 4, CV_64F) << 1, 0, 0, 0, 0, 1, 0, 0,
                      0, 0, 1, 0, 0, 0, 0, 1);
 
-  void extractFeaturesSIFT(Frame &prevFrame, Frame &frame) {
-    int img_width = prevFrame.src_gray.size().width,
-        img_height = prevFrame.src_gray.size().height;
+  void extractFeaturesSIFT(Frame &frame) {
+    int img_width = frame.src_gray.size().width,
+        img_height = frame.src_gray.size().height;
     cout << " Size of image: " << img_width << " x " << img_height << endl;
     double qualityLevel = 0.01;
     double minDistance = 0;
@@ -399,9 +399,6 @@ public:
     // Detect and Compute features
     // prev_src_gray is	#1 query image
     // src_gray is the  #2 train image
-    extractor->detectAndCompute(prevFrame.src_gray, cv::noArray(),
-                                prevFrame.keypoints_cpu,
-                                prevFrame.descriptors_cpu);
     extractor->detectAndCompute(frame.src_gray, cv::noArray(),
                                 frame.keypoints_cpu, frame.descriptors_cpu);
 
@@ -456,17 +453,24 @@ public:
     int point_count = good_matches.size();
     vector<cv::Point2f> points1(point_count);
     vector<cv::Point2f> points2(point_count);
+
+    // Clear the previously made points1 Matrix in prevFrame
+    prevFrame.points1.clear();
+    frame.points1.clear();
     // initialize the points here ...
     for (int i = 0; i < point_count; i++) {
       prevFrame.points1.push_back(
           prevFrame.keypoints_cpu[good_matches[i].queryIdx].pt);
       frame.points1.push_back(frame.keypoints_cpu[good_matches[i].trainIdx].pt);
     }
+
     vector<cv::Point2f> points1_masked, points2_masked;
 
     cv::Mat fund_mask;
+    // cout << "Here " << frame.points1.size() << endl;
     cv::Mat fundamentalMatrix = cv::findFundamentalMat(
         prevFrame.points1, frame.points1, cv::FM_RANSAC, 3., 0.90, fund_mask);
+    // cout << "Here" << endl;
     for (int i = 0; i < point_count; i++) {
       if (fund_mask.at<int>(i) == 1) {
         points1_masked.push_back(prevFrame.points1[i]);
@@ -590,11 +594,9 @@ int main() {
 
   vector<Frame> framesData;
 
-  for (int i = 1; i < imageList.size(); i++) {
-    cv::Mat distorted_src, distorted_src_gray, distorted_prev_src_gray, src,
-        src_gray, prev_src_gray;
+  for (int i = 0; i < imageList.size(); i++) {
+    cv::Mat distorted_src, distorted_src_gray, src, src_gray;
 
-    Frame prevFrame(basePose);
     Frame frame(basePose);
 
     distorted_src = cv::imread(imageList[i]);
@@ -603,63 +605,40 @@ int main() {
     distorted_src_gray = cv::imread(imageList[i], cv::IMREAD_GRAYSCALE);
     cv::undistort(distorted_src_gray, src_gray, frame.cameraMatrix,
                   frame.distortionCoefficients, cv::noArray());
-    distorted_prev_src_gray =
-        cv::imread(imageList[i - 1], cv::IMREAD_GRAYSCALE);
-    cv::undistort(distorted_prev_src_gray, prev_src_gray, frame.cameraMatrix,
-                  frame.distortionCoefficients);
 
-    prevFrame.src_gray = prev_src_gray;
+    frame.src = src;
     frame.src_gray = src_gray;
-    prevFrame.src = src;
-    prevFrame.basePose = basePose;
     FeatureExtractorAndMatcher featureExtractorAndMatcher;
 
-    featureExtractorAndMatcher.extractFeaturesSIFT(prevFrame, frame);
+    featureExtractorAndMatcher.extractFeaturesSIFT(frame);
+    if (i > 0) {
+      Frame prevFrame = framesData[i - 1];
+      featureExtractorAndMatcher.matchFeaturesBrutForce(prevFrame, frame);
 
-    featureExtractorAndMatcher.matchFeaturesBrutForce(prevFrame, frame);
+      Compute3D compute3D;
+      // cout << "FrameSize: " <<
+      // featureExtractorAndMatcher.frame.src_gray.size()
+      //      << std::endl;
 
-    // To do from here:
-    Compute3D compute3D;
-    // cout << "FrameSize: " << featureExtractorAndMatcher.frame.src_gray.size()
-    //      << std::endl;
+      cout << "Main frame object size " << frame.descriptors_cpu.size() << endl;
+      cout << "Main Frame object data " << frame.keypoints_cpu.size() << endl;
 
-    cout << "Main frame object size " << frame.descriptors_cpu.size() << endl;
-    cout << "Main Frame object data " << frame.keypoints_cpu.size() << endl;
+      // change in frame is not reflected in the main frame object after
+      // feature extraction
+      compute3D.findPose(prevFrame, frame);
 
-    // change in frame is not reflected in the main frame object after
-    // feature extraction
-    compute3D.findPose(prevFrame, frame);
+      cout << "relative pose " << frame.relPose << endl;
 
-    cout << "relative pose " << frame.relPose << endl;
+      basePose = compute3D.computeCoordinates(prevFrame, frame, frame.relPose,
+                                              prevFrame.basePose, pointCloud);
 
-    basePose = compute3D.computeCoordinates(prevFrame, frame, frame.relPose,
-                                            prevFrame.basePose, pointCloud);
-    /* // If frames are present, show it */
-    /* if (isSuccess == true) { */
-    /*     // display frames */
-    /*     /1* imshow("Frame", frame); *1/ */
-    /*     /1* imshow("PrevFrame", prevFrame); *1/ */
-    /* } */
-
-    /* if (isSuccess == false) { */
-    /*     cout << "Video camera is disconnected" << endl; */
-    /*     break; */
-    /* } */
-
-    //-- Step 1: Detect the keypoints using SURF Detector,compute
-    // the
-    // descriptors
-
-    // wait 20 ms between successive frames and break the loop ifkey
-    // q is pressed
-
-    int key = cv::waitKey(5000);
-    pointCloud.writeCloudToFile("PointCLoud.ply", pointCloud.pointCloudMatrix,
-                                pointCloud.pointColorsMatrix);
-
-    framesData.push_back(prevFrame);
+      pointCloud.writeCloudToFile("PointCLoud.ply", pointCloud.pointCloudMatrix,
+                                  pointCloud.pointColorsMatrix);
+      framesData[i - 1] = prevFrame;
+    }
     framesData.push_back(frame);
 
+    int key = cv::waitKey(5000);
     if (key == 'q') {
       cout << "q key is pressed by the user. Stopping the "
               "video"
