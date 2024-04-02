@@ -21,7 +21,7 @@
 using namespace std;
 
 int nfeatures = 100000;
-float scaleFactor = 0.4f;
+float scaleFactor = 1.f;
 int nlevels = 16;
 int edgeThreshold = 31;
 int firstLevel = 0;
@@ -97,8 +97,34 @@ public:
 
   // Adjust the scale factor to match the point clouds by triangulation of 3
   // frames
-  void triangulateFramesForScale(cv::Mat &prevFrame, cv::Mat &middle_frame,
-                                 cv::Mat &next_frame) {}
+  void triangulateFramesForScale(Frame &prevFrame, Frame &frame,
+                                 vector<cv::DMatch> good_matches0,
+                                 vector<cv::DMatch> good_matches1) {
+    int maxMatches = max(good_matches0.size(), good_matches1.size());
+
+    vector<pair<int, int>> tracker;
+    // vector<cv::DMatch> good_matches3;
+    for (int i = 0; i < good_matches0.size(); i++) {
+      // cout << goodMatchesDataVector[0][i].trainIdx << " ";
+      for (int j = 0; j < good_matches1.size(); j++) {
+        // cout << goodMatchesDataVector[1][i].queryIdx << " ";
+        if (good_matches0[i].trainIdx == good_matches1[j].queryIdx) {
+          // cout << good_matches0[i].trainIdx << " ";
+          // cv::DMatch match;
+          // match.trainIdx = good_matches1[j].trainIdx;
+          // match.queryIdx = good_matches0[i].queryIdx;
+          // good_matches3.push_back(match);
+          pair<int, int> track;
+          track.first = i;
+          track.second = j;
+          tracker.push_back(track);
+        }
+      }
+    }
+    cout << "Tracker size " << tracker.size() << endl;
+
+    double scaleFactor = 1.;
+  }
 
   // Find the relative pose in between the two input frames
   void findPose(Frame &prevFrame, Frame &frame) {
@@ -246,8 +272,8 @@ public:
 
   // Used by computeCoordinates to calculate world coordinates from local
   // coordinates
-  void getWorldCoordinates(cv::Mat basePose, cv::Mat localCoordinates,
-                           PointCLoud &pointCloud) {
+  cv::Point3d getWorldCoordinates(cv::Mat basePose, cv::Mat localCoordinates,
+                                  PointCLoud &pointCloud) {
     cv::Mat worldCoordinates = cv::Mat_<double>(3, 3, CV_64F);
 
     /* cout << "baseRot" << baseRot << endl; */
@@ -261,6 +287,7 @@ public:
     pointCoordinate.z = worldCoordinates.at<double>(2);
 
     pointCloud.pointCloudMatrix.push_back(pointCoordinate);
+    return pointCoordinate;
   }
 
   // Plce the camera reference in the point cloud
@@ -294,7 +321,8 @@ public:
   }
 
   cv::Mat computeCoordinates(Frame prevFrame, Frame frame, cv::Mat relPose,
-                             cv::Mat &basePose, PointCLoud &pointCloud) {
+                             cv::Mat &basePose, PointCLoud &pointCloud,
+                             vector<cv::Point3d> &worldCoordinateVector) {
     int point_count = frame.points1.size();
     cv::Mat correctRot = extractRotFromPose(relPose);
     cv::Mat P = comptueP(relPose);
@@ -303,7 +331,9 @@ public:
       cv::Mat localCoordinates =
           getLocalCoordinates(prevFrame.src, prevFrame.points1[i],
                               frame.points1[i], relPose, pointCloud);
-      getWorldCoordinates(basePose, localCoordinates, pointCloud);
+      cv::Point3d worldCoordinate =
+          getWorldCoordinates(basePose, localCoordinates, pointCloud);
+      worldCoordinateVector.push_back(worldCoordinate);
     }
     placeCameraReferencePointCloud(basePose, pointCloud);
 
@@ -408,8 +438,9 @@ public:
     // this->prevFrame = prevFrame;
   }
 
-  std::vector<cv::DMatch> matchFeaturesBrutForce(Frame &prevFrame,
-                                                 Frame &frame) {
+  std::vector<cv::DMatch>
+  matchFeaturesBrutForce(Frame &prevFrame, Frame &frame,
+                         vector<cv::DMatch> &good_matches) {
     // cv::Mat prev_src_gray = this->prevFrame.src_gray;
     // cv::Mat src_gray = this->frame.src_gray;
     // cout << "Keypoints size in matching features "
@@ -424,7 +455,7 @@ public:
                       2);
 
     // Filter the good matches
-    std::vector<cv::DMatch> good_matches;
+    good_matches.clear();
     for (int k = 0; k < (int)matches.size(); k++) {
       if ((matches[k][0].distance < 0.8 * (matches[k][1].distance))) {
         good_matches.push_back(matches[k][0]);
@@ -593,6 +624,9 @@ int main() {
   cout << "Image List: " << imageList.size() << endl;
 
   vector<Frame> framesData;
+  vector<vector<cv::DMatch>> goodMatchesDataVector;
+  // vector<cv::Point3d> pointsDataVector;
+  vector<cv::Point3d> worldCoordinateVector;
 
   for (int i = 0; i < imageList.size(); i++) {
     cv::Mat distorted_src, distorted_src_gray, src, src_gray;
@@ -611,9 +645,13 @@ int main() {
     FeatureExtractorAndMatcher featureExtractorAndMatcher;
 
     featureExtractorAndMatcher.extractFeaturesSIFT(frame);
-    if (i > 0) {
+    if (i >= 1) {
       Frame prevFrame = framesData[i - 1];
-      featureExtractorAndMatcher.matchFeaturesBrutForce(prevFrame, frame);
+
+      vector<cv::DMatch> goodMatchesData;
+      featureExtractorAndMatcher.matchFeaturesBrutForce(prevFrame, frame,
+                                                        goodMatchesData);
+      goodMatchesDataVector.push_back(goodMatchesData);
 
       Compute3D compute3D;
       // cout << "FrameSize: " <<
@@ -629,8 +667,21 @@ int main() {
 
       cout << "relative pose " << frame.relPose << endl;
 
+      if (i > 2) {
+        // cout << goodMatchesDataVector[i - 2].size() << " "
+        //      << goodMatchesDataVector[i - 1].size() << endl;
+        compute3D.triangulateFramesForScale(prevFrame, frame,
+                                            goodMatchesDataVector[i - 2],
+                                            goodMatchesDataVector[i - 1]);
+      }
+
+      worldCoordinateVector.clear();
       basePose = compute3D.computeCoordinates(prevFrame, frame, frame.relPose,
-                                              prevFrame.basePose, pointCloud);
+                                              prevFrame.basePose, pointCloud,
+                                              worldCoordinateVector);
+      cout << "DataPointSaves size: " << worldCoordinateVector.size() << endl;
+
+      // pointCloud.pointCloudMatrix.push_back(pointCoordinate);
 
       pointCloud.writeCloudToFile("PointCLoud.ply", pointCloud.pointCloudMatrix,
                                   pointCloud.pointColorsMatrix);
@@ -647,6 +698,26 @@ int main() {
     }
   }
   cout << "FraneData Vector data: " << framesData[1].keypoints_cpu.size();
+  cout << "GoodMatchesData Vector data: " << goodMatchesDataVector[1].size()
+       << endl;
+
+  // vector<cv::DMatch> good_matches;
+  // for (int i = 0; i < goodMatchesDataVector[0].size(); i++) {
+  //   // cout << goodMatchesDataVector[0][i].trainIdx << " ";
+  //   for (int j = 0; j < goodMatchesDataVector[1].size(); j++) {
+  //     // cout << goodMatchesDataVector[1][i].queryIdx << " ";
+  //     if (goodMatchesDataVector[0][i].trainIdx ==
+  //         goodMatchesDataVector[1][j].queryIdx) {
+  //       cout << goodMatchesDataVector[0][i].trainIdx << " ";
+  //       cv::DMatch match;
+  //       // match.trainIdx =
+  //     }
+  //   }
+  // }
+  cout << endl;
+  // for (int i = 0; i < goodMatchesDataVector[1].size(); i++) {
+  //   cout << goodMatchesDataVector[1][i].queryIdx << " ";
+  // }
 
   /* } */
   // Release the video capture object
