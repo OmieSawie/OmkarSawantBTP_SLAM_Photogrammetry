@@ -21,7 +21,7 @@
 using namespace std;
 
 int nfeatures = 100000;
-float scaleFactor = 1.f;
+// float scaleFactor = 1.1f;
 int nlevels = 16;
 int edgeThreshold = 31;
 int firstLevel = 0;
@@ -38,9 +38,8 @@ public:
   cv::Mat pointCloudMatrix = cv::Mat(0, 0, CV_64F);
   cv::Mat pointColorsMatrix = cv::Mat(0, 0, CV_64F);
 
-  void writeCloudToFile(string filename, cv::Mat PointCloudMatrix,
-                        cv::Mat PointColorsMatrix) {
-    cv::viz::writeCloud(filename, PointCloudMatrix, PointColorsMatrix);
+  void writeCloudToFile(string filename, cv::Mat PointCloudMatrix) {
+    cv::viz::writeCloud(filename, PointCloudMatrix);
   }
 };
 
@@ -98,6 +97,9 @@ public:
   // Adjust the scale factor to match the point clouds by triangulation of 3
   // frames
   void triangulateFramesForScale(Frame &prevFrame, Frame &frame,
+                                 cv::Mat relPose, cv::Mat basePose,
+                                 PointCLoud &pointCloud,
+                                 vector<cv::Point3d> &worldCoordinateVector,
                                  vector<cv::DMatch> good_matches0,
                                  vector<cv::DMatch> good_matches1) {
     int maxMatches = max(good_matches0.size(), good_matches1.size());
@@ -123,11 +125,49 @@ public:
     }
     cout << "Tracker size " << tracker.size() << endl;
 
-    double scaleFactor = 1.;
+    vector<cv::Point3d> prevWorldCoordinateVector = worldCoordinateVector;
+    cv::Point3d diff, prevDiff;
+
+    double scaleFactor = 1;
+    for (int i = 0; i < 100; i++) {
+      diff.x = 0;
+      diff.y = 0;
+      diff.z = 0;
+      if (i == 0) {
+        scaleFactor = 0.8;
+      }
+      worldCoordinateVector.clear();
+      computeCoordinates(prevFrame, frame, relPose, basePose, pointCloud,
+                         worldCoordinateVector, scaleFactor);
+
+      for (int i = 0; i < tracker.size(); i++) {
+        diff += prevWorldCoordinateVector[tracker[i].first] -
+                worldCoordinateVector[tracker[i].second];
+        // cout << prevWorldCoordinateVector[tracker[i].first] -
+        //             worldCoordinateVector[tracker[i].second]
+        //      << " " << endl;
+        // cout << prevWorldCoordinateVector[tracker[i].first] << " " <<
+        // endl;
+        // cout << endl;
+      }
+      cout << "Diff " << cv::norm(diff) << " " << cv::norm(prevDiff) << endl;
+      cout << "scaleFactor  " << scaleFactor << endl;
+      if (i == 0) {
+        scaleFactor = 1.2;
+      }
+      if (i >= 1) {
+        if (norm(diff) < norm(prevDiff)) {
+          scaleFactor += 0.01;
+        } else {
+          scaleFactor -= 0.01;
+        }
+      }
+      prevDiff = diff;
+    }
   }
 
   // Find the relative pose in between the two input frames
-  void findPose(Frame &prevFrame, Frame &frame) {
+  void findPose(Frame &prevFrame, Frame &frame, double scaleFactor) {
     // Estimating the Essential Matrix
     cv::Mat essentialMatrix;
     essentialMatrix =
@@ -190,7 +230,8 @@ public:
 
   // Used by computeCoordinates to find the local coordinates
   cv::Mat getLocalCoordinates(cv::Mat src, cv::Point2f l, cv::Point2f r,
-                              cv::Mat relPose, PointCLoud &pointCloud) {
+                              cv::Mat relPose, PointCLoud &pointCloud,
+                              double scaleFactor) {
     /* cout << "getting local coordinates " << l.x << " " << l.y << endl; */
 
     cv::Mat M = computeM();
@@ -286,7 +327,7 @@ public:
     pointCoordinate.y = worldCoordinates.at<double>(1);
     pointCoordinate.z = worldCoordinates.at<double>(2);
 
-    pointCloud.pointCloudMatrix.push_back(pointCoordinate);
+    // pointCloud.pointCloudMatrix.push_back(pointCoordinate);
     return pointCoordinate;
   }
 
@@ -322,15 +363,16 @@ public:
 
   cv::Mat computeCoordinates(Frame prevFrame, Frame frame, cv::Mat relPose,
                              cv::Mat &basePose, PointCLoud &pointCloud,
-                             vector<cv::Point3d> &worldCoordinateVector) {
+                             vector<cv::Point3d> &worldCoordinateVector,
+                             double scaleFactor) {
     int point_count = frame.points1.size();
     cv::Mat correctRot = extractRotFromPose(relPose);
     cv::Mat P = comptueP(relPose);
     cv::Mat M = computeM();
     for (int i = 0; i < point_count; i++) {
-      cv::Mat localCoordinates =
-          getLocalCoordinates(prevFrame.src, prevFrame.points1[i],
-                              frame.points1[i], relPose, pointCloud);
+      cv::Mat localCoordinates = getLocalCoordinates(
+          prevFrame.src, prevFrame.points1[i], frame.points1[i], relPose,
+          pointCloud, scaleFactor);
       cv::Point3d worldCoordinate =
           getWorldCoordinates(basePose, localCoordinates, pointCloud);
       worldCoordinateVector.push_back(worldCoordinate);
@@ -663,28 +705,33 @@ int main() {
 
       // change in frame is not reflected in the main frame object after
       // feature extraction
-      compute3D.findPose(prevFrame, frame);
+      compute3D.findPose(prevFrame, frame, 1.);
 
       cout << "relative pose " << frame.relPose << endl;
 
-      if (i > 2) {
+      if (i >= 2) {
         // cout << goodMatchesDataVector[i - 2].size() << " "
         //      << goodMatchesDataVector[i - 1].size() << endl;
-        compute3D.triangulateFramesForScale(prevFrame, frame,
-                                            goodMatchesDataVector[i - 2],
-                                            goodMatchesDataVector[i - 1]);
+        compute3D.triangulateFramesForScale(
+            prevFrame, frame, frame.relPose, prevFrame.basePose, pointCloud,
+            worldCoordinateVector, goodMatchesDataVector[i - 2],
+            goodMatchesDataVector[i - 1]);
       }
 
       worldCoordinateVector.clear();
       basePose = compute3D.computeCoordinates(prevFrame, frame, frame.relPose,
                                               prevFrame.basePose, pointCloud,
-                                              worldCoordinateVector);
+                                              worldCoordinateVector, 1.);
       cout << "DataPointSaves size: " << worldCoordinateVector.size() << endl;
 
-      // pointCloud.pointCloudMatrix.push_back(pointCoordinate);
+      pointCloud.pointCloudMatrix.push_back(worldCoordinateVector);
 
-      pointCloud.writeCloudToFile("PointCLoud.ply", pointCloud.pointCloudMatrix,
-                                  pointCloud.pointColorsMatrix);
+      // pointCloud.writeCloudToFile("PointCLoud.ply",
+      // pointCloud.pointCloudMatrix,
+      //                             pointCloud.pointColorsMatrix);
+      pointCloud.writeCloudToFile("PointCLoud.ply",
+                                  pointCloud.pointCloudMatrix);
+
       framesData[i - 1] = prevFrame;
     }
     framesData.push_back(frame);
