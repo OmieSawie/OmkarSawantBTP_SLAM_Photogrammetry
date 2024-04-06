@@ -1,7 +1,6 @@
 #include <unistd.h>
 
 #include <cmath>
-// #include <ctime>
 #include <iostream>
 #include <opencv2/calib3d.hpp>
 #include <opencv2/core/mat.hpp>
@@ -20,18 +19,16 @@
 
 using namespace std;
 
-int nfeatures = 100000;
-// float scaleFactor = 1.1f;
-int nlevels = 16;
-int edgeThreshold = 31;
-int firstLevel = 0;
-int WTA_K = 2;
-int scoreType = cv::ORB::HARRIS_SCORE;
-int patchSize = 31;
-int fastThreshold = 20;
-bool blurForDescriptor = true;
-int negativeZCount = 0;
-
+// int nfeatures = 100000;
+// int nlevels = 16;
+// int edgeThreshold = 31;
+// int firstLevel = 0;
+// int WTA_K = 2;
+// int scoreType = cv::ORB::HARRIS_SCORE;
+// int patchSize = 31;
+// int fastThreshold = 20;
+// bool blurForDescriptor = true;
+//
 // Class of Storing Point Cloud data
 class PointCLoud {
 public:
@@ -55,7 +52,6 @@ public:
   cv::Mat src_gray;
   cv::Mat descriptors_cpu;
   std::vector<cv::KeyPoint> keypoints_cpu;
-  // double scaleFactor = 2.;
 
   vector<cv::Point2f> points1;
 
@@ -64,9 +60,9 @@ public:
 
   cv::Mat basePose = (cv::Mat_<double>(4, 4, CV_64F) << 1, 0, 0, 0, 0, 1, 0, 0,
                       0, 0, 1, 0, 0, 0, 0, 1);
-  Frame(cv::Mat basePose) { this->basePose = basePose; }
 };
 
+// Class to define functions for computations of 3D Points
 class Compute3D {
 private:
   cv::Mat cameraMatrix = (cv::Mat_<double>(3, 3) << 3658.26, 0., 2311.5, 0.,
@@ -81,7 +77,7 @@ public:
     return trans;
   }
   cv::Mat extractRotFromPose(cv::Mat pose) {
-    cv::Mat rot = (cv::Mat_<double>(3, 1));
+    cv::Mat rot = (cv::Mat_<double>(3, 3));
     rot.at<double>(0, 0) = pose.at<double>(0, 0);
     rot.at<double>(0, 1) = pose.at<double>(0, 1);
     rot.at<double>(0, 2) = pose.at<double>(0, 2);
@@ -96,30 +92,23 @@ public:
 
   // Adjust the scale factor to match the point clouds by triangulation of 3
   // frames
-  void triangulateFramesForScale(Frame &prevFrame, Frame &frame,
-                                 cv::Mat relPose, cv::Mat basePose,
-                                 PointCLoud &pointCloud,
-                                 vector<cv::Point3d> &worldCoordinateVector,
-                                 vector<cv::DMatch> good_matches0,
-                                 vector<cv::DMatch> good_matches1) {
-    int maxMatches = max(good_matches0.size(), good_matches1.size());
-
+  double triangulateFramesForScale(Frame &prevFrame, Frame &frame,
+                                   cv::Mat relPose, cv::Mat basePose,
+                                   PointCLoud &pointCloud,
+                                   vector<cv::Point3d> &worldCoordinateVector,
+                                   vector<cv::DMatch> good_matches0,
+                                   vector<cv::DMatch> good_matches1) {
     vector<pair<int, int>> tracker;
-    // vector<cv::DMatch> good_matches3;
     for (int i = 0; i < good_matches0.size(); i++) {
       // cout << goodMatchesDataVector[0][i].trainIdx << " ";
       for (int j = 0; j < good_matches1.size(); j++) {
         // cout << goodMatchesDataVector[1][i].queryIdx << " ";
         if (good_matches0[i].trainIdx == good_matches1[j].queryIdx) {
           // cout << good_matches0[i].trainIdx << " ";
-          // cv::DMatch match;
-          // match.trainIdx = good_matches1[j].trainIdx;
-          // match.queryIdx = good_matches0[i].queryIdx;
-          // good_matches3.push_back(match);
-          pair<int, int> track;
-          track.first = i;
-          track.second = j;
-          tracker.push_back(track);
+          pair<int, int> pair;
+          pair.first = i;
+          pair.second = j;
+          tracker.push_back(pair);
         }
       }
     }
@@ -128,17 +117,15 @@ public:
     vector<cv::Point3d> prevWorldCoordinateVector = worldCoordinateVector;
     cv::Point3d diff, prevDiff;
 
-    double scaleFactor = 1;
-    for (int i = 0; i < 100; i++) {
+    double scaleFactor = 1, scaleFactorIncr = 0.;
+    for (int i = 0; i < 1000; i++) {
       diff.x = 0;
       diff.y = 0;
       diff.z = 0;
-      if (i == 0) {
-        scaleFactor = 0.8;
-      }
+
       worldCoordinateVector.clear();
       computeCoordinates(prevFrame, frame, relPose, basePose, pointCloud,
-                         worldCoordinateVector, scaleFactor);
+                         worldCoordinateVector, scaleFactor, true);
 
       for (int i = 0; i < tracker.size(); i++) {
         diff += prevWorldCoordinateVector[tracker[i].first] -
@@ -150,20 +137,27 @@ public:
         // endl;
         // cout << endl;
       }
-      cout << "Diff " << cv::norm(diff) << " " << cv::norm(prevDiff) << endl;
-      cout << "scaleFactor  " << scaleFactor << endl;
+      // cout << "Diff " << cv::norm(diff) << " " << cv::norm(prevDiff) <<
+      // endl; cout << "scaleFactor  " << scaleFactor << endl;
       if (i == 0) {
-        scaleFactor = 1.2;
+        scaleFactor = 1.1;
       }
-      if (i >= 1) {
+      if (i == 1) {
         if (norm(diff) < norm(prevDiff)) {
-          scaleFactor += 0.01;
+          scaleFactorIncr = 0.01;
         } else {
-          scaleFactor -= 0.01;
+          scaleFactorIncr = -0.01;
         }
+        scaleFactor += scaleFactorIncr;
+      } else if (norm(diff) < norm(prevDiff)) {
+        scaleFactor += scaleFactorIncr;
       }
       prevDiff = diff;
     }
+    cout << "scaleFactor  " << scaleFactor << endl;
+    cout << "Diff " << norm(diff) << endl;
+
+    return scaleFactor;
   }
 
   // Find the relative pose in between the two input frames
@@ -361,14 +355,17 @@ public:
     }
   }
 
-  cv::Mat computeCoordinates(Frame prevFrame, Frame frame, cv::Mat relPose,
-                             cv::Mat &basePose, PointCLoud &pointCloud,
+  cv::Mat computeCoordinates(Frame prevFrame, Frame frame, cv::Mat &relPose,
+                             cv::Mat basePose, PointCLoud &pointCloud,
                              vector<cv::Point3d> &worldCoordinateVector,
-                             double scaleFactor) {
+                             double scaleFactor, bool scaling) {
     int point_count = frame.points1.size();
-    cv::Mat correctRot = extractRotFromPose(relPose);
-    cv::Mat P = comptueP(relPose);
-    cv::Mat M = computeM();
+
+    relPose.at<double>(0, 3) = relPose.at<double>(0, 3) * scaleFactor;
+    relPose.at<double>(1, 3) = relPose.at<double>(1, 3) * scaleFactor;
+    relPose.at<double>(2, 3) = relPose.at<double>(2, 3) * scaleFactor;
+    relPose.at<double>(3, 3) = relPose.at<double>(3, 3) * scaleFactor;
+
     for (int i = 0; i < point_count; i++) {
       cv::Mat localCoordinates = getLocalCoordinates(
           prevFrame.src, prevFrame.points1[i], frame.points1[i], relPose,
@@ -377,35 +374,46 @@ public:
           getWorldCoordinates(basePose, localCoordinates, pointCloud);
       worldCoordinateVector.push_back(worldCoordinate);
     }
-    placeCameraReferencePointCloud(basePose, pointCloud);
+    relPose.at<double>(0, 3) = relPose.at<double>(0, 3) / scaleFactor;
+    relPose.at<double>(1, 3) = relPose.at<double>(1, 3) / scaleFactor;
+    relPose.at<double>(2, 3) = relPose.at<double>(2, 3) / scaleFactor;
+    relPose.at<double>(3, 3) = relPose.at<double>(3, 3) / scaleFactor;
 
-    basePose.at<double>(0, 3) = basePose.at<double>(0, 3);
-    basePose.at<double>(1, 3) = basePose.at<double>(1, 3);
-    basePose.at<double>(2, 3) = basePose.at<double>(2, 3);
-    basePose.at<double>(3, 3) = basePose.at<double>(3, 3);
+    if (!scaling) {
+      relPose.at<double>(0, 3) = relPose.at<double>(0, 3) * scaleFactor;
+      relPose.at<double>(1, 3) = relPose.at<double>(1, 3) * scaleFactor;
+      relPose.at<double>(2, 3) = relPose.at<double>(2, 3) * scaleFactor;
+      relPose.at<double>(3, 3) = relPose.at<double>(3, 3) * scaleFactor;
+      placeCameraReferencePointCloud(basePose, pointCloud);
 
-    basePose = basePose * relPose;
-    /* cv::Mat temp = (cv::Mat_<double>(1, 3) << 0., 0., 0.); */
+      // basePose.at<double>(0, 3) = basePose.at<double>(0, 3);
+      // basePose.at<double>(1, 3) = basePose.at<double>(1, 3);
+      // basePose.at<double>(2, 3) = basePose.at<double>(2, 3);
+      // basePose.at<double>(3, 3) = basePose.at<double>(3, 3);
 
-    /* baseTrans.at<double>(0) = baseRPT.at<double>(0, 3); */
-    /* baseTrans.at<double>(1) = baseRPT.at<double>(1, 3); */
-    /* baseTrans.at<double>(2) = baseRPT.at<double>(2, 3); */
-    /* /1* baseTrans = temp; *1/ */
+      basePose = basePose * relPose;
+      /* cv::Mat temp = (cv::Mat_<double>(1, 3) << 0., 0., 0.); */
 
-    /* baseRot.at<double>(0, 0) = baseRPT.at<double>(0, 0); */
-    /* baseRot.at<double>(0, 1) = baseRPT.at<double>(0, 1); */
-    /* baseRot.at<double>(0, 2) = baseRPT.at<double>(0, 2); */
-    /* baseRot.at<double>(1, 0) = baseRPT.at<double>(1, 0); */
-    /* baseRot.at<double>(1, 1) = baseRPT.at<double>(1, 1); */
-    /* baseRot.at<double>(1, 2) = baseRPT.at<double>(1, 2); */
-    /* baseRot.at<double>(2, 0) = baseRPT.at<double>(2, 0); */
-    /* baseRot.at<double>(2, 1) = baseRPT.at<double>(2, 1); */
-    /* baseRot.at<double>(2, 2) = baseRPT.at<double>(2, 2); */
+      /* baseTrans.at<double>(0) = baseRPT.at<double>(0, 3); */
+      /* baseTrans.at<double>(1) = baseRPT.at<double>(1, 3); */
+      /* baseTrans.at<double>(2) = baseRPT.at<double>(2, 3); */
+      /* /1* baseTrans = temp; *1/ */
 
-    cout << "Pose " << basePose << endl;
-    cout << "Base Rot " << correctRot << endl;
+      /* baseRot.at<double>(0, 0) = baseRPT.at<double>(0, 0); */
+      /* baseRot.at<double>(0, 1) = baseRPT.at<double>(0, 1); */
+      /* baseRot.at<double>(0, 2) = baseRPT.at<double>(0, 2); */
+      /* baseRot.at<double>(1, 0) = baseRPT.at<double>(1, 0); */
+      /* baseRot.at<double>(1, 1) = baseRPT.at<double>(1, 1); */
+      /* baseRot.at<double>(1, 2) = baseRPT.at<double>(1, 2); */
+      /* baseRot.at<double>(2, 0) = baseRPT.at<double>(2, 0); */
+      /* baseRot.at<double>(2, 1) = baseRPT.at<double>(2, 1); */
+      /* baseRot.at<double>(2, 2) = baseRPT.at<double>(2, 2); */
 
-    negativeZCount = 0;
+      cout << "Pose " << basePose << endl;
+      cv::Mat correctRot = extractRotFromPose(relPose);
+
+      cout << "Relative Rot " << correctRot << endl;
+    }
 
     //
     /* cout << "baseRPT" << baseRPT << endl; */
@@ -657,8 +665,9 @@ int main() {
   /* imshow(source_window, src); */
 
   PointCLoud pointCloud;
-  cv::Mat basePose = (cv::Mat_<double>(4, 4, CV_64F) << 1, 0, 0, 0, 0, 1, 0, 0,
-                      0, 0, 1, 0, 0, 0, 0, 1);
+  // cv::Mat basePose = (cv::Mat_<double>(4, 4, CV_64F) << 1, 0, 0, 0, 0, 1,
+  // 0, 0,
+  //                     0, 0, 1, 0, 0, 0, 0, 1);
 
   vector<string> imageList;
   readStringList("./src/imageList.xml", imageList);
@@ -673,7 +682,7 @@ int main() {
   for (int i = 0; i < imageList.size(); i++) {
     cv::Mat distorted_src, distorted_src_gray, src, src_gray;
 
-    Frame frame(basePose);
+    Frame frame;
 
     distorted_src = cv::imread(imageList[i]);
     cv::undistort(distorted_src, src, frame.cameraMatrix,
@@ -709,19 +718,21 @@ int main() {
 
       cout << "relative pose " << frame.relPose << endl;
 
+      double scaleFactor = 1.0;
+
       if (i >= 2) {
         // cout << goodMatchesDataVector[i - 2].size() << " "
         //      << goodMatchesDataVector[i - 1].size() << endl;
-        compute3D.triangulateFramesForScale(
+        scaleFactor = compute3D.triangulateFramesForScale(
             prevFrame, frame, frame.relPose, prevFrame.basePose, pointCloud,
             worldCoordinateVector, goodMatchesDataVector[i - 2],
             goodMatchesDataVector[i - 1]);
       }
 
       worldCoordinateVector.clear();
-      basePose = compute3D.computeCoordinates(prevFrame, frame, frame.relPose,
-                                              prevFrame.basePose, pointCloud,
-                                              worldCoordinateVector, 1.);
+      frame.basePose = compute3D.computeCoordinates(
+          prevFrame, frame, frame.relPose, prevFrame.basePose, pointCloud,
+          worldCoordinateVector, scaleFactor, false);
       cout << "DataPointSaves size: " << worldCoordinateVector.size() << endl;
 
       pointCloud.pointCloudMatrix.push_back(worldCoordinateVector);
